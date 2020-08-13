@@ -4,8 +4,10 @@
   "description": "js13kgames competition entry. Motto 404",
   "main": "index.js",
   "scripts": {
+    "build": "rollup -c",
     "check": "node scripts/zip-and-check.js",
     "docs": "jsdoc -c .jsdoc.conf.json -d ./docs -p ./package.json -R README.md -t ./node_modules/ink-docstrap/template -r src",
+    "postbuild": "npm run check && npm run docs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
