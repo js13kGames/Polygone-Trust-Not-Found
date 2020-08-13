@@ -149,4 +149,5 @@ tags
 !dist/.gitkeep
 docs/
 !docs/.gitkeep
+tmp
 *.zip

@@ -1,3 +1,4 @@
+import copy from 'rollup-plugin-copy'
 import license from 'rollup-plugin-license'
 
 const LICENSE_HEADER = `
@@ -16,10 +17,22 @@ along with An Offline Life.  If not, see <https://www.gnu.org/licenses/>.`
 export default {
   input: './src/app.js',
   output: {
-    file: './dist/app.js',
+    file: './tmp/app.js',
     format: 'iife'
   },
   plugins: [
+    copy({
+      flatten: true,
+      verbose: true,
+      targets: [{
+        src: './src/index.html',
+        dest: './dist/'
+      }, {
+        src: './src/app.css',
+        dest: './dist/'
+      }]
+    }),
+
     license({
       banner: LICENSE_HEADER
     })
