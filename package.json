@@ -4,6 +4,7 @@
   "description": "js13kgames competition entry. Motto 404",
   "main": "index.js",
   "scripts": {
+    "check": "node scripts/zip-and-check.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
