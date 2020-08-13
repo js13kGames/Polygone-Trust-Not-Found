@@ -1,0 +1,11 @@
+{
+  "plugins": ["plugins/markdown"],
+  "templates": {
+    "systemName": "JS13kgames - 404",
+    "theme": "cosmo",
+    "navType": "vertical",
+    "inverseNav": true,
+    "syntaxTheme": "dark",
+    "search": false
+  }
+}

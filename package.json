@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "check": "node scripts/zip-and-check.js",
+    "docs": "jsdoc -c .jsdoc.conf.json -d ./docs -p ./package.json -R README.md -t ./node_modules/ink-docstrap/template -r src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

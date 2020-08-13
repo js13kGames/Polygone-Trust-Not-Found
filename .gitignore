@@ -146,4 +146,7 @@ tags
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,node,visualstudiocode
 
+!dist/.gitkeep
+docs/
+!docs/.gitkeep
 *.zip
