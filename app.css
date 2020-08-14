@@ -7,3 +7,56 @@ body {
   color: black;
   background-color: white;
 }
+
+.slidein {
+  animation-name: slidein;
+  animation-duration: 3s;
+  animation-timing-function: ease-in-out; /* Or cubic-bezier(0.1, 0.7, 1.0, 0.1); */
+  animation-delay: 0;
+  animation-iteration-count: 3;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+}
+
+@media (any-hover: hover) {
+  /* :hover can be used */
+  /* alternative value: any-hover: none */
+}
+
+@media (any-pointer: coarse) {
+  /* A pointer device such as mouse is available */
+  /* alternative values: none | fine */
+}
+
+@media (min-aspect-ratio: 4/3) {
+}
+
+@media (max-aspect-ratio: 16/9) {
+}
+
+@media (aspect-ratio: 1/1) {
+}
+
+@media (color) {
+  /* Supports colour! */
+  /* Opposite would be @media (monochrome) {} */
+}
+
+@media (orientation: portrait) {
+  /* Alternative value: landscape */
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Alternative value: light */
+}
+
+@media (prefers-reduced-motiion: reduce) {
+  /* Reduce animations */
+  /* Alternative value: no-preference */
+}
+
+@media (min-resolution: 72dpi) {
+}
+
+@media (max-resolution: 300dpi) {
+}
