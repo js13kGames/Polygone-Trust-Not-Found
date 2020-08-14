@@ -170,3 +170,15 @@ const event = new CustomEvent("cat", {
 document.dispatchEvent(event)
 
 const rect document.createElementNS("http://www.w3.org/2000/svg", "rect")
+
+/*
+radians = degrees * (pi/180)
+degrees = radians * (180/pi)
+*/
+
+/*
+ * x = r * cos(phi)
+ * y = r * sin(phi)
+ * r = (x * x + y * y)^(1/2)
+ * phi = atan2(y, x) (= Math.atan2)
+ */
