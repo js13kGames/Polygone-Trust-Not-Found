@@ -182,3 +182,30 @@ degrees = radians * (180/pi)
  * r = (x * x + y * y)^(1/2)
  * phi = atan2(y, x) (= Math.atan2)
  */
+
+function handleMotionEvent(event) {
+    var x = event.accelerationIncludingGravity.x
+    var y = event.accelerationIncludingGravity.y
+    var z = event.accelerationIncludingGravity.z
+
+    // Do something awesome.
+}
+
+window.addEventListener('devicemotion', handleMotionEvent, true)
+
+if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', function(event) {
+        // alpha: rotation around z-axis
+        var rotateDegrees = event.alpha
+        // gamma: left to right
+        var leftToRight = event.gamma
+        // beta: front back motion
+        var frontToBack = event.beta
+
+        handleOrientationEvent(frontToBack, leftToRight, rotateDegrees);
+    }, true)
+}
+
+var handleOrientationEvent = function(frontToBack, leftToRight, rotateDegrees) {
+    // do something amazing
+}
