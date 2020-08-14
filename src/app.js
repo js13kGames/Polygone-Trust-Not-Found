@@ -158,3 +158,13 @@ if (window.Magnetometer) {
  * start()
  * stop()
  */
+
+document.addEventListener("cat", function(e) { process(e.detail) })
+
+// create and dispatch the event
+const event = new CustomEvent("cat", {
+  detail: {
+    hazcheeseburger: true
+  }
+})
+document.dispatchEvent(event)
