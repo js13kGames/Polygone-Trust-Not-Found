@@ -168,3 +168,5 @@ const event = new CustomEvent("cat", {
   }
 })
 document.dispatchEvent(event)
+
+const rect document.createElementNS("http://www.w3.org/2000/svg", "rect")
