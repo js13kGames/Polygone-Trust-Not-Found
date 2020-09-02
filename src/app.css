@@ -8,6 +8,43 @@ body {
   background-color: white;
 }
 
+#app {
+  height: 95vmin;
+  width: 95vmin;
+}
+
+.hidden.world {
+  display: none;
+}
+
+.background,
+.middleground,
+.foreground {
+  fill: hsl(
+    var(--hue),
+    var(--saturation),
+    var(--luminance)
+  );
+}
+
+.four-portal {
+  fill: transparent;
+  stroke-width: var(--strokeWidth);
+  stroke: hsl(
+    var(--hue),
+    var(--saturation),
+    var(--luminance)
+  );
+}
+
+.sun {
+  fill: gold;
+}
+
+.time {
+  font-size: 0.2em;
+}
+
 .slidein {
   animation-name: slidein;
   animation-duration: 3s;

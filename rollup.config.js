@@ -1,5 +1,6 @@
 import copy from 'rollup-plugin-copy'
 import license from 'rollup-plugin-license'
+import { terser } from 'rollup-plugin-terser'
 
 const LICENSE_HEADER = `
 This file is part of JS13kGames - 404.
@@ -32,6 +33,8 @@ export default {
         dest: './dist/'
       }]
     }),
+
+    // terser(),
 
     license({
       banner: LICENSE_HEADER

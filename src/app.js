@@ -1,4 +1,24 @@
+import { Game } from './js/game'
+
+const el = document.querySelector('#app')
+const game = new Game(el)
+game.init()
+
+let shallStart = true
+
+document
+  .getElementById('action')
+  .addEventListener('click', () => {
+    if (shallStart) {
+      game.startTime()
+    } else {
+      game.pauseTime()
+    }
+    shallStart = !shallStart
+  }, false)
+
 // BIG Kudos to https://stackoverflow.com/a/16484266
+/*
 class World {
   constructor (element, data) {
     this.element = element
@@ -37,8 +57,10 @@ class World {
 // Modify World class to pass in the property to change. Perhaps a mapping of event to properties?
 // Allow for callbacks?
 new World(document.querySelector('#app rect'), 50)
+*/
 
 /* Feature detection of Sensors API */
+/*
 if (typeof Gyroscope === 'function') {
 }
 
@@ -143,6 +165,7 @@ if (window.Magnetometer) {
 } else {
   console.info('No Magnetometer available')
 }
+*/
 
 /* Sensors have the fields:
  * activated: Boolean
@@ -159,18 +182,6 @@ if (window.Magnetometer) {
  * stop()
  */
 
-document.addEventListener("cat", function(e) { process(e.detail) })
-
-// create and dispatch the event
-const event = new CustomEvent("cat", {
-  detail: {
-    hazcheeseburger: true
-  }
-})
-document.dispatchEvent(event)
-
-const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
-
 /*
 radians = degrees * (pi/180)
 degrees = radians * (180/pi)
@@ -183,6 +194,7 @@ degrees = radians * (180/pi)
  * phi = atan2(y, x) (= Math.atan2)
  */
 
+/*
 function handleMotionEvent(event) {
     var x = event.accelerationIncludingGravity.x
     var y = event.accelerationIncludingGravity.y
@@ -209,3 +221,4 @@ if (window.DeviceOrientationEvent) {
 var handleOrientationEvent = function(frontToBack, leftToRight, rotateDegrees) {
     // do something amazing
 }
+*/
