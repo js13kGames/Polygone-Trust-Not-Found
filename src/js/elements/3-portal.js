@@ -6,8 +6,8 @@ class ThreePortal extends WithParent {
     super(properties)
 
     this._hue = 0
-    this._saturation = 100
-    this._luminance = 50
+    this._life = 100
+    this._sympathy = 0
     this._updateView()
   }
 
@@ -28,10 +28,10 @@ class ThreePortal extends WithParent {
   }
 
   _mount (parent) {
-    const strokeWidth = 8
     const { x, y, h, w } = this._boundingBox
+    const strokeWidth = 0.08 * w
     const points = [
-      (x + w) / 2           + ',' + (y + strokeWidth),
+      (x + w * 0.5)         + ',' + (y + strokeWidth),
       (x + w - strokeWidth) + ',' + (y + h - strokeWidth),
       (x     + strokeWidth) + ',' + (y + h - strokeWidth),
     ].join(' ')
@@ -47,9 +47,8 @@ class ThreePortal extends WithParent {
   }
 
   _updateView () {
+    super._updateView()
     this.element.style.setProperty('--hue', this._hue + '', '')
-    this.element.style.setProperty('--saturation', this._saturation + '%', '')
-    this.element.style.setProperty('--luminance', this._luminance + '%', '')
   }
 }
 

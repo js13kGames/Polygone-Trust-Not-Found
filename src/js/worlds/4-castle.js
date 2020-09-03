@@ -11,7 +11,7 @@ import { EVENTS } from '../events'
 import { BaseWorld } from './base'
 
 class FourCastleWorld extends BaseWorld {
-  static worldName = '4-castle'
+  static worldName = 'four-castle'
 
   constructor (properties) {
     super(properties)

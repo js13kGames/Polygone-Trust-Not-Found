@@ -9,6 +9,7 @@ class Controls extends WithParent {
   _handleClick (eventTarget) {
     const isLeftControl = eventTarget.classList.contains('left')
     const isRightControl = eventTarget.classList.contains('right')
+    const isTopControl = eventTarget.classList.contains('top')
 
     if (isLeftControl) {
       const event = new CustomEvent(
@@ -16,13 +17,20 @@ class Controls extends WithParent {
         { detail: { direction: 'left' }}
       )
       this._eventNode.dispatchEvent(event)
-      console.log('Dispatched', event, 'on', this._eventNode)
     }
 
     if (isRightControl) {
       const event = new CustomEvent(
         EVENTS.TURN,
         { detail: { direction: 'right' }}
+      )
+      this._eventNode.dispatchEvent(event)
+    }
+
+    if (isTopControl) {
+      const event = new CustomEvent(
+        EVENTS.TURN,
+        { detail: { direction: 'top' }}
       )
       this._eventNode.dispatchEvent(event)
     }

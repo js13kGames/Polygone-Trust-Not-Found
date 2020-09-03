@@ -80,6 +80,7 @@ class Sun extends WithParent {
   }
 
   _updateView () {
+    super._updateView()
     const cx = this._axisX
     const cy = this._axisY
     this.element.setAttributeNS(null, 'cx', cx + '')

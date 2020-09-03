@@ -46,6 +46,7 @@ class Time extends WithParent {
   }
 
   _updateView () {
+    super._updateView()
     const { hour, minute } = this.clock
     this.element.textContent = `${hour}:${minute}`
   }

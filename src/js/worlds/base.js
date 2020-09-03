@@ -6,7 +6,6 @@ class BaseWorld extends WithParent {
   constructor (properties) {
     super(properties)
     this._isActive = false
-    this._children = []
     this._updateView()
   }
 
@@ -53,6 +52,7 @@ class BaseWorld extends WithParent {
   }
 
   _updateView () {
+    super._updateView()
     if (this.isActive()) {
       this.element.classList.remove('hidden')
     } else {

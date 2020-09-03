@@ -217,6 +217,7 @@ class Mill extends WithParent {
   }
 
   _updateView () {
+    super._updateView()
     const degree = this._degree
     const origin = this._axisX + ',' + this._axisY
     const rotate = `rotate(${degree},${origin})`

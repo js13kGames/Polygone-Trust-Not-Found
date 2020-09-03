@@ -6,7 +6,7 @@ class Foreground extends WithParent {
     super(properties)
 
     this._hue = 140
-    this._saturation = 50
+    this._life = 50
     this._luminance = 50
 
     this._timeoutHandle = null
@@ -54,8 +54,8 @@ class Foreground extends WithParent {
   }
 
   _updateView () {
+    super._updateView()
     this.element.style.setProperty('--hue', this._hue + '', '')
-    this.element.style.setProperty('--saturation', this._saturation + '%', '')
     this.element.style.setProperty('--luminance', this._luminance + '%', '')
   }
 }

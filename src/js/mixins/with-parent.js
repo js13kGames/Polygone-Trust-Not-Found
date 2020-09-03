@@ -1,17 +1,13 @@
-import { WithEventListener } from './with-event-listener'
+import { WithSympathy } from './with-sympathy'
 
 // TODO: Turn into real mixin
-class WithParent extends WithEventListener {
+class WithParent extends WithSympathy {
   constructor (properties) {
     super(properties)
     this._mount(properties.parent)
   }
 
   _mount (parent) {
-    throw new Error('Requires implementation')
-  }
-
-  _updateView () {
     throw new Error('Requires implementation')
   }
 

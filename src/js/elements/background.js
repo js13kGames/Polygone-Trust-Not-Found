@@ -54,8 +54,8 @@ class Background extends WithParent {
   }
 
   _updateView () {
+    super._updateView()
     this.element.style.setProperty('--hue', this._hue + '', '')
-    this.element.style.setProperty('--saturation', this._saturation + '%', '')
     this.element.style.setProperty('--luminance', this._luminance + '%', '')
   }
 }

@@ -3,7 +3,7 @@ import { SixPortal } from '../elements/6-portal'
 import { BaseWorld } from './base'
 
 class SixPortalWorld extends BaseWorld {
-  static worldName = '6-portal'
+  static worldName = 'six-portal'
 
   _addBackground () {
     const { x, y, h, w } = this._boundingBox

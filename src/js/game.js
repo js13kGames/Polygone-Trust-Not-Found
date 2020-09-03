@@ -2,11 +2,17 @@ import { Controls } from './elements/controls'
 import { Time } from './elements/time'
 import { EVENTS } from './events'
 import { WithEventListener } from './mixins/with-event-listener'
+
 import { FivePortalWorld } from './worlds/5-portal'
-import { FourCastleWorld } from './worlds/4-castle'
 import { FourPortalWorld } from './worlds/4-portal'
+import { PortalWorld } from './worlds/portal'
 import { SixPortalWorld } from './worlds/6-portal'
 import { ThreePortalWorld } from './worlds/3-portal'
+
+import { FiveTownWorld } from './worlds/5-town'
+import { FourCastleWorld } from './worlds/4-castle'
+import { SixMountainWorld } from './worlds/6-mountain'
+import { ThreeVillageWorld } from './worlds/3-village'
 
 class Game {
   constructor (mountPoint) {
@@ -25,8 +31,6 @@ class Game {
       w: 100
     }
 
-    // TODO: Think about dropping this property
-    this._children = []
     this._eventNode = mountPoint
     this._parent = mountPoint
     this._timeHandle = null
@@ -53,25 +57,50 @@ class Game {
     }
 
     const worlds = [{
+      ctr: PortalWorld,
+      left: PortalWorld.worldName,
+      right: PortalWorld.worldName,
+      top: PortalWorld.worldName
+    }, {
       ctr: ThreePortalWorld,
-      left: SixPortalWorld.worldName,
-      right: FourPortalWorld.worldName
+      left: ThreeVillageWorld.worldName,
+      right: ThreeVillageWorld.worldName,
+      top: PortalWorld.worldName
+    }, {
+      ctr: ThreeVillageWorld,
+      left: ThreePortalWorld.worldName,
+      right: ThreePortalWorld.worldName,
+      top: ThreeVillageWorld.worldName
     }, {
       ctr: FourPortalWorld,
-      left: ThreePortalWorld.worldName,
-      right: FourCastleWorld.worldName
+      left: FourCastleWorld.worldName,
+      right: FourCastleWorld.worldName,
+      top: PortalWorld.worldName
     }, {
       ctr: FourCastleWorld,
       left: FourPortalWorld.worldName,
-      right: FivePortalWorld.worldName
+      right: FourPortalWorld.worldName,
+      top: FourCastleWorld.worldName
     }, {
       ctr: FivePortalWorld,
-      left: FourCastleWorld.worldName,
-      right: SixPortalWorld.worldName
+      left: FiveTownWorld.worldName,
+      right: FiveTownWorld.worldName,
+      top: FivePortalWorld.worldName
+    }, {
+      ctr: FiveTownWorld,
+      left: FivePortalWorld.worldName,
+      right: FivePortalWorld.worldName,
+      top: FiveTownWorld.worldName,
     }, {
       ctr: SixPortalWorld,
-      left: FivePortalWorld.worldName,
-      right: ThreePortalWorld.worldName
+      left: SixMountainWorld.worldName,
+      right: SixMountainWorld.worldName,
+      top: SixPortalWorld.worldName
+    }, {
+      ctr: SixMountainWorld,
+      left: SixPortalWorld.worldName,
+      right: SixPortalWorld.worldName,
+      top: SixMountainWorld.worldName
     }]
 
     worlds.forEach((w) => {
@@ -80,7 +109,8 @@ class Game {
         instance: world,
         name: w.ctr.worldName,
         left: w.left,
-        right: w.right
+        right: w.right,
+        top: w.top
       })
 
       world.addScene()
@@ -139,13 +169,13 @@ class Game {
   }
 
   init () {
-    const firstWorld = FourCastleWorld.worldName
+    const firstWorld = PortalWorld.worldName
 
     this.addWorlds()
     // TODO: Only in debug builds?
     this._addTime()
     this._addControls()
-    this.switchWorld(firstWorld)
+    this.switchWorld({ nextWorld: firstWorld })
   }
 
   pauseTime () {
@@ -158,9 +188,10 @@ class Game {
     this._timeHandle = setInterval(self.fireNewTime.bind(self), fps)
   }
 
-  switchWorld (nextWorld) {
-    this._worlds.forEach((world) => world.instance.setInactive())
+  switchWorld ({ nextWorld }) {
     const world = this._worlds.find((w) => w.name == nextWorld)
+    this._worlds.forEach((world) => world.instance.setInactive())
+    console.log('Transitioning to ', nextWorld, world)
     world && world.instance.setActive()
   }
 
@@ -198,19 +229,19 @@ class Game {
     }
 
     const time = new Time(properties)
-    this._children.push(time)
   }
 
   _getEventMap () {
     return {
-      [ EVENTS.TURN ]: this._handleGameControlsTurn.bind(this)
+      [ EVENTS.TURN ]: this._handleGameControlsTurn.bind(this),
+      [ EVENTS.WORLD ]: this.switchWorld.bind(this)
     }
   }
 
   _handleGameControlsTurn (eventDetail) {
     const currentWorld = this.getCurrentWorld()
     const nextWorld = currentWorld[ eventDetail.direction ]
-    this.switchWorld(nextWorld)
+    this.switchWorld({ nextWorld })
   }
 }
 
