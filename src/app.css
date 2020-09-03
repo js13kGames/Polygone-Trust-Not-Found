@@ -6,11 +6,36 @@
 body {
   color: black;
   background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+body > section {
+  flex: 1;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-list__item {
+  flex: 1;
+}
+
+.tab-view:not(:target) {
+  display: none;
 }
 
 #app {
-  height: 95vmin;
-  width: 95vmin;
+  display: block;
+  height: 98vmin;
+  width: 98vmin;
+  margin-left: auto;
+  margin-right: auto;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
 }
 
 .hidden.world {
@@ -44,20 +69,37 @@ body {
   fill: gold;
 }
 
+.textbox {
+  fill: rgba(0, 0, 0, 0.6);
+  stroke: rgb(0, 0, 0);
+  stroke-width: var(--strokeWidth);
+}
+
+.textbox__text {
+  fill: white;
+  font-family: var(--fontFamily);
+}
+
+.textbox__text,
 .time {
   font-size: 0.2em;
 }
 
+/*
 .slidein {
   animation-name: slidein;
   animation-duration: 3s;
-  animation-timing-function: ease-in-out; /* Or cubic-bezier(0.1, 0.7, 1.0, 0.1); */
+*/
+  /* Or cubic-bezier(0.1, 0.7, 1.0, 0.1); */
+/*
+  animation-timing-function: ease-in-out;
   animation-delay: 0;
   animation-iteration-count: 3;
   animation-direction: alternate;
   animation-fill-mode: forwards;
 }
 
+*/
 @media (any-hover: hover) {
   /* :hover can be used */
   /* alternative value: any-hover: none */

@@ -1,7 +1,10 @@
 import { Controls } from './elements/controls'
 import { Time } from './elements/time'
+
 import { EVENTS } from './events'
 import { WithEventListener } from './mixins/with-event-listener'
+
+import { IntroWorld } from './worlds/intro'
 
 import { FivePortalWorld } from './worlds/5-portal'
 import { FourPortalWorld } from './worlds/4-portal'
@@ -57,6 +60,11 @@ class Game {
     }
 
     const worlds = [{
+      ctr: IntroWorld,
+      left: PortalWorld.worldName,
+      right: PortalWorld.worldName,
+      top: PortalWorld.worldName
+    }, {
       ctr: PortalWorld,
       left: PortalWorld.worldName,
       right: PortalWorld.worldName,
@@ -169,7 +177,7 @@ class Game {
   }
 
   init () {
-    const firstWorld = PortalWorld.worldName
+    const firstWorld = IntroWorld.worldName
 
     this.addWorlds()
     // TODO: Only in debug builds?

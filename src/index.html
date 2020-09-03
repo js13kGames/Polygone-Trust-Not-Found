@@ -7,8 +7,75 @@
 <link href="./app.css" rel="stylesheet" />
 </head>
 <body>
+<section>
+<nav>
+<ul class="nav-list">
+<li class="nav-list__item">
+<a href="#tab-inventory" class="nav-link">
+<!-- TODO: Translateable! -->
+Inventory
+</a>
+</li>
+<li class="nav-list__item">
+<a href="#tab-memory" class="nav-link">
+<!-- TODO: Translateable! -->
+Memory
+</a>
+</li>
+<li class="nav-list__item">
+<a href="#tab-settings" class="nav-link">
+<!-- TODO: Translateable! -->
+Settings
+</a>
+</li>
+<li class="nav-list__item">
+<a href="#tab-debug" class="nav-link">
+<!-- TODO: Translateable! -->
+Debug
+</a>
+</li>
+</ul>
+</nav>
+</section>
+<section id="tab-inventory" class="tab-view">
+<!-- TODO: Translateable! -->
+No items.
+</section>
+<section id="tab-memory" class="tab-view">
+<!-- TODO: Translateable! -->
+Make some encounters
+</section>
+<section id="tab-settings" class="tab-view">
+<!-- TODO: Translateable! -->
+<form id="form-settings" action="#" method="GET">
+<fieldset>
+<legend>
+<!-- TODO: Translateable! -->
+Language
+</legend>
+<select name="language">
+<!-- TODO: Translateable! -->
+Language
+<option value="en">
+<!-- TODO: Translateable! -->
+English
+</option>
+</select>
+<label>
+<!-- TODO: Translateable! -->
+Typing speed
+<input type="range" min="1" max="3" step="1" />
+</label>
+</fieldset>
+</form>
+</section>
+<section id="tab-debug" class="tab-view">
+<button id="action" type="button">
+<!-- TODO: Translateable! -->
+Start time
+</button>
+</section>
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" id="app">
 </svg>
-<button id="action" type="button">Start time</button>
 <script src="./app.js"></script>
 </body>
