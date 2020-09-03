@@ -4,110 +4,78 @@
 <title>JS13kgames 2020 - 404</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>* {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  color: black;
-  background-color: white;
-}
-
-#app {
-  height: 95vmin;
-  width: 95vmin;
-}
-
-.hidden.world {
-  display: none;
-}
-
-.background,
-.middleground,
-.foreground {
-  fill: hsl(
-    var(--hue),
-    var(--saturation),
-    var(--luminance)
-  );
-}
-
-.four-portal {
-  fill: transparent;
-  stroke-width: var(--strokeWidth);
-  stroke: hsl(
-    var(--hue),
-    var(--saturation),
-    var(--luminance)
-  );
-}
-
-.sun {
-  fill: gold;
-}
-
-.time {
-  font-size: 0.2em;
-}
-
-.slidein {
-  animation-name: slidein;
-  animation-duration: 3s;
-  animation-timing-function: ease-in-out; /* Or cubic-bezier(0.1, 0.7, 1.0, 0.1); */
-  animation-delay: 0;
-  animation-iteration-count: 3;
-  animation-direction: alternate;
-  animation-fill-mode: forwards;
-}
-
-@media (any-hover: hover) {
-  /* :hover can be used */
-  /* alternative value: any-hover: none */
-}
-
-@media (any-pointer: coarse) {
-  /* A pointer device such as mouse is available */
-  /* alternative values: none | fine */
-}
-
-@media (min-aspect-ratio: 4/3) {
-}
-
-@media (max-aspect-ratio: 16/9) {
-}
-
-@media (aspect-ratio: 1/1) {
-}
-
-@media (color) {
-  /* Supports colour! */
-  /* Opposite would be @media (monochrome) {} */
-}
-
-@media (orientation: portrait) {
-  /* Alternative value: landscape */
-}
-
-@media (prefers-color-scheme: dark) {
-  /* Alternative value: light */
-}
-
-@media (prefers-reduced-motiion: reduce) {
-  /* Reduce animations */
-  /* Alternative value: no-preference */
-}
-
-@media (min-resolution: 72dpi) {
-}
-
-@media (max-resolution: 300dpi) {
-}
-</style></head>
+<style>*{margin:0;padding:0}body{color:#000;background-color:#fff;display:flex;flex-direction:column}body>section{flex:1}.nav-list{display:flex;list-style:none;align-items:center}.nav-list__item{flex:1}.tab-view:not(:target){display:none}#app{display:block;height:98vmin;width:98vmin;margin-left:auto;margin-right:auto;margin-inline-start:auto;margin-inline-end:auto}.hidden.world{display:none}.background,.foreground,.middleground{fill:hsl(var(--hue),var(--saturation),var(--luminance))}.five-portal,.four-portal,.six-portal,.three-portal{fill:transparent;stroke-width:var(--strokeWidth);stroke:hsl(var(--hue),var(--saturation),var(--luminance))}.sun{fill:gold}.textbox{fill:rgba(0,0,0,.6);stroke:#000;stroke-width:var(--strokeWidth)}.textbox__text{fill:#fff;font-family:var(--fontFamily)}.textbox__text,.time{font-size:.2em}</style></head>
 <body>
+<section>
+<nav>
+<ul class="nav-list">
+<li class="nav-list__item">
+<a href="#tab-inventory" class="nav-link">
+<!-- TODO: Translateable! -->
+Inventory
+</a>
+</li>
+<li class="nav-list__item">
+<a href="#tab-memory" class="nav-link">
+<!-- TODO: Translateable! -->
+Memory
+</a>
+</li>
+<li class="nav-list__item">
+<a href="#tab-settings" class="nav-link">
+<!-- TODO: Translateable! -->
+Settings
+</a>
+</li>
+<li class="nav-list__item">
+<a href="#tab-debug" class="nav-link">
+<!-- TODO: Translateable! -->
+Debug
+</a>
+</li>
+</ul>
+</nav>
+</section>
+<section id="tab-inventory" class="tab-view">
+<!-- TODO: Translateable! -->
+No items.
+</section>
+<section id="tab-memory" class="tab-view">
+<!-- TODO: Translateable! -->
+Make some encounters
+</section>
+<section id="tab-settings" class="tab-view">
+<!-- TODO: Translateable! -->
+<form id="form-settings" action="#" method="GET">
+<fieldset>
+<legend>
+<!-- TODO: Translateable! -->
+Language
+</legend>
+<select name="language">
+<!-- TODO: Translateable! -->
+Language
+<option value="en">
+<!-- TODO: Translateable! -->
+English
+</option>
+</select>
+<label>
+<!-- TODO: Translateable! -->
+Typing speed
+<input type="range" min="1" max="3" step="1">
+</label>
+</fieldset>
+</form>
+</section>
+<section id="tab-debug" class="tab-view">
+<button id="action" type="button">
+<!-- TODO: Translateable! -->
+Start time
+</button>
+</section>
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" id="app">
 </svg>
-<button id="action" type="button">Start time</button>
 <script>/**
  * This file is part of JS13kGames - 404.
  * An Offline Life is free software: you can redistribute it and/or modify
@@ -129,6 +97,7 @@ body {
     TICK: 'game:time:update',
     TURN: 'game:controls:turn',
     WIND: 'world:weather:wind',
+    WORLD: 'game:world:switch'
   };
 
   class WithBoundingBox {
@@ -188,17 +157,47 @@ body {
   }
 
   // TODO: Turn into real mixin
-  class WithParent extends WithEventListener {
+  class WithLife extends WithEventListener {
+    constructor (properties) {
+      super(properties);
+
+      this._life = 100;
+    }
+
+    _updateView () {
+      if (!this.element) {
+        throw new Error('Requires Element')
+      }
+      this.element.style.setProperty('--saturation', this._life + '%', '');
+    }
+  }
+
+  // TODO: Turn into real mixin
+  class WithSympathy extends WithLife {
+    constructor (properties) {
+      super(properties);
+
+      this._sympathy = 0;
+    }
+
+    _updateView () {
+      super._updateView();
+      if (!this.element) {
+        throw new Error('Requires Element')
+      }
+      const luminance = 50 + this._sympathy / 2;
+      this.element.style.setProperty('--luminance', luminance + '%', '');
+    }
+  }
+
+  // TODO: Turn into real mixin
+  class WithParent extends WithSympathy {
     constructor (properties) {
       super(properties);
       this._mount(properties.parent);
     }
 
     _mount (parent) {
-      throw new Error('Requires implementation')
-    }
-
-    _updateView () {
       throw new Error('Requires implementation')
     }
 
@@ -227,6 +226,7 @@ body {
     _handleClick (eventTarget) {
       const isLeftControl = eventTarget.classList.contains('left');
       const isRightControl = eventTarget.classList.contains('right');
+      const isTopControl = eventTarget.classList.contains('top');
 
       if (isLeftControl) {
         const event = new CustomEvent(
@@ -234,13 +234,20 @@ body {
           { detail: { direction: 'left' }}
         );
         this._eventNode.dispatchEvent(event);
-        console.log('Dispatched', event, 'on', this._eventNode);
       }
 
       if (isRightControl) {
         const event = new CustomEvent(
           EVENTS.TURN,
           { detail: { direction: 'right' }}
+        );
+        this._eventNode.dispatchEvent(event);
+      }
+
+      if (isTopControl) {
+        const event = new CustomEvent(
+          EVENTS.TURN,
+          { detail: { direction: 'top' }}
         );
         this._eventNode.dispatchEvent(event);
       }
@@ -364,8 +371,683 @@ body {
     }
 
     _updateView () {
+      super._updateView();
       const { hour, minute } = this.clock;
       this.element.textContent = `${hour}:${minute}`;
+    }
+  }
+
+  class TextBox extends WithParent {
+    constructor (properties) {
+      super(properties);
+      // Valid options: serif, sans-serif, monospace, cursive, fantasy
+      this.style = 'serif';
+      this.text = '';
+    }
+
+    showText (message, style = 'serif') {
+      this.style = style;
+      this.text = message;
+      this._updateView();
+    }
+
+    _mount (parent) {
+      const { x, y, h, w } = this._boundingBox;
+      const strokeWidth = h * 0.02;
+      this.element = this._createSvgElement(
+        'g',
+        {},
+        []
+      );
+
+      const box = this._createSvgElement(
+        'rect',
+        {
+          x: x + w * 0.05,
+          y: y + h * 0.57,
+          height: h * 0.3,
+          width: w * 0.9,
+          rx: w * 0.02,
+          ry: w * 0.02
+        },
+        [ 'textbox' ]
+      );
+      box.style.setProperty('--strokeWidth', strokeWidth + '', '');
+
+      const text = this._createSvgElement(
+        'text',
+        {
+          x: x + w * 0.07,
+          y: y + h * 0.63
+        },
+        [ 'textbox__text' ]
+      );
+
+      const content = document.createTextNode('');
+      text.appendChild(content);
+      this.element.appendChild(box);
+      this.element.appendChild(text);
+      parent.appendChild(this.element);
+    }
+
+    _updateView () {
+      super._updateView();
+      const text = this.element.querySelector('.textbox__text');
+      text.style.setProperty('--fontFamily', this.style + '', '');
+      text.textContent = this.text;
+    }
+  }
+
+  class BaseWorld extends WithParent {
+    static worldName = 'base'
+
+    constructor (properties) {
+      super(properties);
+      this._isActive = false;
+      this._updateView();
+    }
+
+    addScene () {
+      this._addBackground();
+      this._addMiddleground();
+      this._addForeground();
+    }
+
+    isActive () {
+      return this._isActive
+    }
+
+    setActive () {
+      this._isActive = true;
+      this._updateView();
+    }
+
+    setInactive () {
+      this._isActive = false;
+      this._updateView();
+    }
+
+    _addBackground () {
+      // To be implemented in sub-classes
+    }
+
+    _addForeground () {
+      // To be implemented in sub-classes
+    }
+
+    _addMiddleground () {
+      // To be implemented in sub-classes
+    }
+
+    _mount (parent) {
+      const classes = ['world', 'world--' + this.constructor.worldName];
+      this.element = this._createSvgElement('g', {}, classes);
+      parent.appendChild(this.element);
+    }
+
+    _rollDice (min = 1, max = 6) {
+      return Math.floor(Math.random() * ((max - min) + min) + min)
+    }
+
+    _updateView () {
+      super._updateView();
+      if (this.isActive()) {
+        this.element.classList.remove('hidden');
+      } else {
+        this.element.classList.add('hidden');
+      }
+    }
+  }
+
+  class IntroWorld extends BaseWorld {
+    static worldName = 'intro'
+
+    constructor (properties) {
+      super(properties);
+    }
+
+    addScene () {
+      this._addForeground();
+      this._showIntro();
+    }
+
+    _addForeground () {
+      const { x, y, h, w } = this._boundingBox;
+      const properties = {
+        boundingBox: {
+          x,
+          y,
+          height: h,
+          width: w
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      this._textBox = new TextBox(properties);
+    }
+
+    _showIntro () {
+      this._textBox.showText('Welcome, stranger');
+    }
+  }
+
+  class FivePortal extends WithParent {
+    constructor (properties) {
+      super(properties);
+
+      this._hue = 0;
+      this._life = 100;
+      this._sympathy = 0;
+      this._updateView();
+    }
+
+    _getEventMap () {
+      return {
+        [ EVENTS.TICK ]: this._handleGameTimeUpdate.bind(this)
+      }
+    }
+
+    _handleGameTimeUpdate (clock) {
+      if (!clock.hour || !clock.minute) {
+        console.warn('Invalid event', clock);
+        return
+      }
+
+      this._hue = (clock.hour * 60 + clock.minute) / (24 * 60) * 360;
+      this._updateView();
+    }
+
+    _mount (parent) {
+      const { x, y, h, w } = this._boundingBox;
+      const strokeWidth = 0.08 * w;
+      const points = [
+        (x + w * 0.5)         + ',' + (y     + strokeWidth),
+        (x + w - strokeWidth) + ',' + (y + h * 0.4),
+        (x + w * 0.7)         + ',' + (y + h - strokeWidth),
+        (x + w * 0.3)         + ',' + (y + h - strokeWidth),
+        (x     + strokeWidth) + ',' + (y + h * 0.4)
+      ].join(' ');
+
+      this.element = this._createSvgElement(
+        'polygon',
+        { points },
+        [ 'five-portal' ]
+      );
+
+      this.element.style.setProperty('--strokeWidth',  strokeWidth + '', '');
+      parent.appendChild(this.element);
+    }
+
+    _updateView () {
+      super._updateView();
+      this.element.style.setProperty('--hue', this._hue + '', '');
+    }
+  }
+
+  class FivePortalWorld extends BaseWorld {
+    static worldName = 'five-portal'
+
+    _addBackground () {
+      const { x, y, h, w } = this._boundingBox;
+      const properties = {
+        boundingBox: {
+          x,
+          y,
+          height: h,
+          width: w
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new FivePortal(properties);
+    }
+  }
+
+  class FourPortal extends WithParent {
+    constructor (properties) {
+      super(properties);
+
+      this._hue = 0;
+      this._life = 100;
+      this._sympathy = 0;
+      this._updateView();
+    }
+
+    _getEventMap () {
+      return {
+        [ EVENTS.TICK ]: this._handleGameTimeUpdate.bind(this)
+      }
+    }
+
+    _handleGameTimeUpdate (clock) {
+      if (!clock.hour || !clock.minute) {
+        console.warn('Invalid event', clock);
+        return
+      }
+
+      this._hue = (clock.hour * 60 + clock.minute) / (24 * 60) * 360;
+      this._updateView();
+    }
+
+    _mount (parent) {
+      const { x, y, h, w } = this._boundingBox;
+      const strokeWidth = 0.08 * w;
+      const points = [
+        (x + w * 0.5)         + ',' + (y     + strokeWidth),
+        (x + w - strokeWidth) + ',' + (y + h * 0.5),
+        (x + w * 0.5)         + ',' + (y + h - strokeWidth),
+        (x     + strokeWidth) + ',' + (y + h * 0.5)
+      ].join(' ');
+
+      this.element = this._createSvgElement(
+        'polygon',
+        { points },
+        [ 'four-portal' ]
+      );
+
+      this.element.style.setProperty('--strokeWidth',  strokeWidth + '', '');
+      parent.appendChild(this.element);
+    }
+
+    _updateView () {
+      super._updateView();
+      this.element.style.setProperty('--hue', this._hue + '', '');
+    }
+  }
+
+  class FourPortalWorld extends BaseWorld {
+    static worldName = 'four-portal'
+
+    _addBackground () {
+      const { x, y, h, w } = this._boundingBox;
+      const properties = {
+        boundingBox: {
+          x,
+          y,
+          height: h,
+          width: w
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new FourPortal(properties);
+    }
+  }
+
+  class SixPortal extends WithParent {
+    constructor (properties) {
+      super(properties);
+
+      this._hue = 0;
+      this._life = 100;
+      this._sympathy = 0;
+      this._updateView();
+    }
+
+    _getEventMap () {
+      return {
+        [ EVENTS.TICK ]: this._handleGameTimeUpdate.bind(this)
+      }
+    }
+
+    _handleGameTimeUpdate (clock) {
+      if (!clock.hour || !clock.minute) {
+        console.warn('Invalid event', clock);
+        return
+      }
+
+      this._hue = (clock.hour * 60 + clock.minute) / (24 * 60) * 360;
+      this._updateView();
+    }
+
+    _mount (parent) {
+      const { x, y, h, w } = this._boundingBox;
+      const strokeWidth = 0.08 * w;
+      const points = [
+        (x + w * 0.3)         + ',' + (y     + strokeWidth),
+        (x + w * 0.7)         + ',' + (y     + strokeWidth),
+        (x + w - strokeWidth) + ',' + (y + h * 0.5),
+        (x + w * 0.7)         + ',' + (y + h - strokeWidth),
+        (x + w * 0.3)         + ',' + (y + h - strokeWidth),
+        (x     + strokeWidth) + ',' + (y + h * 0.5)
+      ].join(' ');
+
+      this.element = this._createSvgElement(
+        'polygon',
+        { points },
+        [ 'six-portal' ]
+      );
+
+      this.element.style.setProperty('--strokeWidth',  strokeWidth + '', '');
+      parent.appendChild(this.element);
+    }
+
+    _updateView () {
+      super._updateView();
+      this.element.style.setProperty('--hue', this._hue + '', '');
+    }
+  }
+
+  class ThreePortal extends WithParent {
+    constructor (properties) {
+      super(properties);
+
+      this._hue = 0;
+      this._life = 100;
+      this._sympathy = 0;
+      this._updateView();
+    }
+
+    _getEventMap () {
+      return {
+        [ EVENTS.TICK ]: this._handleGameTimeUpdate.bind(this)
+      }
+    }
+
+    _handleGameTimeUpdate (clock) {
+      if (!clock.hour || !clock.minute) {
+        console.warn('Invalid event', clock);
+        return
+      }
+
+      this._hue = (clock.hour * 60 + clock.minute) / (24 * 60) * 360;
+      this._updateView();
+    }
+
+    _mount (parent) {
+      const { x, y, h, w } = this._boundingBox;
+      const strokeWidth = 0.08 * w;
+      const points = [
+        (x + w * 0.5)         + ',' + (y + strokeWidth),
+        (x + w - strokeWidth) + ',' + (y + h - strokeWidth),
+        (x     + strokeWidth) + ',' + (y + h - strokeWidth),
+      ].join(' ');
+
+      this.element = this._createSvgElement(
+        'polygon',
+        { points },
+        [ 'three-portal' ]
+      );
+
+      this.element.style.setProperty('--strokeWidth',  strokeWidth + '', '');
+      parent.appendChild(this.element);
+    }
+
+    _updateView () {
+      super._updateView();
+      this.element.style.setProperty('--hue', this._hue + '', '');
+    }
+  }
+
+  class PortalWorld extends BaseWorld {
+    static worldName = 'portal'
+
+    constructor (properties) {
+      super(properties);
+      this._portalLength = 0.3;
+    }
+
+    _addBackground () {
+      this._portalLength = 0.3;
+      this._addThreePortal();
+      this._addFourPortal();
+      this._addFivePortal();
+      this._addSixPortal();
+    }
+
+    _addFivePortal () {
+      const { x, y, h, w } = this._boundingBox;
+      const properties = {
+        boundingBox: {
+          x: x + w * (1 - this._portalLength),
+          y: y + h * (0.5 - this._portalLength / 2),
+          height: h * this._portalLength,
+          width: w * this._portalLength
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new FivePortal(properties);
+    }
+
+    _addFourPortal () {
+      const { x, y, h, w } = this._boundingBox;
+      const properties = {
+        boundingBox: {
+          x,
+          y: y + h * (0.5 - this._portalLength / 2),
+          height: h * this._portalLength,
+          width: w * this._portalLength
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new FourPortal(properties);
+    }
+
+    _addSixPortal () {
+      const { x, y, h, w } = this._boundingBox;
+      const properties = {
+        boundingBox: {
+          x: x + w * (0.5 - this._portalLength / 2),
+          y: y + h * (1 - this._portalLength),
+          height: h * this._portalLength,
+          width: w * this._portalLength
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new SixPortal(properties);
+    }
+
+    _addThreePortal () {
+      const { x, y, h, w } = this._boundingBox;
+      const properties = {
+        boundingBox: {
+          x: x + w * (0.5 - this._portalLength / 2),
+          y,
+          height: h * this._portalLength,
+          width: w * this._portalLength
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new ThreePortal(properties);
+    }
+
+    _getEventMap () {
+      return {
+        'click': this._handleClick.bind(this)
+      }
+    }
+
+    _handleClick (eventTarget) {
+      const nextWorld = eventTarget.getAttribute('class');
+      console.log('Clicked world', eventTarget, nextWorld);
+      if (!nextWorld || nextWorld && !nextWorld.includes('-portal')) {
+        return
+      }
+      const event = new CustomEvent(
+        EVENTS.WORLD,
+        { detail: { nextWorld }}
+      );
+      this._eventNode.dispatchEvent(event);
+    }
+  }
+
+  class SixPortalWorld extends BaseWorld {
+    static worldName = 'six-portal'
+
+    _addBackground () {
+      const { x, y, h, w } = this._boundingBox;
+      const properties = {
+        boundingBox: {
+          x,
+          y,
+          height: h,
+          width: w
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new SixPortal(properties);
+    }
+  }
+
+  class ThreePortalWorld extends BaseWorld {
+    static worldName = 'three-portal'
+
+    _addBackground () {
+      const { x, y, h, w } = this._boundingBox;
+      const properties = {
+        boundingBox: {
+          x,
+          y,
+          height: h,
+          width: w
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new ThreePortal(properties);
+    }
+  }
+
+  class Sun extends WithParent {
+    constructor (properties) {
+      super(properties);
+
+      this._radius = 3;
+      this._axisX = this._boundingBox.x;
+      this._axisY = this._boundingBox.y;
+    }
+
+    _getElementAttributes () {
+      this._radius = this._radius || 3;
+      this._axisX = this._axisX || this._boundingBox.x;
+      this._axisY = this._axisY || this._boundingBox.y;
+
+      return {
+        r: this._radius,
+        cx: this._axisX,
+        cy: this._axisY
+      }
+    }
+
+    _getEventMap () {
+      return {
+        [ EVENTS.TICK ]: this._handleGameTimeUpdate.bind(this)
+      }
+    }
+
+    _handleGameTimeUpdate (clock) {
+      const { hour, minute } = clock;
+      if (!hour || !minute) {
+        // TODO: Investigate
+        console.warn('Invalid event', clock);
+        return
+      }
+
+      const { x, y, h, w } = this._boundingBox;
+
+      const dawn = 6;
+      const dust = 18;
+
+      const currentTime = (hour - dawn) * 60 + minute;
+      const lengthOfDay = (dust - dawn) /* hours */ * 60; /* in minutes */
+      const isDay = hour >= dawn && hour <= dust;
+
+      let axisX = -5;
+
+      if (isDay) {
+        axisX = w * currentTime / lengthOfDay;
+      }
+      const angle = (hour + dawn) * 60 + minute;
+      const lowerBorder = this._radius + h;
+      const scale = h;
+
+      const axisY = lowerBorder + scale * Math.sin(
+        // Rescale to lengthOfDay
+        angle * Math.PI / lengthOfDay
+      );
+
+      this._axisX = axisX;
+      this._axisY = axisY;
+      this._updateView();
+    }
+
+    _mount (parent) {
+      const { r, cx, cy } = this._getElementAttributes();
+
+      this.element = this._createSvgElement(
+        'circle',
+        {
+          r: r + '',
+          cx: cx - r * 3 + '',
+          cy: cy - r * 3 + ''
+        },
+        [ 'sun' ]
+      );
+      parent.appendChild(this.element);
+    }
+
+    _updateView () {
+      super._updateView();
+      const cx = this._axisX;
+      const cy = this._axisY;
+      this.element.setAttributeNS(null, 'cx', cx + '');
+      this.element.setAttributeNS(null, 'cy', cy + '');
+    }
+  }
+
+  class FiveTownWorld extends BaseWorld {
+    static worldName = 'five-town'
+
+    constructor (properties) {
+      super(properties);
+    }
+
+    addScene () {
+      this._addBackground();
+      this._addSun();
+      this._addMiddleground();
+      this._addForeground();
+    }
+
+    _addBackground () {
+    }
+
+    _addForeground () {
+    }
+
+    _addMiddleground () {
+    }
+
+    _addSun () {
+      const { x, y, h, w } = this._boundingBox;
+      const backgroundHeight = h / 3;
+
+      const properties = {
+        boundingBox: {
+          x,
+          y,
+          height: backgroundHeight,
+          width: w
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new Sun(properties);
     }
   }
 
@@ -422,8 +1104,8 @@ body {
     }
 
     _updateView () {
+      super._updateView();
       this.element.style.setProperty('--hue', this._hue + '', '');
-      this.element.style.setProperty('--saturation', this._saturation + '%', '');
       this.element.style.setProperty('--luminance', this._luminance + '%', '');
     }
   }
@@ -433,7 +1115,7 @@ body {
       super(properties);
 
       this._hue = 140;
-      this._saturation = 50;
+      this._life = 50;
       this._luminance = 50;
 
       this._timeoutHandle = null;
@@ -481,8 +1163,8 @@ body {
     }
 
     _updateView () {
+      super._updateView();
       this.element.style.setProperty('--hue', this._hue + '', '');
-      this.element.style.setProperty('--saturation', this._saturation + '%', '');
       this.element.style.setProperty('--luminance', this._luminance + '%', '');
     }
   }
@@ -492,7 +1174,7 @@ body {
       super(properties);
 
       this._hue = 140;
-      this._saturation = 50;
+      this._life = 50;
       this._luminance = 30;
 
       this._timeoutHandle = null;
@@ -540,8 +1222,8 @@ body {
     }
 
     _updateView () {
+      super._updateView();
       this.element.style.setProperty('--hue', this._hue + '', '');
-      this.element.style.setProperty('--saturation', this._saturation + '%', '');
       this.element.style.setProperty('--luminance', this._luminance + '%', '');
     }
   }
@@ -876,6 +1558,7 @@ body {
     }
 
     _updateView () {
+      super._updateView();
       const degree = this._degree;
       const origin = this._axisX + ',' + this._axisY;
       const rotate = `rotate(${degree},${origin})`;
@@ -885,155 +1568,8 @@ body {
     }
   }
 
-  class Sun extends WithParent {
-    constructor (properties) {
-      super(properties);
-
-      this._radius = 3;
-      this._axisX = this._boundingBox.x;
-      this._axisY = this._boundingBox.y;
-    }
-
-    _getElementAttributes () {
-      this._radius = this._radius || 3;
-      this._axisX = this._axisX || this._boundingBox.x;
-      this._axisY = this._axisY || this._boundingBox.y;
-
-      return {
-        r: this._radius,
-        cx: this._axisX,
-        cy: this._axisY
-      }
-    }
-
-    _getEventMap () {
-      return {
-        [ EVENTS.TICK ]: this._handleGameTimeUpdate.bind(this)
-      }
-    }
-
-    _handleGameTimeUpdate (clock) {
-      const { hour, minute } = clock;
-      if (!hour || !minute) {
-        // TODO: Investigate
-        console.warn('Invalid event', clock);
-        return
-      }
-
-      const { x, y, h, w } = this._boundingBox;
-
-      const dawn = 6;
-      const dust = 18;
-
-      const currentTime = (hour - dawn) * 60 + minute;
-      const lengthOfDay = (dust - dawn) /* hours */ * 60; /* in minutes */
-      const isDay = hour >= dawn && hour <= dust;
-
-      let axisX = -5;
-
-      if (isDay) {
-        axisX = w * currentTime / lengthOfDay;
-      }
-      const angle = (hour + dawn) * 60 + minute;
-      const lowerBorder = this._radius + h;
-      const scale = h;
-
-      const axisY = lowerBorder + scale * Math.sin(
-        // Rescale to lengthOfDay
-        angle * Math.PI / lengthOfDay
-      );
-
-      this._axisX = axisX;
-      this._axisY = axisY;
-      this._updateView();
-    }
-
-    _mount (parent) {
-      const { r, cx, cy } = this._getElementAttributes();
-
-      this.element = this._createSvgElement(
-        'circle',
-        {
-          r: r + '',
-          cx: cx - r * 3 + '',
-          cy: cy - r * 3 + ''
-        },
-        [ 'sun' ]
-      );
-      parent.appendChild(this.element);
-    }
-
-    _updateView () {
-      const cx = this._axisX;
-      const cy = this._axisY;
-      this.element.setAttributeNS(null, 'cx', cx + '');
-      this.element.setAttributeNS(null, 'cy', cy + '');
-    }
-  }
-
-  class BaseWorld extends WithParent {
-    static worldName = 'base'
-
-    constructor (properties) {
-      super(properties);
-      this._isActive = false;
-      this._children = [];
-      this._updateView();
-    }
-
-    addScene () {
-      this._addBackground();
-      this._addMiddleground();
-      this._addForeground();
-    }
-
-    isActive () {
-      return this._isActive
-    }
-
-    setActive () {
-      this._isActive = true;
-      this._updateView();
-    }
-
-    setInactive () {
-      this._isActive = false;
-      this._updateView();
-    }
-
-    _addBackground () {
-      // To be implemented in sub-classes
-    }
-
-    _addForeground () {
-      // To be implemented in sub-classes
-    }
-
-    _addMiddleground () {
-      // To be implemented in sub-classes
-    }
-
-    _mount (parent) {
-      const classes = ['world', 'world--' + this.constructor.worldName];
-      this.element = this._createSvgElement('g', {}, classes);
-      parent.appendChild(this.element);
-    }
-
-    _rollDice (min = 1, max = 6) {
-      return Math.floor(Math.random() * ((max - min) + min) + min)
-    }
-
-    _updateView () {
-      if (this.isActive()) {
-        this.element.classList.remove('hidden');
-      } else {
-        this.element.classList.add('hidden');
-      }
-    }
-  }
-
   class FourCastleWorld extends BaseWorld {
-    static worldName = '4-castle'
+    static worldName = 'four-castle'
 
     constructor (properties) {
       super(properties);
@@ -1178,76 +1714,87 @@ body {
     }
   }
 
-  class FourPortal extends WithParent {
+  class SixMountainWorld extends BaseWorld {
+    static worldName = 'six-mountain'
+
     constructor (properties) {
       super(properties);
-
-      this._hue = 0;
-      this._saturation = 100;
-      this._luminance = 50;
-      this._updateView();
     }
 
-    _getEventMap () {
-      return {
-        [ EVENTS.TICK ]: this._handleGameTimeUpdate.bind(this)
-      }
+    addScene () {
+      this._addBackground();
+      this._addSun();
+      this._addMiddleground();
+      this._addForeground();
     }
-
-    _handleGameTimeUpdate (clock) {
-      if (!clock.hour || !clock.minute) {
-        console.warn('Invalid event', clock);
-        return
-      }
-
-      this._hue = (clock.hour * 60 + clock.minute) / (24 * 60) * 360;
-      this._updateView();
-    }
-
-    _mount (parent) {
-      const strokeWidth = 8;
-      const { x, y, h, w } = this._boundingBox;
-      const points = [
-        (x + w) / 2           + ',' + (y     + strokeWidth),
-        (x + w - strokeWidth) + ',' + (y + h) / 2,
-        (x + w) / 2           + ',' + (y + h - strokeWidth),
-        (x     + strokeWidth) + ',' + (y + h) / 2
-      ].join(' ');
-
-      this.element = this._createSvgElement(
-        'polygon',
-        { points },
-        [ 'four-portal' ]
-      );
-
-      this.element.style.setProperty('--strokeWidth',  strokeWidth + '', '');
-      parent.appendChild(this.element);
-    }
-
-    _updateView () {
-      this.element.style.setProperty('--hue', this._hue + '', '');
-      this.element.style.setProperty('--saturation', this._saturation + '%', '');
-      this.element.style.setProperty('--luminance', this._luminance + '%', '');
-    }
-  }
-
-  class FourPortalWorld extends BaseWorld {
-    static worldName = '4-portal'
 
     _addBackground () {
+    }
+
+    _addForeground () {
+    }
+
+    _addMiddleground () {
+    }
+
+    _addSun () {
       const { x, y, h, w } = this._boundingBox;
+      const backgroundHeight = h / 3;
+
       const properties = {
         boundingBox: {
           x,
           y,
-          height: h,
+          height: backgroundHeight,
           width: w
         },
         eventNode: this._eventNode,
         parent: this.element
       };
 
-      new FourPortal(properties);
+      new Sun(properties);
+    }
+  }
+
+  class ThreeVillageWorld extends BaseWorld {
+    static worldName = 'three-village'
+
+    constructor (properties) {
+      super(properties);
+    }
+
+    addScene () {
+      this._addBackground();
+      this._addSun();
+      this._addMiddleground();
+      this._addForeground();
+    }
+
+    _addBackground () {
+    }
+
+    _addForeground () {
+    }
+
+    _addMiddleground () {
+    }
+
+    _addSun () {
+      const { x, y, h, w } = this._boundingBox;
+      const backgroundHeight = h / 3;
+
+      const properties = {
+        boundingBox: {
+          x,
+          y,
+          height: backgroundHeight,
+          width: w
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new Sun(properties);
     }
   }
 
@@ -1268,8 +1815,6 @@ body {
         w: 100
       };
 
-      // TODO: Think about dropping this property
-      this._children = [];
       this._eventNode = mountPoint;
       this._parent = mountPoint;
       this._timeHandle = null;
@@ -1296,13 +1841,55 @@ body {
       };
 
       const worlds = [{
-        ctr: FourCastleWorld,
-        left: FourPortalWorld.worldName,
-        right: FourPortalWorld.worldName
+        ctr: IntroWorld,
+        left: PortalWorld.worldName,
+        right: PortalWorld.worldName,
+        top: PortalWorld.worldName
+      }, {
+        ctr: PortalWorld,
+        left: PortalWorld.worldName,
+        right: PortalWorld.worldName,
+        top: PortalWorld.worldName
+      }, {
+        ctr: ThreePortalWorld,
+        left: ThreeVillageWorld.worldName,
+        right: ThreeVillageWorld.worldName,
+        top: PortalWorld.worldName
+      }, {
+        ctr: ThreeVillageWorld,
+        left: ThreePortalWorld.worldName,
+        right: ThreePortalWorld.worldName,
+        top: ThreeVillageWorld.worldName
       }, {
         ctr: FourPortalWorld,
         left: FourCastleWorld.worldName,
-        right: FourCastleWorld.worldName
+        right: FourCastleWorld.worldName,
+        top: PortalWorld.worldName
+      }, {
+        ctr: FourCastleWorld,
+        left: FourPortalWorld.worldName,
+        right: FourPortalWorld.worldName,
+        top: FourCastleWorld.worldName
+      }, {
+        ctr: FivePortalWorld,
+        left: FiveTownWorld.worldName,
+        right: FiveTownWorld.worldName,
+        top: FivePortalWorld.worldName
+      }, {
+        ctr: FiveTownWorld,
+        left: FivePortalWorld.worldName,
+        right: FivePortalWorld.worldName,
+        top: FiveTownWorld.worldName,
+      }, {
+        ctr: SixPortalWorld,
+        left: SixMountainWorld.worldName,
+        right: SixMountainWorld.worldName,
+        top: SixPortalWorld.worldName
+      }, {
+        ctr: SixMountainWorld,
+        left: SixPortalWorld.worldName,
+        right: SixPortalWorld.worldName,
+        top: SixMountainWorld.worldName
       }];
 
       worlds.forEach((w) => {
@@ -1311,7 +1898,8 @@ body {
           instance: world,
           name: w.ctr.worldName,
           left: w.left,
-          right: w.right
+          right: w.right,
+          top: w.top
         });
 
         world.addScene();
@@ -1370,13 +1958,13 @@ body {
     }
 
     init () {
-      const firstWorld = FourCastleWorld.worldName;
+      const firstWorld = IntroWorld.worldName;
 
       this.addWorlds();
       // TODO: Only in debug builds?
       this._addTime();
       this._addControls();
-      this.switchWorld(firstWorld);
+      this.switchWorld({ nextWorld: firstWorld });
     }
 
     pauseTime () {
@@ -1389,9 +1977,10 @@ body {
       this._timeHandle = setInterval(self.fireNewTime.bind(self), fps);
     }
 
-    switchWorld (nextWorld) {
-      this._worlds.forEach((world) => world.instance.setInactive());
+    switchWorld ({ nextWorld }) {
       const world = this._worlds.find((w) => w.name == nextWorld);
+      this._worlds.forEach((world) => world.instance.setInactive());
+      console.log('Transitioning to ', nextWorld, world);
       world && world.instance.setActive();
     }
 
@@ -1429,19 +2018,19 @@ body {
       };
 
       const time = new Time(properties);
-      this._children.push(time);
     }
 
     _getEventMap () {
       return {
-        [ EVENTS.TURN ]: this._handleGameControlsTurn.bind(this)
+        [ EVENTS.TURN ]: this._handleGameControlsTurn.bind(this),
+        [ EVENTS.WORLD ]: this.switchWorld.bind(this)
       }
     }
 
     _handleGameControlsTurn (eventDetail) {
       const currentWorld = this.getCurrentWorld();
       const nextWorld = currentWorld[ eventDetail.direction ];
-      this.switchWorld(nextWorld);
+      this.switchWorld({ nextWorld });
     }
   }
 
