@@ -28,9 +28,6 @@ export default {
       targets: [{
         src: './src/index.html',
         dest: './dist/'
-      }, {
-        src: './src/app.css',
-        dest: './dist/'
       }]
     }),
 

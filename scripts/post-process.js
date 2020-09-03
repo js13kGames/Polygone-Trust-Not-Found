@@ -63,7 +63,7 @@ async function inlineStyle (htmlString, styleSrc) {
 
   const style = document.createElement('style')
   const source = document.createTextNode(styleSrc)
-  style.appendChild(source)
+  style.appendChild(source)  // TODO: Should work with replaceChild, too?
 
   linkElement.remove()
   document.head.appendChild(style)
