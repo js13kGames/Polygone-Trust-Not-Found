@@ -2,8 +2,11 @@ import { Controls } from './elements/controls'
 import { Time } from './elements/time'
 import { EVENTS } from './events'
 import { WithEventListener } from './mixins/with-event-listener'
+import { FivePortalWorld } from './worlds/5-portal'
 import { FourCastleWorld } from './worlds/4-castle'
 import { FourPortalWorld } from './worlds/4-portal'
+import { SixPortalWorld } from './worlds/6-portal'
+import { ThreePortalWorld } from './worlds/3-portal'
 
 class Game {
   constructor (mountPoint) {
@@ -50,13 +53,25 @@ class Game {
     }
 
     const worlds = [{
-      ctr: FourCastleWorld,
-      left: FourPortalWorld.worldName,
+      ctr: ThreePortalWorld,
+      left: SixPortalWorld.worldName,
       right: FourPortalWorld.worldName
     }, {
       ctr: FourPortalWorld,
-      left: FourCastleWorld.worldName,
+      left: ThreePortalWorld.worldName,
       right: FourCastleWorld.worldName
+    }, {
+      ctr: FourCastleWorld,
+      left: FourPortalWorld.worldName,
+      right: FivePortalWorld.worldName
+    }, {
+      ctr: FivePortalWorld,
+      left: FourCastleWorld.worldName,
+      right: SixPortalWorld.worldName
+    }, {
+      ctr: SixPortalWorld,
+      left: FivePortalWorld.worldName,
+      right: ThreePortalWorld.worldName
     }]
 
     worlds.forEach((w) => {

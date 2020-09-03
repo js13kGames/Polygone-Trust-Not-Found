@@ -27,7 +27,10 @@ body {
   );
 }
 
-.four-portal {
+.three-portal,
+.four-portal,
+.five-portal,
+.six-portal {
   fill: transparent;
   stroke-width: var(--strokeWidth);
   stroke: hsl(
