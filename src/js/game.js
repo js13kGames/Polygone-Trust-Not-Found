@@ -1,7 +1,6 @@
+import { EVENTS } from './constants'
 import { Controls } from './elements/controls'
 import { Time } from './elements/time'
-
-import { EVENTS } from './events'
 import { WithEventListener } from './mixins/with-event-listener'
 
 import { IntroWorld } from './worlds/intro'

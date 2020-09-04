@@ -1,4 +1,4 @@
-import { EVENTS } from '../events'
+import { EVENTS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
 class Middleground extends WithParent {

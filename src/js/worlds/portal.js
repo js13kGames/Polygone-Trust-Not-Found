@@ -1,9 +1,9 @@
+import { EVENTS } from '../constants'
+
 import { FivePortal } from '../elements/5-portal'
 import { FourPortal } from '../elements/4-portal'
 import { SixPortal } from '../elements/6-portal'
 import { ThreePortal } from '../elements/3-portal'
-
-import { EVENTS } from '../events'
 
 import { BaseWorld } from './base'
 

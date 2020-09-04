@@ -1,6 +1,6 @@
-import { Sun } from '../elements/sun'
+import { EVENTS } from '../constants'
 
-import { EVENTS } from '../events'
+import { Sun } from '../elements/sun'
 
 import { BaseWorld } from './base'
 

@@ -1,3 +1,5 @@
+import { EVENTS } from '../constants'
+
 import { Background } from '../elements/background'
 import { Foreground } from '../elements/foreground'
 import { Middleground } from '../elements/middleground'
@@ -5,8 +7,6 @@ import { Middleground } from '../elements/middleground'
 import { Castle } from '../elements/castle'
 import { Mill } from '../elements/mill'
 import { Sun } from '../elements/sun'
-
-import { EVENTS } from '../events'
 
 import { BaseWorld } from './base'
 
