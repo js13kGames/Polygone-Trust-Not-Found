@@ -8,12 +8,16 @@ class WithSympathy extends WithLife {
     this._sympathy = 0
   }
 
+  _mapSympathyToLuminance () {
+    return 50 + this._sympathy / 2
+  }
+
   _updateView () {
     super._updateView()
     if (!this.element) {
       throw new Error('Requires Element')
     }
-    const luminance = 50 + this._sympathy / 2
+    const luminance = this._mapSympathyToLuminance()
     this.element.style.setProperty('--luminance', luminance + '%', '')
   }
 }

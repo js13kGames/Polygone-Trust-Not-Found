@@ -6,6 +6,8 @@ class TextBox extends WithParent {
     // Valid options: serif, sans-serif, monospace, cursive, fantasy
     this.style = 'serif'
     this.text = ''
+
+    this._hue = 42
   }
 
   showText (message, style = 'serif') {
@@ -26,35 +28,38 @@ class TextBox extends WithParent {
     const box = this._createSvgElement(
       'rect',
       {
-        x: x + w * 0.05,
-        y: y + h * 0.57,
-        height: h * 0.3,
-        width: w * 0.9,
+        x,
+        y: y + h * 0.6,
+        height: h * 0.5,
+        width: w,
         rx: w * 0.02,
         ry: w * 0.02
       },
       [ 'textbox' ]
     )
     box.style.setProperty('--strokeWidth', strokeWidth + '', '')
+    this.element.appendChild(box)
 
     const text = this._createSvgElement(
       'text',
       {
-        x: x + w * 0.07,
-        y: y + h * 0.63
+        x: x + w * 0.03,
+        y: y + h * 0.73
       },
       [ 'textbox__text' ]
     )
 
     const content = document.createTextNode('')
     text.appendChild(content)
-    this.element.appendChild(box)
     this.element.appendChild(text)
     parent.appendChild(this.element)
   }
 
   _updateView () {
     super._updateView()
+    const textbox = this.element.querySelector('.textbox')
+    textbox.style.setProperty('--hue', this._hue + '', '')
+
     const text = this.element.querySelector('.textbox__text')
     text.style.setProperty('--fontFamily', this.style + '', '')
     text.textContent = this.text

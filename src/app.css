@@ -69,20 +69,35 @@ body > section {
   fill: gold;
 }
 
-.textbox {
-  fill: rgba(0, 0, 0, 0.6);
+.textbox,
+.speaker-box {
+  fill: hsl(
+    var(--hue),
+    var(--saturation),
+    var(--luminance)
+  );
   stroke: rgb(0, 0, 0);
   stroke-width: var(--strokeWidth);
 }
 
-.textbox__text {
+.textbox__text,
+.speaker-box__text {
   fill: white;
   font-family: var(--fontFamily);
 }
 
 .textbox__text,
+.speaker-box__text ,
 .time {
   font-size: 0.2em;
+}
+
+.speaker-avatar__pic--narrator {
+  stroke: hsl(
+    var(--hue),
+    var(--saturation),
+    var(--luminance)
+  )
 }
 
 /*

@@ -1,4 +1,6 @@
-import { TextBox } from '../elements/textbox'
+import { T } from '../translations'
+
+import { Narrator } from '../elements/narrator'
 
 import { BaseWorld } from './base'
 
@@ -18,20 +20,20 @@ class IntroWorld extends BaseWorld {
     const { x, y, h, w } = this._boundingBox
     const properties = {
       boundingBox: {
-        x,
-        y,
-        height: h,
-        width: w
+        x: x + w * 0.05,
+        y: y + h * 0.40,
+        height: h * 0.45,
+        width: w * 0.9
       },
       eventNode: this._eventNode,
       parent: this.element
     }
 
-    this._textBox = new TextBox(properties)
+    this._narrator = new Narrator(properties)
   }
 
   _showIntro () {
-    this._textBox.showText('Welcome, stranger')
+    this._narrator.showText(T.WELCOME)
   }
 }
 
