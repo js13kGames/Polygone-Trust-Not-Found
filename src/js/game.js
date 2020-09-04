@@ -1,4 +1,5 @@
 import { EVENTS } from './constants'
+import { Canvas } from './elements/canvas'
 import { Controls } from './elements/controls'
 import { Time } from './elements/time'
 import { WithEventListener } from './mixins/with-event-listener'
@@ -42,6 +43,8 @@ class Game {
     Object.keys(this._getEventMap()).forEach((eventName) => {
       this._eventNode.addEventListener(eventName, this, false)
     })
+
+    this._mount(mountPoint)
   }
 
   addWorlds () {
@@ -55,7 +58,7 @@ class Game {
         width: w
       },
       eventNode: this._eventNode,
-      parent: this._parent
+      parent: this.canvas.element
     }
 
     const worlds = [{
@@ -218,7 +221,7 @@ class Game {
         width: controlsWidth
       },
       eventNode: this._eventNode,
-      parent: this._parent
+      parent: this.canvas.element
     }
 
     const controls = new Controls(properties)
@@ -232,7 +235,7 @@ class Game {
         y: 0.95 * w
       },
       eventNode: this._eventNode,
-      parent: this._parent
+      parent: this.canvas.element
     }
 
     const time = new Time(properties)
@@ -249,6 +252,21 @@ class Game {
     const currentWorld = this.getCurrentWorld()
     const nextWorld = currentWorld[ eventDetail.direction ]
     this.switchWorld({ nextWorld })
+  }
+
+  _mount (parent) {
+    const properties = {
+      boundingBox: {
+        x: 0,
+        y: 0,
+        height: 100,
+        width: 100
+      },
+      parent: this._parent,
+      eventNode: this._eventNode
+    }
+
+    this.canvas = new Canvas(properties)
   }
 }
 

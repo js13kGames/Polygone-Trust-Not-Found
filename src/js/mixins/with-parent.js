@@ -7,8 +7,19 @@ class WithParent extends WithSympathy {
     this._mount(properties.parent)
   }
 
-  _mount (parent) {
-    throw new Error('Requires implementation')
+  _createHtmlElement (name, attributes = {}, classes = []) {
+    const element = document.createElement(name)
+
+    Object.keys(attributes).forEach((attribute) => {
+      const value = attributes[ attribute ]
+      element.setAttribute(attribute, value)
+    })
+
+    classes.forEach((className) => {
+      element.classList.add(className)
+    })
+
+    return element
   }
 
   _createSvgElement (name, attributes = {}, classes = []) {
@@ -25,6 +36,10 @@ class WithParent extends WithSympathy {
     })
 
     return element
+  }
+
+  _mount (parent) {
+    throw new Error('Requires implementation')
   }
 }
 
