@@ -4,8 +4,9 @@
 <title>JS13kgames 2020 - 404</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>*{margin:0;padding:0}body{color:#000;background-color:#fff;display:flex;flex-direction:column}body>section{flex:1}.nav-list{display:flex;list-style:none;align-items:center}.nav-list__item{flex:1}.tab-view:not(:target){display:none}#app{display:block;height:98vmin;width:98vmin;margin-left:auto;margin-right:auto;margin-inline-start:auto;margin-inline-end:auto}.hidden.world{display:none}.background,.foreground,.middleground{fill:hsl(var(--hue),var(--saturation),var(--luminance))}.five-portal,.four-portal,.six-portal,.three-portal{fill:transparent;stroke-width:var(--strokeWidth);stroke:hsl(var(--hue),var(--saturation),var(--luminance))}.sun{fill:gold}.textbox{fill:rgba(0,0,0,.6);stroke:#000;stroke-width:var(--strokeWidth)}.textbox__text{fill:#fff;font-family:var(--fontFamily)}.textbox__text,.time{font-size:.2em}</style></head>
+<style>*{margin:0;padding:0}body{color:#000;background-color:#fff;display:flex;flex-direction:column}body>section{flex:1}.nav-list{display:flex;list-style:none;align-items:center}.nav-list__item{flex:1}.tab-view:not(:target){display:none}#app{display:block;height:98vmin;width:98vmin;margin-left:auto;margin-right:auto;margin-inline-start:auto;margin-inline-end:auto}.hidden.world{display:none}.background,.foreground,.middleground{fill:hsl(var(--hue),var(--saturation),var(--luminance))}.five-portal,.four-portal,.six-portal,.three-portal{fill:transparent;stroke-width:var(--strokeWidth);stroke:hsl(var(--hue),var(--saturation),var(--luminance))}.sun{fill:gold}.speaker-box,.textbox{fill:hsl(var(--hue),var(--saturation),var(--luminance));stroke:#000;stroke-width:var(--strokeWidth)}.speaker-box__text,.textbox__text{fill:#fff;font-family:var(--fontFamily)}.speaker-box__text,.textbox__text,.time{font-size:.2em}.speaker-avatar__pic--narrator{stroke:hsl(var(--hue),var(--saturation),var(--luminance))}</style></head>
 <body>
+<main id="app">
 <section>
 <nav>
 <ul class="nav-list">
@@ -74,8 +75,7 @@ Typing speed
 Start time
 </button>
 </section>
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" id="app">
-</svg>
+</main>
 <script>/**
  * This file is part of JS13kGames - 404.
  * An Offline Life is free software: you can redistribute it and/or modify
@@ -180,12 +180,16 @@ Start time
       this._sympathy = 0;
     }
 
+    _mapSympathyToLuminance () {
+      return 50 + this._sympathy / 2
+    }
+
     _updateView () {
       super._updateView();
       if (!this.element) {
         throw new Error('Requires Element')
       }
-      const luminance = 50 + this._sympathy / 2;
+      const luminance = this._mapSympathyToLuminance();
       this.element.style.setProperty('--luminance', luminance + '%', '');
     }
   }
@@ -197,8 +201,19 @@ Start time
       this._mount(properties.parent);
     }
 
-    _mount (parent) {
-      throw new Error('Requires implementation')
+    _createHtmlElement (name, attributes = {}, classes = []) {
+      const element = document.createElement(name);
+
+      Object.keys(attributes).forEach((attribute) => {
+        const value = attributes[ attribute ];
+        element.setAttribute(attribute, value);
+      });
+
+      classes.forEach((className) => {
+        element.classList.add(className);
+      });
+
+      return element
     }
 
     _createSvgElement (name, attributes = {}, classes = []) {
@@ -215,6 +230,25 @@ Start time
       });
 
       return element
+    }
+
+    _mount (parent) {
+      throw new Error('Requires implementation')
+    }
+  }
+
+  class Canvas extends WithParent {
+    _mount (parent) {
+      const { x, y, h, w } = this._boundingBox;
+
+      this.element = this._createSvgElement(
+        'svg',
+        { viewBox: `${x} ${y} ${w} ${h}` },
+        []
+      );
+      this.element.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+      parent.appendChild(this.element);
     }
   }
 
@@ -377,12 +411,18 @@ Start time
     }
   }
 
+  const T = {
+    WELCOME: 'Welcome, stranger'
+  };
+
   class TextBox extends WithParent {
     constructor (properties) {
       super(properties);
       // Valid options: serif, sans-serif, monospace, cursive, fantasy
       this.style = 'serif';
       this.text = '';
+
+      this._hue = 42;
     }
 
     showText (message, style = 'serif') {
@@ -403,38 +443,153 @@ Start time
       const box = this._createSvgElement(
         'rect',
         {
-          x: x + w * 0.05,
-          y: y + h * 0.57,
-          height: h * 0.3,
-          width: w * 0.9,
+          x,
+          y: y + h * 0.6,
+          height: h * 0.5,
+          width: w,
           rx: w * 0.02,
           ry: w * 0.02
         },
         [ 'textbox' ]
       );
       box.style.setProperty('--strokeWidth', strokeWidth + '', '');
+      this.element.appendChild(box);
 
       const text = this._createSvgElement(
         'text',
         {
-          x: x + w * 0.07,
-          y: y + h * 0.63
+          x: x + w * 0.03,
+          y: y + h * 0.73
         },
         [ 'textbox__text' ]
       );
 
       const content = document.createTextNode('');
       text.appendChild(content);
-      this.element.appendChild(box);
       this.element.appendChild(text);
       parent.appendChild(this.element);
     }
 
     _updateView () {
       super._updateView();
+      const textbox = this.element.querySelector('.textbox');
+      textbox.style.setProperty('--hue', this._hue + '', '');
+
       const text = this.element.querySelector('.textbox__text');
       text.style.setProperty('--fontFamily', this.style + '', '');
       text.textContent = this.text;
+    }
+  }
+
+  class Person extends TextBox {
+    constructor (properties) {
+      super(properties);
+      this.name = '';
+      this._updateView();
+    }
+
+    _mount (parent) {
+      super._mount(parent);
+      const { x, y, h, w } = this._boundingBox;
+      const strokeWidth = h * 0.02;
+      const speakerBox = this._createSvgElement(
+        'rect',
+        {
+          x: x + w * 0.05,
+          y: y + h * 0.53,
+          height: h * 0.15,
+          width: w * 0.2
+        },
+        [ 'speaker-box' ]
+      );
+      speakerBox.style.setProperty('--strokeWidth', strokeWidth + '', '');
+      this.element.appendChild(speakerBox);
+
+      const speakerName = this._createSvgElement(
+        'text',
+        {
+          x: x + w * 0.07,
+          y: y + h * 0.63
+        },
+        [ 'speaker-box__text' ]
+      );
+
+      const content = document.createTextNode('');
+
+      speakerName.appendChild(content);
+      this.element.appendChild(speakerName);
+
+      const text = this.element.querySelector('.textbox__text');
+      text.setAttributeNS(null, 'y', y + h * 0.78 + '');
+    }
+
+    _updateView () {
+      super._updateView();
+      const speakerBox = this.element.querySelector('.speaker-box');
+      speakerBox.style.setProperty('--hue', this._hue + '', '');
+
+      const speakerName = this.element.querySelector('.speaker-box__text');
+      speakerName.style.setProperty('--fontFamily', this.style + '', '');
+      speakerName.textContent = this.name;
+    }
+  }
+
+  class Narrator extends Person {
+    constructor (properties) {
+      super(properties);
+      this.name = '???';
+      this.style = 'fantasy';
+
+      this._hue = 42;
+      this._updateView();
+    }
+
+    _mount (parent) {
+      super._mount(parent);
+      const { x, y, h, w } = this._boundingBox;
+
+      const left   = x + w * 0.1;
+      const right  = x + w * 0.2;
+      const top    = y + h * 0.2;
+      const bottom = y + h * 0.5;
+
+      const points = [
+         left              + ',' + (top    + h * 0.05),
+        (left  + w * 0.05) + ',' +  top,
+        (right - w * 0.05) + ',' +  top,
+         right             + ',' + (top    + h * 0.05),
+         left              + ',' + (bottom - h * 0.05),
+        (left  + w * 0.05) + ',' +  bottom,
+        (right - w * 0.05) + ',' +  bottom,
+         right             + ',' + (bottom - h * 0.05)
+      ].join(' ');
+
+      const background = this._createSvgElement(
+        'ellipse',
+        {
+          cx: x + w * 0.15,
+          cy: y + h * 0.5,
+          rx: w * 0.11,
+          ry: h * 0.35
+        },
+        [ 'speaker-avatar__background' ]
+      );
+
+      const avatar = this._createSvgElement(
+        'polyline',
+        { points },
+        [ 'speaker-avatar__pic', 'speaker-avatar__pic--narrator' ]
+      );
+      avatar.setAttributeNS(null, 'stroke-linecap', 'round');
+
+      this.element.insertBefore(avatar, this.element.firstChild);
+      this.element.insertBefore(background, this.element.firstChild);
+    }
+
+    _updateView () {
+      super._updateView();
+      const avatar = this.element.querySelector('.speaker-avatar__pic');
+      avatar.style.setProperty('--hue', this._hue + '', '');
     }
   }
 
@@ -515,20 +670,20 @@ Start time
       const { x, y, h, w } = this._boundingBox;
       const properties = {
         boundingBox: {
-          x,
-          y,
-          height: h,
-          width: w
+          x: x + w * 0.05,
+          y: y + h * 0.40,
+          height: h * 0.45,
+          width: w * 0.9
         },
         eventNode: this._eventNode,
         parent: this.element
       };
 
-      this._textBox = new TextBox(properties);
+      this._narrator = new Narrator(properties);
     }
 
     _showIntro () {
-      this._textBox.showText('Welcome, stranger');
+      this._narrator.showText(T.WELCOME);
     }
   }
 
@@ -922,6 +1077,44 @@ Start time
     }
   }
 
+  class Guild extends WithParent {
+    _mount (parent) {
+      this.element = this._createSvgElement(
+        'g',
+        {},
+        [ 'guild' ]
+      );
+
+      parent.appendChild(this.element);
+      this._mountMarket();
+    }
+
+    _mountMarket () {
+      const { x, y, h, w } = this._boundingBox;
+      const left = x;
+      const right = x + w;
+      const top = y;
+      const bottom = y + h;
+      const middle = x + w * 0.5;
+
+      const points = [
+        left   + ',' + bottom,
+        left   + ',' + (top + h * 0.1),
+        middle + ',' +  top,
+        right  + ',' + (top + h * 0.1),
+        right  + ',' + bottom
+      ].join(' ');
+
+      const market = this._createSvgElement(
+        'polygon',
+        { points },
+        [ 'market' ]
+      );
+
+      this.element.appendChild(market);
+    }
+  }
+
   class Sun extends WithParent {
     constructor (properties) {
       super(properties);
@@ -1021,12 +1214,52 @@ Start time
       this._addSun();
       this._addMiddleground();
       this._addForeground();
+      this._addGuild();
+    }
+
+    playMusic () {
+      /* Taken from https://xem.github.io/miniMusic/simple.html */
+      // Frequencies taken from https://pages.mtu.edu/~suits/notefreqs.html
+      // See also https://www.artofcomposing.com/how-to-compose-music-101
+      // And https://twitter.com/mknol/status/1301193570842484738
+      // More tools at https://twitter.com/MaximeEuziere/status/1288918702776356866
+      /*
+      with(new AudioContext)
+      with(G=createGain())
+      for(i in D=[1,,,,1,1,,,,,1,,,,1,1])
+      with(createOscillator())
+      if(D[i])
+      connect(G),
+      G.connect(destination),
+      start(i*.1),
+      frequency.setValueAtTime(262*1.06**(13-D[i]),i*.1),
+      gain.setValueAtTime(1,i*.1),
+      gain.setTargetAtTime(.0001,i*.1+.08,.005),
+      stop(i*.1+.09)
+      */
     }
 
     _addBackground () {
     }
 
     _addForeground () {
+    }
+
+    _addGuild () {
+      const { x, y, h, w } = this._boundingBox;
+
+      const properties = {
+        boundingBox: {
+          x: x + w * 0.3,
+          y: y + h * 0.2,
+          height: h * 0.6,
+          width: w * 0.4
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new Guild(properties);
     }
 
     _addMiddleground () {
@@ -1756,6 +1989,195 @@ Start time
     }
   }
 
+  class Hut extends WithParent {
+    _mount (parent) {
+      this.element = this._createSvgElement(
+        'g',
+        {},
+        [ 'hut' ]
+      );
+
+      parent.appendChild(this.element);
+      this._mountRoof();
+      this._mountBuilding();
+    }
+
+    _mountBuilding () {
+      const { x, y, h, w } = this._boundingBox;
+      const top = y;
+      const bottom = y + h * 0.8;
+      const left = x + w * 0.05;
+      const right = x + w * 0.95;
+      const middle = x + w * 0.5;
+
+      const points = [
+        left   + ',' + bottom,
+        middle + ',' + top,
+        right  + ',' + bottom
+      ].join(' ');
+
+      const roof = this._createSvgElement(
+        'polygon',
+        { points },
+        []
+      );
+
+      this.element.appendChild(roof);
+    }
+
+    _mountRoof () {
+      const { x, y, h, w } = this._boundingBox;
+      const top = y;
+      const bottom = y + h * 0.6;
+      const left = x;
+      const right = x + w;
+      const middle = x + w * 0.5;
+
+      const points = [
+        left   + ',' + bottom,
+        middle + ',' + top,
+        right  + ',' + bottom
+      ].join(' ');
+
+      const roof = this._createSvgElement(
+        'polygon',
+        { points },
+        []
+      );
+
+      this.element.appendChild(roof);
+    }
+  }
+
+  class Sea extends WithParent {
+    constructor (properties) {
+      super(properties);
+      this._updateView();
+    }
+
+    _mount (parent) {
+      this.element = this._createSvgElement(
+        'g',
+        {},
+        [ 'sea' ]
+      );
+
+      parent.appendChild(this.element);
+      // this._mountFilter()
+      this._mountSky();
+      this._mountWaves();
+    }
+
+    _mountFilter () {
+      // Based on https://medium.com/swlh/using-the-svg-feturbulence-filter-for-wave-effects-2b8cb2546ee6
+      // See also https://www.smashingmagazine.com/2015/05/why-the-svg-filter-is-awesome/
+      this._filterId = 'sea-filter';
+      let filter = document.querySelector(`#${this._filterId}`);
+      if (filter !== null) {
+        // Already created
+        return
+      }
+
+      filter = this._createSvgElement(
+        'filter',
+        { id: this._filterId },
+        []
+      );
+
+      const turbulence = this._createSvgElement(
+        'feTurbulence',
+        {
+          id: 'turbulence',
+          type: 'turbulence',
+          baseFrequency: '0.042',
+          numOctaves: '1',
+          result: 'turbulence',
+          seed: 5
+        },
+        []
+      );
+
+      const animate = this._createSvgElement(
+        'animate',
+        {
+          id: 'animate',
+          attributeName: 'baseFrequency',
+          values: '0;0.1;0;0',
+          from: '0',
+          to: '100',
+          dur: '10s',
+          repeatCount: 'inifinte'
+        },
+        []
+      );
+
+      const displacement = this._createSvgElement(
+        'feDisplacementMap',
+        {
+          in: 'SourceGraphic',
+          in2: 'turbulence',
+          scale: '30',
+          xChannelSelector: 'R',
+          yChannelSelector: 'R',
+        },
+        []
+      );
+
+      filter.appendChild(turbulence);
+      filter.appendChild(animate);
+      this.element.appendChild(filter);
+      this.element.appendChild(displacement);
+    }
+
+    _mountSky () {
+      const { x, y, h, w } = this._boundingBox;
+
+      const top = y;
+      const middle = y + h * 0.5;
+      const left = x;
+      const right = x + w;
+
+      const points = [
+        left  + ',' + top,
+        right + ',' + top,
+        right + ',' + middle
+      ].join(' ');
+
+      const sky = this._createSvgElement(
+        'polygon',
+        {
+          points
+        },
+        [ 'sky' ]
+      );
+      this.element.appendChild(sky);
+    }
+
+    _mountWaves () {
+      const { x, y, h, w } = this._boundingBox;
+      const middle = y + h * 0.5;
+      const bottom = y + h;
+      const left = x;
+      const right = x + w;
+
+      const points = [
+        right + ',' + middle,
+        right + ',' + bottom,
+        left  + ',' + bottom,
+      ].join(' ');
+
+      const waves = this._createSvgElement(
+        'polygon',
+        {
+          // filter: `url(#${this._filterId})`,
+          points
+        },
+        [ 'waves' ]
+      );
+      this.element.appendChild(waves);
+    }
+  }
+
   class ThreeVillageWorld extends BaseWorld {
     static worldName = 'three-village'
 
@@ -1766,8 +2188,27 @@ Start time
     addScene () {
       this._addBackground();
       this._addSun();
+      this._addSea();
       this._addMiddleground();
       this._addForeground();
+      this._addHut();
+    }
+
+    playMusic () {
+      /*
+      with(new AudioContext)
+      with(G=createGain())
+      for(i in D=[13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13])
+      with(createOscillator())
+      if(D[i])
+      connect(G),
+      G.connect(destination),
+      start(i*.1),
+      frequency.setValueAtTime(262*1.06**(13-D[i]),i*.1),
+      gain.setValueAtTime(1,i*.1),
+      gain.setTargetAtTime(.0001,i*.1+.08,.005),
+      stop(i*.1+.09)
+      */
     }
 
     _addBackground () {
@@ -1776,9 +2217,45 @@ Start time
     _addForeground () {
     }
 
+    _addHut () {
+      const { x, y, h, w } = this._boundingBox;
+      const controlsWidth = 5 * 3;
+
+      const properties = {
+        boundingBox: {
+          x: x + controlsWidth,
+          y: y + h * 0.7,
+          height: y + h * 0.25,
+          width: w - controlsWidth * 2
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new Hut(properties);
+    }
+
     _addMiddleground () {
     }
 
+    _addSea () {
+      const { x, y, h, w } = this._boundingBox;
+      const backgroundHeight = h / 3;
+
+      const properties = {
+        boundingBox: {
+          x,
+          y,
+          height: backgroundHeight,
+          width: w
+        },
+        eventNode: this._eventNode,
+        parent: this.element
+      };
+
+      new Sea(properties);
+    }
+   
     _addSun () {
       const { x, y, h, w } = this._boundingBox;
       const backgroundHeight = h / 3;
@@ -1824,6 +2301,8 @@ Start time
       Object.keys(this._getEventMap()).forEach((eventName) => {
         this._eventNode.addEventListener(eventName, this, false);
       });
+
+      this._mount(mountPoint);
     }
 
     addWorlds () {
@@ -1837,7 +2316,7 @@ Start time
           width: w
         },
         eventNode: this._eventNode,
-        parent: this._parent
+        parent: this.canvas.element
       };
 
       const worlds = [{
@@ -2000,7 +2479,7 @@ Start time
           width: controlsWidth
         },
         eventNode: this._eventNode,
-        parent: this._parent
+        parent: this.canvas.element
       };
 
       const controls = new Controls(properties);
@@ -2014,7 +2493,7 @@ Start time
           y: 0.95 * w
         },
         eventNode: this._eventNode,
-        parent: this._parent
+        parent: this.canvas.element
       };
 
       const time = new Time(properties);
@@ -2031,6 +2510,21 @@ Start time
       const currentWorld = this.getCurrentWorld();
       const nextWorld = currentWorld[ eventDetail.direction ];
       this.switchWorld({ nextWorld });
+    }
+
+    _mount (parent) {
+      const properties = {
+        boundingBox: {
+          x: 0,
+          y: 0,
+          height: 100,
+          width: 100
+        },
+        parent: this._parent,
+        eventNode: this._eventNode
+      };
+
+      this.canvas = new Canvas(properties);
     }
   }
 
