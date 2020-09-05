@@ -4,6 +4,12 @@ import { Controls } from './elements/controls'
 import { Time } from './elements/time'
 import { WithEventListener } from './mixins/with-event-listener'
 
+import { Navigation } from './elements/navigation'
+import { TabDebug } from './elements/tab-debug'
+import { TabInventory } from './elements/tab-inventory'
+import { TabMemory } from './elements/tab-memory'
+import { TabSettings } from './elements/tab-settings'
+
 import { IntroWorld } from './worlds/intro'
 
 import { FivePortalWorld } from './worlds/5-portal'
@@ -266,7 +272,25 @@ class Game {
       eventNode: this._eventNode
     }
 
+    this.navigation = new Navigation(properties)
+    this._mountTabViews(properties)
     this.canvas = new Canvas(properties)
+  }
+
+  _mountTabViews (properties) {
+    this.tabs = [{
+      id: 'inventory',
+      ref: new TabInventory(properties),
+    }, {
+      id: 'memory',
+      ref: new TabMemory(properties)
+    }, {
+      id: 'settings',
+      ref: new TabSettings(properties)
+    }, {
+      id: 'debug',
+      ref: new TabDebug(properties)
+    }]
   }
 }
 
