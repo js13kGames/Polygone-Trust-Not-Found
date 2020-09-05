@@ -6,76 +6,10 @@
 
 <style>*{margin:0;padding:0}body{color:#000;background-color:#fff;display:flex;flex-direction:column}body>section{flex:1}.nav-list{display:flex;list-style:none;align-items:center}.nav-list__item{flex:1}.tab-view:not(:target){display:none}#app{display:block;height:98vmin;width:98vmin;margin-left:auto;margin-right:auto;margin-inline-start:auto;margin-inline-end:auto}.hidden.world{display:none}.background,.foreground,.middleground{fill:hsl(var(--hue),var(--saturation),var(--luminance))}.five-portal,.four-portal,.six-portal,.three-portal{fill:transparent;stroke-width:var(--strokeWidth);stroke:hsl(var(--hue),var(--saturation),var(--luminance))}.sun{fill:gold}.speaker-box,.textbox{fill:hsl(var(--hue),var(--saturation),var(--luminance));stroke:#000;stroke-width:var(--strokeWidth)}.speaker-box__text,.textbox__text{fill:#fff;font-family:var(--fontFamily)}.speaker-box__text,.textbox__text,.time{font-size:.2em}.speaker-avatar__pic--narrator{stroke:hsl(var(--hue),var(--saturation),var(--luminance))}</style></head>
 <body>
-<main id="app">
-<section>
-<nav>
-<ul class="nav-list">
-<li class="nav-list__item">
-<a href="#tab-inventory" class="nav-link">
-<!-- TODO: Translateable! -->
-Inventory
-</a>
-</li>
-<li class="nav-list__item">
-<a href="#tab-memory" class="nav-link">
-<!-- TODO: Translateable! -->
-Memory
-</a>
-</li>
-<li class="nav-list__item">
-<a href="#tab-settings" class="nav-link">
-<!-- TODO: Translateable! -->
-Settings
-</a>
-</li>
-<li class="nav-list__item">
-<a href="#tab-debug" class="nav-link">
-<!-- TODO: Translateable! -->
-Debug
-</a>
-</li>
-</ul>
-</nav>
-</section>
-<section id="tab-inventory" class="tab-view">
-<!-- TODO: Translateable! -->
-No items.
-</section>
-<section id="tab-memory" class="tab-view">
-<!-- TODO: Translateable! -->
-Make some encounters
-</section>
-<section id="tab-settings" class="tab-view">
-<!-- TODO: Translateable! -->
-<form id="form-settings" action="#" method="GET">
-<fieldset>
-<legend>
-<!-- TODO: Translateable! -->
-Language
-</legend>
-<select name="language">
-<!-- TODO: Translateable! -->
-Language
-<option value="en">
-<!-- TODO: Translateable! -->
-English
-</option>
-</select>
-<label>
-<!-- TODO: Translateable! -->
-Typing speed
-<input type="range" min="1" max="3" step="1">
-</label>
-</fieldset>
-</form>
-</section>
-<section id="tab-debug" class="tab-view">
-<button id="action" type="button">
-<!-- TODO: Translateable! -->
-Start time
-</button>
-</section>
-</main>
+<noscript>
+I'm deeply sorry, but this game requires JavaScript to run.
+</noscript>
+<main id="app"></main>
 <script>/**
  * This file is part of JS13kGames - 404.
  * An Offline Life is free software: you can redistribute it and/or modify
@@ -412,8 +346,221 @@ Start time
   }
 
   const T = {
+    DEBUG: 'Debug',
+    DEBUG_BUTTON: 'Start time',
+    INVENTORY: 'Inventory',
+    LANGUAGE: 'Language',
+    LANGUAGE_EN: 'English',
+    MEMORY: 'Memory',
+    NO_ITEMS: 'No items.',
+    NO_MEMORIES: 'Make some encounters.',
+    SETTINGS: 'Settings',
+    TYPING: 'Typing speed',
     WELCOME: 'Welcome, stranger'
   };
+
+  class Navigation extends WithParent {
+    _mount (parent) {
+      this.element = this._createHtmlElement(
+        'section',
+        {},
+        []
+      );
+
+      parent.appendChild(this.element);
+      this._mountNavigation();
+    }
+
+    _mountNavigation () {
+      // TODO: Move somewhere else
+      const navListItems = [{
+        href: '#tab-inventory',
+        text: T.INVENTORY
+      }, {
+        href: '#tab-memory',
+        text: T.MEMORY
+      }, {
+        href: '#tab-settings',
+        text: T.SETTINGS
+      }, {
+        href: '#tab-debug',
+        text: T.DEBUG
+      }];
+
+      const nav = this._createHtmlElement(
+        'nav',
+        {},
+        []
+      );
+
+      const navList = this._createHtmlElement(
+        'ul',
+        {},
+        [ 'nav-list' ]
+      );
+
+      navListItems.forEach((navListItem) => {
+        const listItem = this._createHtmlElement(
+          'li',
+          {},
+          [ 'nav-list__item' ]
+        );
+
+        const link = this._createHtmlElement(
+          'a',
+          { href: navListItem.href },
+          [ 'nav-link' ]
+        );
+
+        const linkText = document.createTextNode(navListItem.text);
+
+        link.appendChild(linkText);
+        listItem.appendChild(link);
+        navList.appendChild(listItem);
+      });
+
+      nav.appendChild(navList);
+      this.element.appendChild(nav);
+    }
+  }
+
+  class Tab extends WithParent {
+    _mount(parent) {
+      this.element = this._createHtmlElement(
+        'section',
+        {},
+        [ 'tab-view' ]
+      );
+
+      const text = document.createTextNode('');
+
+      this.element.appendChild(text);
+      parent.appendChild(this.element);
+    }
+  }
+
+  class TabDebug extends Tab {
+    _mount (parent) {
+      super._mount(parent);
+      this.element.setAttribute('id', 'tab-debug');
+
+      this._mountDebug();
+    }
+
+    _mountDebug () {
+      const button = this._createHtmlElement(
+        'button',
+        { id: 'action', type: 'button' },
+        []
+      );
+
+      button.textContent = T.DEBUG_BUTTON;
+      this.element.appendChild(button);
+    }
+  }
+
+  class TabInventory extends Tab {
+    _mount (parent) {
+      super._mount(parent);
+      this.element.setAttribute('id', 'tab-inventory');
+
+      this.element.textContent = T.NO_ITEMS;
+    }
+  }
+
+  class TabMemory extends Tab {
+    _mount (parent) {
+      super._mount(parent);
+      this.element.setAttribute('id', 'tab-memory');
+
+      this.element.textContent = T.NO_MEMORIES;
+    }
+  }
+
+  class TabSettings extends Tab {
+    _mount (parent) {
+      super._mount(parent);
+      this.element.setAttribute('id', 'tab-settings');
+      this._mountForm();
+    }
+
+    _mountForm () {
+      const languages = [{
+        value: 'en',
+        text: T.LANGUAGE_EN
+      }];
+
+      const form = this._createHtmlElement(
+        'form',
+        {
+          id: 'form-settings',
+          action: '#',
+          method: 'GET'
+        },
+        []
+      );
+
+      const fieldset = this._createHtmlElement(
+        'fieldset',
+        {},
+        []
+      );
+
+      const legend = this._createHtmlElement(
+        'legend',
+        {},
+        []
+      );
+      const languageLegend = document.createTextNode(T.LANGUAGE);
+      legend.appendChild(languageLegend);
+
+      const languageSelect = this._createHtmlElement(
+        'select',
+        { name: 'language' },
+        []
+      );
+      const languageLabel = document.createTextNode(T.LANGUAGE);
+      languageSelect.appendChild(languageLabel);
+
+      languages.forEach((lang) => {
+        const option = this._createHtmlElement(
+          'option',
+          { value: lang.value },
+          []
+        );
+        const text = document.createTextNode(lang.text);
+        option.appendChild(text);
+        languageSelect.appendChild(option);
+      });
+
+      const typingLabel = this._createHtmlElement(
+        'label',
+        {},
+        []
+      );
+      const typingLabelText = document.createTextNode(T.TYPING);
+      typingLabel.appendChild(typingLabelText);
+
+      const typingSpeed = this._createHtmlElement(
+        'input',
+        {
+          type: 'range',
+          min: 1,
+          max: 3,
+          step: 1
+        },
+        []
+      );
+
+      fieldset.appendChild(legend);
+      fieldset.appendChild(languageSelect);
+      fieldset.appendChild(typingLabel);
+      fieldset.appendChild(typingSpeed);
+
+      form.appendChild(fieldset);
+      this.element.appendChild(form);
+    }
+  }
 
   class TextBox extends WithParent {
     constructor (properties) {
@@ -598,6 +745,7 @@ Start time
 
     constructor (properties) {
       super(properties);
+      this.melody = [];
       this._isActive = false;
       this._updateView();
     }
@@ -612,9 +760,37 @@ Start time
       return this._isActive
     }
 
+    playMusic () {
+      if (this.melody.length > 0) {
+        /* Taken from https://xem.github.io/miniMusic/simple.html */
+        // Frequencies taken from https://pages.mtu.edu/~suits/notefreqs.html
+        // See also https://www.artofcomposing.com/how-to-compose-music-101
+        // And https://twitter.com/mknol/status/1301193570842484738
+        // More tools at https://twitter.com/MaximeEuziere/status/1288918702776356866
+        const baseFrequency = 262;  // 262 equals „middle C”
+        const audioContext = new AudioContext();
+        const gainNode = audioContext.createGain();
+        this.melody.forEach((note, index) => {
+          const oscillator = audioContext.createOscillator();
+          if (note) {
+            oscillator
+              .connect(gainNode)
+              .connect(audioContext.destination);
+
+            oscillator.start(index * 0.1);
+            oscillator.frequency.setValueAtTime(baseFrequency * 1.06 ** (13 - note), index * 0.1);
+            gainNode.gain.setValueAtTime(1, index * 0.1);
+            gainNode.gain.setTargetAtTime(0.0001, index * 0.1 + 0.08, 0.005);
+            oscillator.stop(index * 0.1 + 0.09);
+          }
+        });
+      }
+    }
+
     setActive () {
       this._isActive = true;
       this._updateView();
+      this.playMusic();
     }
 
     setInactive () {
@@ -1024,6 +1200,7 @@ Start time
     }
 
     _handleClick (eventTarget) {
+      // TODO: Don't transition to portal of world, but the left world of it
       const nextWorld = eventTarget.getAttribute('class');
       console.log('Clicked world', eventTarget, nextWorld);
       if (!nextWorld || nextWorld && !nextWorld.includes('-portal')) {
@@ -1207,6 +1384,7 @@ Start time
 
     constructor (properties) {
       super(properties);
+      this.melody = [1,,,,1,1,,,,,1,,,,1,1];
     }
 
     addScene () {
@@ -1215,28 +1393,6 @@ Start time
       this._addMiddleground();
       this._addForeground();
       this._addGuild();
-    }
-
-    playMusic () {
-      /* Taken from https://xem.github.io/miniMusic/simple.html */
-      // Frequencies taken from https://pages.mtu.edu/~suits/notefreqs.html
-      // See also https://www.artofcomposing.com/how-to-compose-music-101
-      // And https://twitter.com/mknol/status/1301193570842484738
-      // More tools at https://twitter.com/MaximeEuziere/status/1288918702776356866
-      /*
-      with(new AudioContext)
-      with(G=createGain())
-      for(i in D=[1,,,,1,1,,,,,1,,,,1,1])
-      with(createOscillator())
-      if(D[i])
-      connect(G),
-      G.connect(destination),
-      start(i*.1),
-      frequency.setValueAtTime(262*1.06**(13-D[i]),i*.1),
-      gain.setValueAtTime(1,i*.1),
-      gain.setTargetAtTime(.0001,i*.1+.08,.005),
-      stop(i*.1+.09)
-      */
     }
 
     _addBackground () {
@@ -2183,6 +2339,9 @@ Start time
 
     constructor (properties) {
       super(properties);
+      this.melody = [
+        13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13
+      ];
     }
 
     addScene () {
@@ -2192,23 +2351,6 @@ Start time
       this._addMiddleground();
       this._addForeground();
       this._addHut();
-    }
-
-    playMusic () {
-      /*
-      with(new AudioContext)
-      with(G=createGain())
-      for(i in D=[13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13])
-      with(createOscillator())
-      if(D[i])
-      connect(G),
-      G.connect(destination),
-      start(i*.1),
-      frequency.setValueAtTime(262*1.06**(13-D[i]),i*.1),
-      gain.setValueAtTime(1,i*.1),
-      gain.setTargetAtTime(.0001,i*.1+.08,.005),
-      stop(i*.1+.09)
-      */
     }
 
     _addBackground () {
@@ -2524,7 +2666,25 @@ Start time
         eventNode: this._eventNode
       };
 
+      this.navigation = new Navigation(properties);
+      this._mountTabViews(properties);
       this.canvas = new Canvas(properties);
+    }
+
+    _mountTabViews (properties) {
+      this.tabs = [{
+        id: 'inventory',
+        ref: new TabInventory(properties),
+      }, {
+        id: 'memory',
+        ref: new TabMemory(properties)
+      }, {
+        id: 'settings',
+        ref: new TabSettings(properties)
+      }, {
+        id: 'debug',
+        ref: new TabDebug(properties)
+      }];
     }
   }
 
