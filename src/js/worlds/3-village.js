@@ -11,6 +11,9 @@ class ThreeVillageWorld extends BaseWorld {
 
   constructor (properties) {
     super(properties)
+    this.melody = [
+      13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13
+    ]
   }
 
   addScene () {
@@ -20,23 +23,6 @@ class ThreeVillageWorld extends BaseWorld {
     this._addMiddleground()
     this._addForeground()
     this._addHut()
-  }
-
-  playMusic () {
-    /*
-    with(new AudioContext)
-    with(G=createGain())
-    for(i in D=[13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13])
-    with(createOscillator())
-    if(D[i])
-    connect(G),
-    G.connect(destination),
-    start(i*.1),
-    frequency.setValueAtTime(262*1.06**(13-D[i]),i*.1),
-    gain.setValueAtTime(1,i*.1),
-    gain.setTargetAtTime(.0001,i*.1+.08,.005),
-    stop(i*.1+.09)
-    */
   }
 
   _addBackground () {

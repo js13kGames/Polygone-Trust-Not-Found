@@ -10,6 +10,7 @@ class FiveTownWorld extends BaseWorld {
 
   constructor (properties) {
     super(properties)
+    this.melody = [1,,,,1,1,,,,,1,,,,1,1]
   }
 
   addScene () {
@@ -18,28 +19,6 @@ class FiveTownWorld extends BaseWorld {
     this._addMiddleground()
     this._addForeground()
     this._addGuild()
-  }
-
-  playMusic () {
-    /* Taken from https://xem.github.io/miniMusic/simple.html */
-    // Frequencies taken from https://pages.mtu.edu/~suits/notefreqs.html
-    // See also https://www.artofcomposing.com/how-to-compose-music-101
-    // And https://twitter.com/mknol/status/1301193570842484738
-    // More tools at https://twitter.com/MaximeEuziere/status/1288918702776356866
-    /*
-    with(new AudioContext)
-    with(G=createGain())
-    for(i in D=[1,,,,1,1,,,,,1,,,,1,1])
-    with(createOscillator())
-    if(D[i])
-    connect(G),
-    G.connect(destination),
-    start(i*.1),
-    frequency.setValueAtTime(262*1.06**(13-D[i]),i*.1),
-    gain.setValueAtTime(1,i*.1),
-    gain.setTargetAtTime(.0001,i*.1+.08,.005),
-    stop(i*.1+.09)
-    */
   }
 
   _addBackground () {

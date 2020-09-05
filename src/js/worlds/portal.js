@@ -94,6 +94,7 @@ class PortalWorld extends BaseWorld {
   }
 
   _handleClick (eventTarget) {
+    // TODO: Don't transition to portal of world, but the left world of it
     const nextWorld = eventTarget.getAttribute('class')
     console.log('Clicked world', eventTarget, nextWorld)
     if (!nextWorld || nextWorld && !nextWorld.includes('-portal')) {
