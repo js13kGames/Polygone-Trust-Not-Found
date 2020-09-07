@@ -1,17 +1,17 @@
+import { VOICES } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
 class TextBox extends WithParent {
   constructor (properties) {
     super(properties)
-    // Valid options: serif, sans-serif, monospace, cursive, fantasy
-    this.style = 'serif'
+    this.style = VOICES.SERIOUS
     this.text = ''
 
     this._hue = 42
   }
 
-  showText (message, style = 'serif') {
-    this.style = style
+  showText (message, style) {
+    this.style = style || VOICES.SERIOUS
     this.text = message
     this._updateView()
   }

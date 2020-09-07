@@ -1,3 +1,7 @@
+/**
+ * Look up table for all translations.
+ * @enum {String}
+ */
 const T = {
   DEBUG: 'Debug',
   DEBUG_BUTTON: 'Start time',
@@ -12,4 +16,13 @@ const T = {
   WELCOME: 'Welcome, stranger'
 }
 
-export { T }
+/**
+ * Translates a key into a string.
+ * @param {String} key - Key of translation.
+ * @returns {String} Translation associated with key.
+ */
+function t (key) {
+  return T[ key ]
+}
+
+export { T, t }

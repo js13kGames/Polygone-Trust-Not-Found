@@ -1,3 +1,7 @@
+/**
+ * Lists all known Custom Event types.
+ * @enum {String}
+ */
 const EVENTS = {
   TICK: 'game:time:update',
   TURN: 'game:controls:turn',
@@ -5,4 +9,16 @@ const EVENTS = {
   WORLD: 'game:world:switch'
 }
 
-export { EVENTS }
+/**
+ * Lists all possible voices.
+ * @enum {String}
+ */
+const VOICES = {
+  CRAZY: 'cursive',
+  DREAMING: 'fantasy',
+  MONOTONOUS: 'monospace',
+  SERIOUS: 'serif',
+  SOFT: 'sans-serif'
+}
+
+export { EVENTS, VOICES }

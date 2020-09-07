@@ -1,10 +1,11 @@
+import { VOICES } from '../constants'
 import { Person } from './person'
 
 class Narrator extends Person {
   constructor (properties) {
     super(properties)
     this.name = '???'
-    this.style = 'fantasy'
+    this.style = VOICES.DREAMING
 
     this._hue = 42
     this._updateView()
