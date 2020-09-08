@@ -7,7 +7,7 @@
     "build": "rollup -c",
     "check": "node ./scripts/zip-and-check.js",
     "deploy": "gh-pages -d ./dist",
-    "docs": "jsdoc -c ./.jsdoc.conf.json -d ./docs -p ./package.json -R README.md -t ./node_modules/ink-docstrap/template -r ./src",
+    "docs": "jsdoc -c ./.jsdoc.conf.json -d ./docs -P ./package.json -R README.md -t ./node_modules/ink-docstrap/template -r ./src",
     "minify:css": "cleancss -o ./dist/app.css ./src/app.css",
     "postbuild": "cp ./tmp/*.js ./dist && npm run check && npm run docs",
     "post-process": "node ./scripts/post-process.js",
