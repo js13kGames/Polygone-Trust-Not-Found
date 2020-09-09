@@ -1,5 +1,8 @@
 {
-  "plugins": ["plugins/markdown"],
+  "plugins": [
+    "plugins/markdown",
+    "jsdoc-mermaid"
+  ],
   "templates": {
     "systemName": "JS13kgames - 404",
     "theme": "cosmo",
