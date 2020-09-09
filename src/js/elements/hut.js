@@ -1,5 +1,9 @@
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * This was meant to become the Fishing Hut in ThreeVillageWorld
+ * @extends WithParent
+ */
 class Hut extends WithParent {
   _mount (parent) {
     this.element = this._createSvgElement(

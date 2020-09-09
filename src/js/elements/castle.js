@@ -1,6 +1,15 @@
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * This is the castle in FourCastleWorld
+ * @extends {WithParent}
+ */
 class Castle extends WithParent {
+  /**
+   * Adds the Castle as composition of SVG Elements to the DOM.
+   * @protected
+   * @param {HTMLElement} parent
+   */
   _mount (parent) {
     this.element = this._createSvgElement(
       'g',
@@ -15,6 +24,11 @@ class Castle extends WithParent {
     this._mountRightTower()
   }
 
+  /**
+   * This adds a number of crenellations to the top of the castle.
+   * @private
+   * @param {Number} numberOfCrenellations
+   */
   _mountCrenellations (numberOfCrenellations) {
     const { x, y, h, w } = this._boundingBox
 
@@ -44,6 +58,10 @@ class Castle extends WithParent {
     this.element.appendChild(crenellations)
   }
 
+  /**
+   * This adds the left tower to the castle.
+   * @private
+   */
   _mountLeftTower () {
     const { x, y, h, w } = this._boundingBox
 
@@ -67,6 +85,11 @@ class Castle extends WithParent {
     this.element.appendChild(tower)
   }
 
+  /**
+   * This adds the main part to the castle.
+   * I originally planned to add more details to it, but lacked the time.
+   * @private
+   */
   _mountMain () {
     const { x, y, h, w } = this._boundingBox
 
@@ -90,6 +113,10 @@ class Castle extends WithParent {
     this.element.appendChild(main)
   }
 
+  /**
+   * This adds the right tower to the castle.
+   * @private
+   */
   _mountRightTower () {
     const { x, y, h, w } = this._boundingBox
 

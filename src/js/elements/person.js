@@ -1,5 +1,14 @@
 import { TextBox } from './textbox'
 
+/**
+ * This is the blueprint for adding characters to the game.
+ * Inspired by JRPGs dialogs.
+ * @extends TextBox
+ * @todo Add character for FiveTownWorld (Scribe)
+ * @todo Add character for FourCastleWorld (Knight)
+ * @todo Add character for SixMountainWorld (Pilot)
+ * @todo Add character for ThreeVillageWorld (Fisherwoman)
+ */
 class Person extends TextBox {
   constructor (properties) {
     super(properties)

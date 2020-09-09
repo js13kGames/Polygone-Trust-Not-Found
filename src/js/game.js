@@ -1,3 +1,91 @@
+/**
+ * @file
+ * Let me take the chance to share a bit about the history of this game.
+ * When reading the source code, you might wonder, why there are 3- elements
+ * and worlds. Well, I started developing this code during vacation.
+ * I had next to no internet connection and English isn't my first language.
+ * So I picked a naming convention, that made sense.
+ * In the beginning, the class names started with digits as well.
+ * However, I couldn't target those with CSS for some reason, so I changed
+ * them to their long form.
+ *
+ * I normally have a single place, where all other moving parts are started.
+ * This is this file, game.js.
+ * It sets up the basic structure and initialises the game logic.
+ *
+ * During those two weeks of vacation, I realised, that there is quite some
+ * duplicated logic. But I couldn't look up the
+ * {@link https://javascript.info/mixins|Mixin Pattern}, so I went with
+ * what I knew by heart: class inheritance
+ * If you look below, you can see, that there are almost all classes
+ * inheriting from WithParent.
+ * For the GameClass, I couldn't do that, since that would end up in a
+ * recursion. Here, a mixin would have been helpful.
+ *
+ * I said to myself, that I could adjust it once I transfer the code back to
+ * my laptop. But then work happened. And life caught me. So sad …
+ *
+ * @author André Jaenisch
+ * @license GPL v3 or newer
+ *
+ * @mermaid
+ *   classDiagram
+ *     class Game
+ *     BaseWorld         <|-- FivePortalWorld
+ *     BaseWorld         <|-- FiveTownWorld
+ *     BaseWorld         <|-- FourCastleWorld
+ *     BaseWorld         <|-- FourPortalWorld
+ *     BaseWorld         <|-- IntroWorld
+ *     BaseWorld         <|-- PortalWorld
+ *     BaseWorld         <|-- SixMountainWorld
+ *     BaseWorld         <|-- SixPortalWorld
+ *     BaseWorld         <|-- ThreePortalWorld
+ *     BaseWorld         <|-- ThreeVillageWorld
+ *     BaseWorld         <|-- TitleWorld
+ *     Person            <|-- Narrator
+ *     Tab               <|-- TabDebug
+ *     Tab               <|-- TabInventory
+ *     Tab               <|-- TabMemory
+ *     Tab               <|-- TabSettings
+ *     TextBox           <|-- Person
+ *     WithBoundingBox   <|-- WithEventListener
+ *     WithEventListener <|-- WithLife
+ *     WithLife          <|-- WithSympathy
+ *     WithParent        <|-- BaseWorld
+ *     WithParent        <|-- Background
+ *     WithParent        <|-- Canvas
+ *     WithParent        <|-- Castle
+ *     WithParent        <|-- Controls
+ *     WithParent        <|-- FivePortal
+ *     WithParent        <|-- Foreground
+ *     WithParent        <|-- FourPortal
+ *     WithParent        <|-- Guild
+ *     WithParent        <|-- Hut
+ *     WithParent        <|-- Middleground
+ *     WithParent        <|-- Mill
+ *     WithParent        <|-- Navigation
+ *     WithParent        <|-- Sea
+ *     WithParent        <|-- SixPortal
+ *     WithParent        <|-- Sun
+ *     WithParent        <|-- Tab
+ *     WithParent        <|-- TextBox
+ *     WithParent        <|-- ThreePortal
+ *     WithParent        <|-- Time
+ *     WithSympathy      <|-- WithParent
+ *
+ *     WithBoundingBox   : Object _boundingBox
+ *     WithEventListener : HTMLElement _eventNode
+ *     WithEventListener : _getEventMap() Object
+ *     WithEventListener : _handleEvent(event)
+ *     WithLife          : Number _life
+ *     WithLife          : _updateView()
+ *     WithParent        : _createHtmlElement (String name, Object attributes, Array classes): HTMLElement
+ *     WithParent        : _createSvgElement (String name, Object attributes, Array classes): SVGElement
+ *     WithParent        : _mount(HTMLElement)*
+ *     WithSympathy      : Number _sympathy
+ *     WithSympathy      : _mapSympathyToLuminance() : Number
+ */
+
 import { EVENTS } from './constants'
 import { Canvas } from './elements/canvas'
 import { Controls } from './elements/controls'

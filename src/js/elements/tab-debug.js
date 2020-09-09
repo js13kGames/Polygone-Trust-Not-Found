@@ -2,6 +2,11 @@ import { T } from '../translations'
 
 import { Tab } from './tab'
 
+/**
+ * This builds the debug tag view.
+ * @extends Tab
+ * @todo Remove in final build.
+ */
 class TabDebug extends Tab {
   _mount (parent) {
     super._mount(parent)

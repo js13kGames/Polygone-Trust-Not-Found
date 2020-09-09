@@ -1,6 +1,15 @@
 import { EVENTS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * This is the sun in all worlds.
+ * I had the idea to subclass it to change the shape accordingly to the world.
+ * @extends WithParent
+ * @todo Turn into triangle for ThreeVillageWorld
+ * @todo Turn into square for FourCastleWorld
+ * @todo Turn into pentagon for FiveTownWorld
+ * @todo Turn into hexagon for SixMountainWorld
+ */
 class Sun extends WithParent {
   constructor (properties) {
     super(properties)

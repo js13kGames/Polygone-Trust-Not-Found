@@ -1,5 +1,9 @@
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * This was meant to become the city in FiveTownWorld.
+ * @extends WithParent
+ */
 class Guild extends WithParent {
   _mount (parent) {
     this.element = this._createSvgElement(

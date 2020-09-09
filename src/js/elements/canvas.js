@@ -1,6 +1,15 @@
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * This is responsible for adding the `<svg>` to the DOM.
+ * @extends WithParent
+ */
 class Canvas extends WithParent {
+  /**
+   * Adds a `<svg>` to the DOM.
+   * @protected
+   * @param {HTMLElement} parent
+   */
   _mount (parent) {
     const { x, y, h, w } = this._boundingBox
 

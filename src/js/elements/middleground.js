@@ -1,6 +1,11 @@
 import { EVENTS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * This was the middleground of my first world: FourCastleWorld.
+ * @extends WithParent.
+ * @todo Rename to something meaningful.
+ */
 class Middleground extends WithParent {
   constructor (properties) {
     super(properties)

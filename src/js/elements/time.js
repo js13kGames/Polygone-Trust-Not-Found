@@ -1,6 +1,11 @@
 import { EVENTS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * This shows the current time. It was used during development.
+ * @extends WithParent
+ * @todo Remove from final build.
+ */
 class Time extends WithParent {
   constructor (properties) {
     super(properties)

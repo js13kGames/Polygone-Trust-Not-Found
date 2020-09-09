@@ -22,6 +22,7 @@ class WithBoundingBox {
     /**
      * Describes the bounding box of this element
      * @type {{}}
+     * @protected
      * @property {Number} x
      * @property {Number} y
      * @property {Number} h

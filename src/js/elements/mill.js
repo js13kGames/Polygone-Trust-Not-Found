@@ -1,6 +1,11 @@
 import { EVENTS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * This is the Mill of my first world: FourCastleWorld
+ * @extends WithParent
+ * @todo Fix wings.
+ */
 class Mill extends WithParent {
   constructor (properties) {
     super(properties)

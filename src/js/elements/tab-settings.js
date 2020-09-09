@@ -2,6 +2,13 @@ import { T } from '../translations'
 
 import { Tab } from './tab'
 
+/**
+ * This builds the settings tab view.
+ * You could change things like volume or left- or right-handedness.
+ * @extends Tab
+ * @todo Implement gain setting
+ * @todo Implement handedness setting
+ */
 class TabSettings extends Tab {
   _mount (parent) {
     super._mount(parent)

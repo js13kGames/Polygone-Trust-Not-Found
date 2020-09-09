@@ -6,32 +6,72 @@ import { Sun } from '../elements/sun'
 
 import { BaseWorld } from './base'
 
+/**
+ * World at the coast. Fishers welcome you.
+ * @extends BaseWorld
+ */
 class ThreeVillageWorld extends BaseWorld {
+  /**
+   * Unique identifier
+   * @static
+   * @readonly
+   */
   static worldName = 'three-village'
 
+  /**
+   * @param {PropertiesWithParent}
+   */
   constructor (properties) {
     super(properties)
+    /**
+     * This world has a melody.
+     * @todo Improve notation.
+     */
     this.melody = [
       13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13
     ]
   }
 
+  /**
+   * The world shows a sun raising above a coast with sea and sky.
+   * In the middleground, you can see a hut.
+   * @public
+   */
   addScene () {
     this._addBackground()
-    this._addSun()
-    this._addSea()
+    this.__addSun()
+    this.__addSea()
     this._addMiddleground()
     this._addForeground()
-    this._addHut()
+    this.__addHut()
   }
 
+  /**
+   * No background.
+   * @protected
+   */
   _addBackground () {
   }
 
+  /**
+   * No foreground.
+   * @protected
+   */
   _addForeground () {
   }
 
-  _addHut () {
+  /**
+   * No middleground.
+   * @protected
+   */
+  _addMiddleground () {
+  }
+
+   /**
+    * Adds the hut to the scene.
+    * @private
+    */
+   __addHut () {
     const { x, y, h, w } = this._boundingBox
     const controlsWidth = 5 * 3
     const controlsHeight = 5 * 2
@@ -50,10 +90,12 @@ class ThreeVillageWorld extends BaseWorld {
     new Hut(properties)
   }
 
-  _addMiddleground () {
-  }
-
-  _addSea () {
+  /**
+   * Adds the sea to the scene.
+   * @private
+   * @todo Split into sea + sky
+   */
+  __addSea () {
     const { x, y, h, w } = this._boundingBox
     const backgroundHeight = h / 3
 
@@ -70,8 +112,12 @@ class ThreeVillageWorld extends BaseWorld {
 
     new Sea(properties)
   }
- 
-  _addSun () {
+
+  /**
+   * Adds the sun to the scene.
+   * @private
+   */
+  __addSun () {
     const { x, y, h, w } = this._boundingBox
     const backgroundHeight = h / 3
 

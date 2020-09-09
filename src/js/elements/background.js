@@ -1,14 +1,36 @@
 import { EVENTS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * This class was the actual background of my first world: FourCastleWorld.
+ * @extends WithParent
+ * @todo Rename to FourSky
+ */
 class Background extends WithParent {
+  /**
+   * @param {PropertiesWithParent}
+   */
   constructor (properties) {
     super(properties)
 
+    /**
+     * The hue of this background.
+     */
     this._hue = 211
+    /**
+     * The saturation of this background.
+     * It overrides the sympathy functionality.
+     */
     this._saturation = 70
+    /**
+     * The luminance of this background.
+     * It is affected by the game clock.
+     */
     this._luminance = 50
 
+    /**
+     * This holds the return value of setInterval()
+     */
     this._timeoutHandle = null
     this._updateView()
   }

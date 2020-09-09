@@ -1,5 +1,10 @@
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * This was meant to become the sea in ThreeVillageWorld
+ * @extends WithParent
+ * @todo Break into ThreeSky and ThreeSea
+ */
 class Sea extends WithParent {
   constructor (properties) {
     super(properties)

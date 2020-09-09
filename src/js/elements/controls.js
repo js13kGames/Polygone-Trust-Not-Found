@@ -1,12 +1,41 @@
 import { EVENTS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * These add game controls for moving through the game.
+ * @extends WithParent
+ */
 class Controls extends WithParent {
+  /**
+   * Adds a click event listener.
+   * @protected
+   * @returns {{}}
+   */
   _getEventMap () {
-    return { click: this._handleClick.bind(this) }
+    return { click: this.__handleClick.bind(this) }
   }
 
-  _handleClick (eventTarget) {
+ /**
+  * This adds game controls to the UI.
+  * @protected
+  * @param {HTMLElement} parent
+  */
+ _mount (parent) {
+    this.element = this._createSvgElement('g', {}, [ 'controls' ])
+    parent.appendChild(this.element)
+
+    this.__mountLeft()
+    this.__mountTop()
+    this.__mountRight()
+  }
+
+  /**
+   * Handles clicks on a control.
+   * @private
+   * @param {HTMLElement} eventTarget
+   * @todo Refactor to reduce code duplication.
+   */
+  __handleClick (eventTarget) {
     const isLeftControl = eventTarget.classList.contains('left')
     const isRightControl = eventTarget.classList.contains('right')
     const isTopControl = eventTarget.classList.contains('top')
@@ -36,16 +65,11 @@ class Controls extends WithParent {
     }
   }
 
-  _mount (parent) {
-    this.element = this._createSvgElement('g', {}, [ 'controls' ])
-    parent.appendChild(this.element)
-
-    this._mountLeft()
-    this._mountTop()
-    this._mountRight()
-  }
-
-  _mountLeft () {
+  /**
+   * This adds the game control pointing to the left.
+   * @private
+   */
+  __mountLeft () {
     const { x, y, h, w } = this._boundingBox
     const top = y + h / 2
     const bottom = y + h
@@ -66,7 +90,11 @@ class Controls extends WithParent {
     this.element.appendChild(control)
   }
 
-  _mountRight () {
+  /**
+   * This adds the game control pointing to the right.
+   * @private
+   */
+  __mountRight () {
     const { x, y, h, w } = this._boundingBox
     const top = y + h / 2
     const bottom = y + h
@@ -87,7 +115,11 @@ class Controls extends WithParent {
     this.element.appendChild(control)
   }
 
-  _mountTop () {
+  /**
+   * This adds the game control pointing to the top.
+   * @private
+   */
+  __mountTop () {
     const { x, y, h, w } = this._boundingBox
     const top = y
     const bottom = y + h / 2

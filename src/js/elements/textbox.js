@@ -1,6 +1,10 @@
 import { VOICES } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * This shows a text box in the game.
+ * @extends WithParent
+ */
 class TextBox extends WithParent {
   constructor (properties) {
     super(properties)

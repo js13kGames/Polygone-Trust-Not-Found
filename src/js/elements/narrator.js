@@ -1,6 +1,10 @@
 import { VOICES } from '../constants'
 import { Person } from './person'
 
+/**
+ * This is my first character.
+ * @extends Person
+ */
 class Narrator extends Person {
   constructor (properties) {
     super(properties)

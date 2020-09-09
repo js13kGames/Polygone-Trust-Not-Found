@@ -1,6 +1,10 @@
 import { WithParent } from '../mixins/with-parent'
 import { T } from '../translations'
 
+/**
+ * This controls the Navigation part in HTML.
+ * @extends WithParent
+ */
 class Navigation extends WithParent {
   _mount (parent) {
     this.element = this._createHtmlElement(

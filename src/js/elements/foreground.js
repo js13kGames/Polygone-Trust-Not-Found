@@ -1,7 +1,15 @@
 import { EVENTS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
+/**
+ * This was the foreground of my first world: FourCastleWorld.
+ * @extends WithParent
+ * @todo Rename to Meadow.
+ */
 class Foreground extends WithParent {
+  /**
+   * @param {PropertiesWithParent}
+   */
   constructor (properties) {
     super(properties)
 
