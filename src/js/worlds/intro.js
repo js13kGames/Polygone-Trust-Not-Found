@@ -1,4 +1,4 @@
-import { T } from '../translations'
+import { t } from '../translations'
 
 import { Narrator } from '../elements/narrator'
 
@@ -33,7 +33,7 @@ class IntroWorld extends BaseWorld {
   }
 
   _showIntro () {
-    this._narrator.showText(T.WELCOME)
+    this._narrator.showText(t('WELCOME'))
   }
 }
 

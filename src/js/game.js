@@ -42,7 +42,11 @@
  *     BaseWorld         <|-- ThreePortalWorld
  *     BaseWorld         <|-- ThreeVillageWorld
  *     BaseWorld         <|-- TitleWorld
+ *     Person            <|-- Fisherwoman
+ *     Person            <|-- Knight
  *     Person            <|-- Narrator
+ *     Person            <|-- Pilot
+ *     Person            <|-- Scribe
  *     Tab               <|-- TabDebug
  *     Tab               <|-- TabInventory
  *     Tab               <|-- TabMemory
@@ -93,10 +97,6 @@ import { Time } from './elements/time'
 import { WithEventListener } from './mixins/with-event-listener'
 
 import { Navigation } from './elements/navigation'
-import { TabDebug } from './elements/tab-debug'
-import { TabInventory } from './elements/tab-inventory'
-import { TabMemory } from './elements/tab-memory'
-import { TabSettings } from './elements/tab-settings'
 
 import { IntroWorld } from './worlds/intro'
 
@@ -274,7 +274,7 @@ class Game {
   /**
    * Update game time.
    * @public
-   * @fires {Game:time:update}
+   * @fires {game:time:update}
    * @todo Fix Event documentation
    */
   fireNewTime () {
@@ -291,7 +291,7 @@ class Game {
     }
 
     /**
-     * @event Game:time:update
+     * @event game:time:update
      * @type {{}}
      * @property {{}}     detail
      * @property {Number} detail.hour
@@ -420,7 +420,6 @@ class Game {
     }
 
     this.navigation = new Navigation(properties)
-    this.__mountTabViews(properties)
     this.canvas = new Canvas(properties)
   }
 
@@ -478,34 +477,6 @@ class Game {
     const currentWorld = this.getCurrentWorld()
     const nextWorld = currentWorld[ eventDetail.direction ]
     this.switchWorld({ nextWorld })
-  }
-
-  /**
-   * Add Tab views to DOM.
-   * @private
-   * @param {{}}          properties
-   * @param {{}}          properties.boundingBox
-   * @param {Number}      properties.boundingBox.x
-   * @param {Number}      properties.boundingBox.y
-   * @param {Number}      properties.boundingBox.height
-   * @param {Number}      properties.boundingBox.width
-   * @param {HTMLElement} properties.eventNode
-   * @param {HTMLElement} properties.parent
-   */
-  __mountTabViews (properties) {
-    this.tabs = [{
-      id: 'inventory',
-      ref: new TabInventory(properties),
-    }, {
-      id: 'memory',
-      ref: new TabMemory(properties)
-    }, {
-      id: 'settings',
-      ref: new TabSettings(properties)
-    }, {
-      id: 'debug',
-      ref: new TabDebug(properties)
-    }]
   }
 }
 

@@ -3,32 +3,54 @@
   padding: 0;
 }
 
+:root {
+  --scroll-distance: 1.5em;
+}
+
+html {
+  /* c.f. https://css-tricks.com/fixed-headers-on-page-links-and-overlapping-content-oh-my/ */
+  scroll-padding-top: var(--scroll-distance);
+}
+
 body {
   color: black;
   background-color: white;
-  display: flex;
-  flex-direction: column;
+  scroll-padding-top: var(--scroll-distance);
 }
 
-body > section {
-  flex: 1;
+#app {
+  display: flex;
+  align-items: center;
+}
+
+/* TODO: Added handedness setting */
+#app.right-handedness {
+  flow-direction: row;
+}
+
+#app-left-handedness {
+  flow-direction: row-reverse;
 }
 
 .nav-list {
   display: flex;
+  flex-wrap: wrap;
   list-style: none;
   align-items: center;
 }
 
 .nav-list__item {
   flex: 1;
+  margin: 0.5em;
+  text-align: center;
 }
 
 .tab-view:not(:target) {
   display: none;
 }
 
-#app {
+svg {
+  flex-shrink: 0;
   display: block;
   height: 98vmin;
   width: 98vmin;

@@ -46,8 +46,8 @@ It took me quite some time to develop the whole game engine next to the game.
 Plus, going back full time, cut my time for development short.
 Family duties weren't adding either.
 
-So I had to take cuts again. The whole game is about 7k zipped, so there's lot
-of unexplored opportunities. Imagine a _complex_ game within 13k!
+So I had to take cuts again. The whole game is about 9k zipped, so there's 
+quite some unexplored opportunities. Imagine a _complex_ game within 13k!
 
 I want to end this section with a THANK YOU to Maxim!
 The sound in this game wouldn't be possible without

@@ -6,15 +6,25 @@ import { Person } from './person'
  * @extends Person
  */
 class Narrator extends Person {
+  /**
+   * @param {PropertiesWithParent} properties
+   */
   constructor (properties) {
     super(properties)
+    /** Name of the narrator */
     this.name = '???'
+    /** Voice of the narrator */
     this.style = VOICES.DREAMING
 
     this._hue = 42
     this._updateView()
   }
 
+  /**
+   * Add new element to the DOM.
+   * @protected
+   * @param {HTMLElement} parent
+   */
   _mount (parent) {
     super._mount(parent)
     const { x, y, h, w } = this._boundingBox
@@ -57,9 +67,13 @@ class Narrator extends Person {
     this.element.insertBefore(background, this.element.firstChild)
   }
 
+  /**
+   * Update the UI
+   * @protected
+   */
   _updateView () {
     super._updateView()
-    const avatar = this.element.querySelector('.speaker-avatar__pic')
+    const avatar = this.element.querySelector('.speaker-avatar__pic--narrator')
     avatar.style.setProperty('--hue', this._hue + '', '')
   }
 }

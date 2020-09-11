@@ -1,4 +1,4 @@
-import { T } from '../translations'
+import { t } from '../translations'
 
 import { Tab } from './tab'
 
@@ -11,6 +11,7 @@ class TabDebug extends Tab {
   _mount (parent) {
     super._mount(parent)
     this.element.setAttribute('id', 'tab-debug')
+    this.element.querySelector('.tab-view__header').textContent = t('DEBUG')
 
     this._mountDebug()
   }
@@ -22,7 +23,7 @@ class TabDebug extends Tab {
       []
     )
 
-    button.textContent = T.DEBUG_BUTTON
+    button.textContent = t('DEBUG_BUTTON')
     this.element.appendChild(button)
   }
 }

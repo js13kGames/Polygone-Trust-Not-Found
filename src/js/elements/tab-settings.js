@@ -1,4 +1,4 @@
-import { T } from '../translations'
+import { t } from '../translations'
 
 import { Tab } from './tab'
 
@@ -10,16 +10,26 @@ import { Tab } from './tab'
  * @todo Implement handedness setting
  */
 class TabSettings extends Tab {
+  /**
+   * Add new element to the DOM
+   * @protected
+   * @param {HTMLElement} parent
+   */
   _mount (parent) {
     super._mount(parent)
     this.element.setAttribute('id', 'tab-settings')
-    this._mountForm()
+    this.element.querySelector('.tab-view__header').textContent = t('SETTINGS')
+
+    this.__mountForm()
   }
 
-  _mountForm () {
+  /**
+   * Add Settings form to the DOM
+   * @private
+   */
+  __mountForm () {
     const languages = [{
-      value: 'en',
-      text: T.LANGUAGE_EN
+      value: 'en', text: t('LANGUAGE_EN')
     }]
 
     const form = this._createHtmlElement(
@@ -43,7 +53,7 @@ class TabSettings extends Tab {
       {},
       []
     )
-    const languageLegend = document.createTextNode(T.LANGUAGE)
+    const languageLegend = document.createTextNode(t('LANGUAGE'))
     legend.appendChild(languageLegend)
 
     const languageSelect = this._createHtmlElement(
@@ -51,7 +61,7 @@ class TabSettings extends Tab {
       { name: 'language' },
       []
     )
-    const languageLabel = document.createTextNode(T.LANGUAGE)
+    const languageLabel = document.createTextNode(t('LANGUAGE'))
     languageSelect.appendChild(languageLabel)
 
     languages.forEach((lang) => {
@@ -70,7 +80,7 @@ class TabSettings extends Tab {
       {},
       []
     )
-    const typingLabelText = document.createTextNode(T.TYPING)
+    const typingLabelText = document.createTextNode(t('TYPING'))
     typingLabel.appendChild(typingLabelText)
 
     const typingSpeed = this._createHtmlElement(

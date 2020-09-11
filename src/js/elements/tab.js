@@ -12,9 +12,18 @@ class Tab extends WithParent {
       [ 'tab-view' ]
     )
 
-    const text = document.createTextNode('')
+    const header = this._createHtmlElement(
+      'h2',
+      {},
+      [ 'tab-view__header' ]
+    )
+    const headline = document.createTextNode('')
+    header.appendChild(headline)
+    this.element.appendChild(header)
 
+    const text = document.createTextNode('')
     this.element.appendChild(text)
+
     parent.appendChild(this.element)
   }
 }

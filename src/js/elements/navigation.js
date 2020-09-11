@@ -1,5 +1,10 @@
 import { WithParent } from '../mixins/with-parent'
-import { T } from '../translations'
+import { t } from '../translations'
+
+import { TabDebug } from './tab-debug'
+import { TabInventory } from './tab-inventory'
+import { TabMemory } from './tab-memory'
+import { TabSettings } from './tab-settings'
 
 /**
  * This controls the Navigation part in HTML.
@@ -21,16 +26,16 @@ class Navigation extends WithParent {
     // TODO: Move somewhere else
     const navListItems = [{
       href: '#tab-inventory',
-      text: T.INVENTORY
+      text: t('INVENTORY')
     }, {
       href: '#tab-memory',
-      text: T.MEMORY
+      text: t('MEMORY')
     }, {
       href: '#tab-settings',
-      text: T.SETTINGS
+      text: t('SETTINGS')
     }, {
       href: '#tab-debug',
-      text: T.DEBUG
+      text: t('DEBUG')
     }]
 
     const nav = this._createHtmlElement(
@@ -67,6 +72,37 @@ class Navigation extends WithParent {
 
     nav.appendChild(navList)
     this.element.appendChild(nav)
+
+    this.__mountTabViews()
+  }
+
+  /**
+   * Add Tab views to DOM.
+   * @private
+   */
+  __mountTabViews () {
+    const { x, y, h, w } = this._boundingBox
+
+    const properties = {
+      boundingBox: {
+        x,
+        y,
+        height: h,
+        width: w
+      },
+      parent: this.element,
+      eventNode: this._eventNode
+    }
+
+    this.tabs = [{
+      id: 'inventory', ref: new TabInventory(properties),
+    }, {
+      id: 'memory', ref: new TabMemory(properties)
+    }, {
+      id: 'settings', ref: new TabSettings(properties)
+    }, {
+      id: 'debug', ref: new TabDebug(properties)
+    }]
   }
 }
 
