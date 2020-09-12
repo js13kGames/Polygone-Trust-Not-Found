@@ -4,18 +4,23 @@ import { Narrator } from '../elements/narrator'
 
 import { BaseWorld } from './base'
 
+/**
+ * This is the intro scene.
+ * @extends BaseWorld
+ */
 class IntroWorld extends BaseWorld {
-  static worldName = 'intro'
-
-  constructor (properties) {
-    super(properties)
-  }
-
+  /**
+   * Adds elements to the scene.
+   */
   addScene () {
     this._addForeground()
-    this._showIntro()
+    this.__showIntro()
   }
 
+  /**
+   * Adds narrator to the foreground.
+   * @protected
+   */
   _addForeground () {
     const { x, y, h, w } = this._boundingBox
     const properties = {
@@ -32,9 +37,20 @@ class IntroWorld extends BaseWorld {
     this._narrator = new Narrator(properties)
   }
 
-  _showIntro () {
+  /**
+   * Shows the intro text of the narrator.
+   * @private
+   */
+  __showIntro () {
     this._narrator.showText(t('WELCOME'))
   }
 }
+
+/**
+ * Unique identifier for this world.
+ * @static
+ * @readonly
+ */
+IntroWorld.worldName = 'intro'
 
 export { IntroWorld }

@@ -7,30 +7,58 @@ import { ThreePortal } from '../elements/3-portal'
 
 import { BaseWorld } from './base'
 
+/**
+ * Connects all portal worlds.
+ * @extends BaseWorld
+ */
 class PortalWorld extends BaseWorld {
-  static worldName = 'portal'
-
+  /**
+   * @param {PropertiesWithParent} properties
+   */
   constructor (properties) {
     super(properties)
-    this._portalLength = 0.3
+    /**
+     * Reserved space for each portal.
+     * @private
+     */
+    this.__portalLength = 0.3
   }
 
+  /**
+   * Add elements to the background.
+   * @protected
+   */
   _addBackground () {
-    this._portalLength = 0.3
-    this._addThreePortal()
-    this._addFourPortal()
-    this._addFivePortal()
-    this._addSixPortal()
+    this.__portalLength = 0.3
+    this.__addThreePortal()
+    this.__addFourPortal()
+    this.__addFivePortal()
+    this.__addSixPortal()
   }
 
-  _addFivePortal () {
+  /**
+   * Register event listeners.
+   * @protected
+   * @returns {{}}
+   */
+  _getEventMap () {
+    return {
+      'click': this.__handleClick.bind(this)
+    }
+  }
+
+  /**
+   * Add FivePortal to the scene.
+   * @private
+   */
+  __addFivePortal () {
     const { x, y, h, w } = this._boundingBox
     const properties = {
       boundingBox: {
-        x: x + w * (1 - this._portalLength),
-        y: y + h * (0.5 - this._portalLength / 2),
-        height: h * this._portalLength,
-        width: w * this._portalLength
+        x: x + w * (1 - this.__portalLength),
+        y: y + h * (0.5 - this.__portalLength / 2),
+        height: h * this.__portalLength,
+        width: w * this.__portalLength
       },
       eventNode: this._eventNode,
       parent: this.element
@@ -39,14 +67,18 @@ class PortalWorld extends BaseWorld {
     new FivePortal(properties)
   }
 
-  _addFourPortal () {
+  /**
+   * Add FourPortal to the scene.
+   * @private
+   */
+  __addFourPortal () {
     const { x, y, h, w } = this._boundingBox
     const properties = {
       boundingBox: {
         x,
-        y: y + h * (0.5 - this._portalLength / 2),
-        height: h * this._portalLength,
-        width: w * this._portalLength
+        y: y + h * (0.5 - this.__portalLength / 2),
+        height: h * this.__portalLength,
+        width: w * this.__portalLength
       },
       eventNode: this._eventNode,
       parent: this.element
@@ -55,14 +87,18 @@ class PortalWorld extends BaseWorld {
     new FourPortal(properties)
   }
 
-  _addSixPortal () {
+  /**
+   * Add SixPortal to the scene.
+   * @private
+   */
+  __addSixPortal () {
     const { x, y, h, w } = this._boundingBox
     const properties = {
       boundingBox: {
-        x: x + w * (0.5 - this._portalLength / 2),
-        y: y + h * (1 - this._portalLength),
-        height: h * this._portalLength,
-        width: w * this._portalLength
+        x: x + w * (0.5 - this.__portalLength / 2),
+        y: y + h * (1 - this.__portalLength),
+        height: h * this.__portalLength,
+        width: w * this.__portalLength
       },
       eventNode: this._eventNode,
       parent: this.element
@@ -71,14 +107,18 @@ class PortalWorld extends BaseWorld {
     new SixPortal(properties)
   }
 
-  _addThreePortal () {
+  /**
+   * Add ThreePortal to the scene.
+   * @private
+   */
+  __addThreePortal () {
     const { x, y, h, w } = this._boundingBox
     const properties = {
       boundingBox: {
-        x: x + w * (0.5 - this._portalLength / 2),
+        x: x + w * (0.5 - this.__portalLength / 2),
         y,
-        height: h * this._portalLength,
-        width: w * this._portalLength
+        height: h * this.__portalLength,
+        width: w * this.__portalLength
       },
       eventNode: this._eventNode,
       parent: this.element
@@ -87,13 +127,12 @@ class PortalWorld extends BaseWorld {
     new ThreePortal(properties)
   }
 
-  _getEventMap () {
-    return {
-      'click': this._handleClick.bind(this)
-    }
-  }
-
-  _handleClick (eventTarget) {
+  /**
+   * Handle click events.
+   * @private
+   * @param {HTMLElement} eventTarget
+   */
+  __handleClick (eventTarget) {
     // TODO: Don't transition to portal of world, but the left world of it
     const nextWorld = eventTarget.getAttribute('class')
     console.log('Clicked world', eventTarget, nextWorld)
@@ -107,5 +146,12 @@ class PortalWorld extends BaseWorld {
     this._eventNode.dispatchEvent(event)
   }
 }
+
+/**
+ * Unique identifer for this world.
+ * @static
+ * @readonly
+ */
+PortalWorld.worldName = 'portal'
 
 export { PortalWorld }

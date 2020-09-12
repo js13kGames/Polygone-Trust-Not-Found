@@ -12,13 +12,6 @@ import { BaseWorld } from './base'
  */
 class ThreeVillageWorld extends BaseWorld {
   /**
-   * Unique identifier
-   * @static
-   * @readonly
-   */
-  static worldName = 'three-village'
-
-  /**
    * @param {PropertiesWithParent}
    */
   constructor (properties) {
@@ -135,5 +128,12 @@ class ThreeVillageWorld extends BaseWorld {
     new Sun(properties)
   }
 }
+
+/**
+ * Unique identifier
+ * @static
+ * @readonly
+ */
+ThreeVillageWorld.worldName = 'three-village'
 
 export { ThreeVillageWorld }

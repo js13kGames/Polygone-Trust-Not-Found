@@ -8,13 +8,6 @@ import { BaseWorld } from './base'
  */
 class ThreePortalWorld extends BaseWorld {
   /**
-   * Unique identifier
-   * @static
-   * @readonly
-   */
-  static worldName = 'three-portal'
-
-  /**
    * Adds the {@see ThreePortal} to the background.
    * @protected
    */
@@ -34,5 +27,12 @@ class ThreePortalWorld extends BaseWorld {
     new ThreePortal(properties)
   }
 }
+
+/**
+ * Unique identifier
+ * @static
+ * @readonly
+ */
+ThreePortalWorld.worldName = 'three-portal'
 
 export { ThreePortalWorld }

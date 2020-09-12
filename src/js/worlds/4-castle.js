@@ -17,12 +17,6 @@ import { BaseWorld } from './base'
  */
 class FourCastleWorld extends BaseWorld {
   /**
-   * The unique identifier for this world.
-   * @static
-   */
-  static worldName = 'four-castle'
-
-  /**
    * @param {PropertiesWithParent} properties
    */
   constructor (properties) {
@@ -264,5 +258,12 @@ class FourCastleWorld extends BaseWorld {
     new Sun(properties)
   }
 }
+
+/**
+ * The unique identifier for this world.
+ * @static
+ * @readonly
+ */
+FourCastleWorld.worldName = 'four-castle'
 
 export { FourCastleWorld }

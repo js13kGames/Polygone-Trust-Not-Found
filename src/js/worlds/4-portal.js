@@ -2,9 +2,15 @@ import { FourPortal } from '../elements/4-portal'
 
 import { BaseWorld } from './base'
 
+/**
+ * This is the portal between FourCastleWorld and the rest.
+ * @extends BaseWorld
+ */
 class FourPortalWorld extends BaseWorld {
-  static worldName = 'four-portal'
-
+  /**
+   * Add the portal to the Background
+   * @protected
+   */
   _addBackground () {
     const { x, y, h, w } = this._boundingBox
     const properties = {
@@ -21,5 +27,12 @@ class FourPortalWorld extends BaseWorld {
     new FourPortal(properties)
   }
 }
+
+/**
+ * Unique identifier for this world.
+ * @static
+ * @readonly
+ */
+FourPortalWorld.worldName = 'four-portal'
 
 export { FourPortalWorld }

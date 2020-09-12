@@ -6,9 +6,6 @@ import { WithParent } from '../mixins/with-parent'
  * @extends WithParent
  */
 class BaseWorld extends WithParent {
-  /** Used as identifier for transitions between worlds. */
-  static worldName = 'base'
-
   /**
    * @param {PropertiesWithParent}
    */
@@ -179,5 +176,12 @@ class BaseWorld extends WithParent {
     }
   }
 }
+
+/**
+ * Used as identifier for transitions between worlds.
+ * @static
+ * @readonly
+ */
+BaseWorld.worldName = 'base'
 
 export { BaseWorld }

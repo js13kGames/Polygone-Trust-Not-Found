@@ -2,9 +2,15 @@ import { FivePortal } from '../elements/5-portal'
 
 import { BaseWorld } from './base'
 
+/**
+ * This connects FiveTownWorld to the rest.
+ * @extends BaseWorld
+ */
 class FivePortalWorld extends BaseWorld {
-  static worldName = 'five-portal'
-
+  /**
+   * Add the portal to the background.
+   * @protected
+   */
   _addBackground () {
     const { x, y, h, w } = this._boundingBox
     const properties = {
@@ -21,5 +27,12 @@ class FivePortalWorld extends BaseWorld {
     new FivePortal(properties)
   }
 }
+
+/**
+ * Unique identifier for this world.
+ * @static
+ * @readonly
+ */
+FivePortalWorld.worldName = 'five-portal'
 
 export { FivePortalWorld }

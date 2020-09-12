@@ -2,9 +2,15 @@ import { SixPortal } from '../elements/6-portal'
 
 import { BaseWorld } from './base'
 
+/**
+ * This connects SixMountainWorld to the rest.
+ * @extends BaseWorld
+ */
 class SixPortalWorld extends BaseWorld {
-  static worldName = 'six-portal'
-
+  /**
+   * Add the portal to the background.
+   * @protected
+   */
   _addBackground () {
     const { x, y, h, w } = this._boundingBox
     const properties = {
@@ -21,5 +27,12 @@ class SixPortalWorld extends BaseWorld {
     new SixPortal(properties)
   }
 }
+
+/**
+ * Unique identifier for this world.
+ * @static
+ * @readonly
+ */
+SixPortalWorld.worldName = 'six-portal'
 
 export { SixPortalWorld }
