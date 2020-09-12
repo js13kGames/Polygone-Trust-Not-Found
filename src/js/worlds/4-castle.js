@@ -11,6 +11,10 @@ import { Sun } from '../elements/sun'
 
 import { BaseWorld } from './base'
 
+/**
+ * This world is inspired by mideaval knights.
+ * @extends BaseWorld
+ */
 class FourCastleWorld extends BaseWorld {
   /**
    * The unique identifier for this world.
@@ -23,6 +27,35 @@ class FourCastleWorld extends BaseWorld {
    */
   constructor (properties) {
     super(properties)
+
+    /**
+     * This world plays Alouette, a French folk song.
+     */
+    this.melody = [
+      'h3', 'C1',
+      'D2', 'D2',
+      'C1', 'h1', 'C1', 'D1',
+      'h2', 'f2',
+      'h3', 'C1',
+      'D2', 'D2',
+      'C1', 'h1', 'C1', 'D1',
+      'h4',
+      'h1', 'h1', 'h1', 'h1',
+      'h1', 'D1', 'F2',
+      'F1', 'G1', 'F1', 'E1',
+      'D1', 'C1', 'h2',
+      'F1', 'F1', 'F2',
+      'f1', 'f1', 'f2',
+      'F1', 'F1', 'F2',
+      'f1', 'f1', 'f2',
+      'F1', 'F1', 'F2',
+      'F1', 'f1', 'f2',
+      'F4',
+      'h3', 'C1',
+      'D2', 'D2',
+      'C1', 'h1', 'C1', 'D1',
+      'h4'
+    ]
 
     /**
      * The return value for changing the wind.

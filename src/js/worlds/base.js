@@ -1,3 +1,4 @@
+import { NOTES } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
 /**
@@ -16,9 +17,14 @@ class BaseWorld extends WithParent {
     /**
      * Holds the melody to be played while visiting this world.
      * @type {Array<Number|undefined>}
-     * @todo Abstract away Numbers to musical notes (= strings).
      */
     this.melody = []
+
+    /**
+     * How loud shall the music be played?
+     */
+    this.gain = 0.3;
+
     /**
      * Flag to indicate, whether this world is shown in the UI.
      */
@@ -48,35 +54,55 @@ class BaseWorld extends WithParent {
   }
 
   /**
-   * Inspired by Maxim (but can't used `with` blocks in strict mode.
+   * Inspired by Maxim (but can't used `with` blocks in strict mode)
+   * Taken from {@link https://xem.github.io/miniMusic/simple.html}
+   *
+   * Assume, each note is an eigth note (quaver). Apply multiplicator
+   * @see {@link http://www.sengpielaudio.com/calculator-bpmtempotime.htm|BPM calculus}
    * @todo Check against a setting to control volume.
-   * @todo Move baseFrequency and timeOfInterval into a constant each.
-   * @todo Abstract musical notes away.
    */
   playMusic () {
+    // See also https://www.artofcomposing.com/how-to-compose-music-101
+    // And https://twitter.com/mknol/status/1301193570842484738
+    // More tools at https://twitter.com/MaximeEuziere/status/1288918702776356866
     if (this.melody.length > 0) {
-      /* Taken from https://xem.github.io/miniMusic/simple.html */
-      // Frequencies taken from https://pages.mtu.edu/~suits/notefreqs.html
-      // See also https://www.artofcomposing.com/how-to-compose-music-101
-      // And https://twitter.com/mknol/status/1301193570842484738
-      // More tools at https://twitter.com/MaximeEuziere/status/1288918702776356866
-      const baseFrequency = 262  // 262 equals „middle C”
+      const bpm = 120 * 2 /* since quaver instead of crotchet */
+      const minInS = 1 * 60
+      const bpmForQuaver = minInS / bpm
+
+      const baseFrequency = NOTES.C
       const audioContext = new AudioContext()
       const gainNode = audioContext.createGain()
-      this.melody.forEach((note, index) => {
-        const oscillator = audioContext.createOscillator()
-        if (note) {
-          oscillator
-            .connect(gainNode)
-            .connect(audioContext.destination)
+      const oscillator = audioContext.createOscillator()
+      let previousTime = 0.1
 
-          oscillator.start(index * 0.1)
-          oscillator.frequency.setValueAtTime(baseFrequency * 1.06 ** (13 - note), index * 0.1)
-          gainNode.gain.setValueAtTime(1, index * 0.1)
-          gainNode.gain.setTargetAtTime(0.0001, index * 0.1 + 0.08, 0.005)
-          oscillator.stop(index * 0.1 + 0.09)
-        }
-      })
+      oscillator
+        .connect(gainNode)
+        .connect(audioContext.destination)
+
+      oscillator.start(previousTime)
+      gainNode.gain.setValueAtTime(this.gain, previousTime)
+
+      this.melody
+        .map((note) => {
+          const value = note.slice(0, 1)
+          const hz = NOTES[ value ]
+
+          const lengthOfNote = parseFloat(note.slice(1))
+          const time = bpmForQuaver * lengthOfNote
+          
+          return {
+            hz,
+            time
+          }
+        }).forEach((note, index) => {
+          const { hz, time } = note
+          oscillator.frequency.setValueAtTime(hz, previousTime)
+          previousTime += time
+        })
+
+      gainNode.gain.setValueAtTime(0, previousTime + 0.1)
+      oscillator.stop(previousTime + 0.1)
     }
   }
 

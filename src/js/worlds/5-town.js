@@ -5,29 +5,75 @@ import { Sun } from '../elements/sun'
 
 import { BaseWorld } from './base'
 
+/**
+ * This world represents a medieval town (German style).
+ * @extends BaseWorld
+ */
 class FiveTownWorld extends BaseWorld {
+  /**
+   * The unique identifier for this town.
+   * @static
+   */
   static worldName = 'five-town'
 
+  /**
+   * @param {PropertiesWithParent} properties
+   */
   constructor (properties) {
     super(properties)
-    this.melody = [1,,,,1,1,,,,,1,,,,1,1]
+
+    /**
+     * This world plays Rondo by Tilman Susato, 1551
+     */
+    this.melody = [
+      'a2', 'a1', 'h1', 'C4',
+      'C1', 'D1', 'E1', 'C1', 'D2', 'h2',
+      'h2', 'h2', 'h2', 'h2',
+      'h1', 'C1', 'D1', 'h1', 'C2', 'a2',
+      'a2', 'a1', 'h1', 'C2', 'C2',
+      'C1', 'D1', 'E1', 'C1', 'D2', 'h2',
+      'h1', 'C1', 'D1', 'h1', 'C2', 'h1', 'a1',
+      'g1', 'f1', 'a1', 'g1', 'a4'
+    ]
   }
 
+  /**
+   * Add elements to the scene.
+   * @public
+   */
   addScene () {
     this._addBackground()
-    this._addSun()
+    this.__addSun()
     this._addMiddleground()
     this._addForeground()
-    this._addGuild()
+    this.__addGuild()
   }
 
+  /**
+   * Currently the background is empty.
+   * @protected
+   */
   _addBackground () {
   }
 
+  /**
+   * Currently, the foreground is empty.
+   * @protected
+   */
   _addForeground () {
   }
 
-  _addGuild () {
+  /**
+   * Currently, the middleground is empty.
+   */
+  _addMiddleground () {
+  }
+
+  /**
+   * Add a guild building to the scene.
+   * @private
+   */
+  __addGuild () {
     const { x, y, h, w } = this._boundingBox
 
     const properties = {
@@ -44,10 +90,12 @@ class FiveTownWorld extends BaseWorld {
     new Guild(properties)
   }
 
-  _addMiddleground () {
-  }
 
-  _addSun () {
+  /**
+   * Add a sun to the scene.
+   * @private
+   */
+  __addSun () {
     const { x, y, h, w } = this._boundingBox
     const backgroundHeight = h / 3
 
