@@ -1,3 +1,4 @@
+import buble from '@rollup/plugin-buble'
 import copy from 'rollup-plugin-copy'
 import license from 'rollup-plugin-license'
 import { terser } from 'rollup-plugin-terser'
@@ -31,7 +32,12 @@ export default {
       }]
     }),
 
-    terser(),
+    buble(),
+    terser({
+      output: {
+        comments: false
+      }
+    }),
 
     license({
       banner: LICENSE_HEADER
