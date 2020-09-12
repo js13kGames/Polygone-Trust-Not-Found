@@ -5,6 +5,24 @@
 
 :root {
   --scroll-distance: 1.5em;
+  --text-color: black;
+  --background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root,
+  html.dark-theme {
+    --text-color: #eee;
+    --background-color: #333;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root,
+  html.light-theme {
+    --text-color: #333;
+    --background-color: #eee;
+  }
 }
 
 html {
@@ -13,8 +31,8 @@ html {
 }
 
 body {
-  color: black;
-  background-color: white;
+  color: var(--text-color);
+  background-color: var(--background-color);
   scroll-padding-top: var(--scroll-distance);
 }
 
@@ -26,13 +44,21 @@ body {
   margin: auto;
 }
 
-/* TODO: Added handedness setting */
-#app.right-handedness {
-  flow-direction: row;
+#app > * {
+  margin: 0.5em;
 }
 
-#app-left-handedness {
-  flow-direction: row-reverse;
+#app.right-handedness {
+  flex-direction: row;
+}
+
+#app.left-handedness {
+  flex-direction: row-reverse;
+}
+
+nav {
+  margin-bottom: 1em;
+  margin-block-end: 1em;
 }
 
 .nav-list {
@@ -44,8 +70,20 @@ body {
 
 .nav-list__item {
   flex: 1;
-  margin: 0.5em;
   text-align: center;
+  margin: 0.5em;
+}
+
+.nav-link,
+.nav-link:visited {
+  color: var(--text-color);
+  padding: 0.5em;
+}
+
+.nav-link:hover,
+.nav-link:active {
+  color: var(--background-color);
+  background-color: var(--text-color);
 }
 
 .tab-view:not(:target) {
@@ -53,6 +91,7 @@ body {
 }
 
 svg {
+  background-color: #fff;
   flex-shrink: 0;
   display: block;
   height: 50vmin;
@@ -61,6 +100,33 @@ svg {
   margin-right: auto;
   margin-inline-start: auto;
   margin-inline-end: auto;
+}
+
+.logo__image,
+.logo__button__text {
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-delay: 0;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+}
+
+.logo__image {
+  fill: transparent;
+  stroke: black;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation-name: handwrite;
+}
+
+.logo__button__text {
+  fill: transparent;
+  stroke: black;
+}
+
+.logo__button__text {
+  animation-name: fade-in;
 }
 
 .hidden.world {
@@ -111,6 +177,10 @@ svg {
   font-family: var(--fontFamily);
 }
 
+.logo__button__text {
+  font-size: 0.65em;
+}
+
 .textbox__text,
 .speaker-box__text ,
 .time {
@@ -125,21 +195,16 @@ svg {
   )
 }
 
-/*
-.slidein {
-  animation-name: slidein;
-  animation-duration: 3s;
-*/
-  /* Or cubic-bezier(0.1, 0.7, 1.0, 0.1); */
-/*
-  animation-timing-function: ease-in-out;
-  animation-delay: 0;
-  animation-iteration-count: 3;
-  animation-direction: alternate;
-  animation-fill-mode: forwards;
+@keyframes fade-in {
+  from { fill: transparent; }
+  to   { fill: black;       }
 }
 
-*/
+@keyframes handwrite {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
 @media (any-hover: hover) {
   /* :hover can be used */
   /* alternative value: any-hover: none */
@@ -166,10 +231,6 @@ svg {
 
 @media (orientation: portrait) {
   /* Alternative value: landscape */
-}
-
-@media (prefers-color-scheme: dark) {
-  /* Alternative value: light */
 }
 
 @media (prefers-reduced-motiion: reduce) {

@@ -1,3 +1,4 @@
+import { WORLDS } from '../constants'
 import { FourPortal } from '../elements/4-portal'
 
 import { BaseWorld } from './base'
@@ -33,6 +34,6 @@ class FourPortalWorld extends BaseWorld {
  * @static
  * @readonly
  */
-FourPortalWorld.worldName = 'four-portal'
+FourPortalWorld.worldName = WORLDS.FOUR_PORTAL
 
 export { FourPortalWorld }

@@ -1,4 +1,4 @@
-import { EVENTS } from '../constants'
+import { EVENTS, WORLDS } from '../constants'
 
 import { FivePortal } from '../elements/5-portal'
 import { FourPortal } from '../elements/4-portal'
@@ -43,7 +43,7 @@ class PortalWorld extends BaseWorld {
    */
   _getEventMap () {
     return {
-      'click': this.__handleClick.bind(this)
+      click: this.__handleClick.bind(this)
     }
   }
 
@@ -133,12 +133,11 @@ class PortalWorld extends BaseWorld {
    * @param {HTMLElement} eventTarget
    */
   __handleClick (eventTarget) {
-    // TODO: Don't transition to portal of world, but the left world of it
     const nextWorld = eventTarget.getAttribute('class')
-    console.log('Clicked world', eventTarget, nextWorld)
     if (!nextWorld || nextWorld && !nextWorld.includes('-portal')) {
       return
     }
+
     const event = new CustomEvent(
       EVENTS.WORLD,
       { detail: { nextWorld }}
@@ -152,6 +151,6 @@ class PortalWorld extends BaseWorld {
  * @static
  * @readonly
  */
-PortalWorld.worldName = 'portal'
+PortalWorld.worldName = WORLDS.PORTAL
 
 export { PortalWorld }

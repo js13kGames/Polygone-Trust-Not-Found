@@ -1,4 +1,4 @@
-import { EVENTS } from '../constants'
+import { DIRECTIONS, HANDEDNESS, EVENTS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
 /**
@@ -12,21 +12,127 @@ class Controls extends WithParent {
    * @returns {{}}
    */
   _getEventMap () {
-    return { click: this.__handleClick.bind(this) }
+    return {
+      [ EVENTS.HANDEDNESS ]: this.__handleHandednessChange.bind(this),
+      click: this.__handleClick.bind(this)
+    }
   }
 
- /**
-  * This adds game controls to the UI.
-  * @protected
-  * @param {HTMLElement} parent
-  */
- _mount (parent) {
-    this.element = this._createSvgElement('g', {}, [ 'controls' ])
+  /**
+   * This adds game controls to the UI.
+   * @protected
+   * @param {HTMLElement} parent
+   */
+  _mount (parent) {
+    this.element = this._createSvgElement(
+      'g',
+      {
+        'data-handedness': HANDEDNESS.RIGHT
+      },
+      [ 'controls' ]
+    )
     parent.appendChild(this.element)
 
     this.__mountLeft()
     this.__mountTop()
     this.__mountRight()
+  }
+
+  /**
+   * Update the UI
+   * @protected
+   */
+  _updateView () {
+    Array.from(
+      this.element.querySelectorAll('.control')
+    ).forEach((control) => {
+      let points = ''
+
+      if (control.classList.contains('left')) {
+        points = this.__getLeftControlsPoints()
+      } else if (control.classList.contains('right')) {
+        points = this.__getRightControlsPoints()
+      } else if (control.classList.contains('top')) {
+        points = this.__getTopControlsPoints()
+      }
+
+      control.setAttributeNS(null, 'points', points)
+    })
+  }
+
+  /**
+   * Compute the points value for the left control.
+   * @private
+   * @returns {String}
+   */
+  __getLeftControlsPoints () {
+    const { x, y, h, w } = this._boundingBox
+    const { height, width, isOnRight } = this._controls
+
+    const top    = y + h - height / 2
+    const bottom = top + height / 2
+    const left = isOnRight
+      ? x + w - width 
+      : x
+    const right  = left + width / 3
+
+    const points = [
+      right + ',' + top,
+      right + ',' + bottom,
+      left  + ',' + (top + bottom) / 2
+    ].join(' ')
+
+    return points
+  }
+
+  /**
+   * Compute the points for the right control.
+   * @private
+   * @returns {String}
+   */
+  __getRightControlsPoints () {
+    const { x, y, h, w } = this._boundingBox
+    const { height, width, isOnRight } = this._controls
+
+    const top = y + h - height / 2
+    const bottom = top + height / 2
+    const left = isOnRight
+      ? x + w     - width / 3 
+      : x + width - width / 3
+    const right = left + width / 3
+
+    const points = [
+      left + ',' + top,
+      left + ',' + bottom,
+      right  + ',' + (top + bottom) / 2
+    ].join(' ')
+
+    return points
+  }
+
+  /**
+   * Compute the points for the top control.
+   * @private
+   * @returns {String}
+   */
+  __getTopControlsPoints () {
+    const { x, y, h, w } = this._boundingBox
+    const { height, width, isOnRight } = this._controls
+
+    const top = y + h - height
+    const bottom = top + height / 2
+    const left = isOnRight
+      ? x + w - width + width / 3
+      : x             + width / 3
+    const right = left + width / 3
+
+    const points = [
+      right + ',' + bottom,
+      left + ',' + bottom,
+      (right + left) / 2  + ',' + top
+    ].join(' ')
+
+    return points
   }
 
   /**
@@ -43,26 +149,37 @@ class Controls extends WithParent {
     if (isLeftControl) {
       const event = new CustomEvent(
         EVENTS.TURN,
-        { detail: { direction: 'left' }}
+        { detail: { direction: DIRECTIONS.LEFT }}
       )
       this._eventNode.dispatchEvent(event)
+      return
     }
 
     if (isRightControl) {
       const event = new CustomEvent(
         EVENTS.TURN,
-        { detail: { direction: 'right' }}
+        { detail: { direction: DIRECTIONS.RIGHT }}
       )
       this._eventNode.dispatchEvent(event)
+      return
     }
 
     if (isTopControl) {
       const event = new CustomEvent(
         EVENTS.TURN,
-        { detail: { direction: 'top' }}
+        { detail: { direction: DIRECTIONS.TOP }}
       )
       this._eventNode.dispatchEvent(event)
+      return
     }
+  }
+
+  /**
+   * User indicated change of handedness
+   */
+  __handleHandednessChange (eventDetail) {
+    this._controls.isOnRight = eventDetail.handedness === HANDEDNESS.RIGHT
+    this._updateView()
   }
 
   /**
@@ -70,21 +187,9 @@ class Controls extends WithParent {
    * @private
    */
   __mountLeft () {
-    const { x, y, h, w } = this._boundingBox
-    const top = y + h / 2
-    const bottom = y + h
-    const left = x
-    const right = x + w / 3
-
-    const points = [
-      right + ',' + top,
-      right + ',' + bottom,
-      left  + ',' + (top + bottom) / 2
-    ].join(' ')
-
     const control = this._createSvgElement(
       'polygon',
-      { points },
+      { points: this.__getLeftControlsPoints() },
       [ 'left', 'control' ]
     )
     this.element.appendChild(control)
@@ -95,21 +200,9 @@ class Controls extends WithParent {
    * @private
    */
   __mountRight () {
-    const { x, y, h, w } = this._boundingBox
-    const top = y + h / 2
-    const bottom = y + h
-    const left = x + w * 2 / 3
-    const right = x + w
-
-    const points = [
-      left + ',' + top,
-      left + ',' + bottom,
-      right  + ',' + (top + bottom) / 2
-    ].join(' ')
-
     const control = this._createSvgElement(
       'polygon',
-      { points },
+      { points: this.__getRightControlsPoints() },
       [ 'right', 'control' ]
     )
     this.element.appendChild(control)
@@ -120,21 +213,9 @@ class Controls extends WithParent {
    * @private
    */
   __mountTop () {
-    const { x, y, h, w } = this._boundingBox
-    const top = y
-    const bottom = y + h / 2
-    const left = x + w / 3
-    const right = x + w * 2 / 3
-
-    const points = [
-      right + ',' + bottom,
-      left + ',' + bottom,
-      (right + left) / 2  + ',' + top
-    ].join(' ')
-
     const control = this._createSvgElement(
       'polygon',
-      { points },
+      { points: this.__getTopControlsPoints() },
       [ 'top', 'control' ]
     )
     this.element.appendChild(control)

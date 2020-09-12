@@ -1,4 +1,4 @@
-import { EVENTS, NOTES } from '../constants'
+import { EVENTS, NOTES, WORLDS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
 /**
@@ -22,6 +22,11 @@ class BaseWorld extends WithParent {
      * @protected
      */
     this._isActive = false
+
+    /**
+     * Flag to track, whether music is already playing.
+     */
+    this.__isPlayingMusic = false
 
     /**
      * How loud shall the music be played?
@@ -65,7 +70,7 @@ class BaseWorld extends WithParent {
     // See also https://www.artofcomposing.com/how-to-compose-music-101
     // And https://twitter.com/mknol/status/1301193570842484738
     // More tools at https://twitter.com/MaximeEuziere/status/1288918702776356866
-    if (this.melody.length > 0) {
+    if (this.melody.length > 0 && !this.__isPlayingMusic) {
       const bpm = 120 * 2 /* since quaver instead of crotchet */
       const minInS = 1 * 60
       const bpmForQuaver = minInS / bpm
@@ -74,6 +79,7 @@ class BaseWorld extends WithParent {
       const audioContext = new AudioContext()
       const gainNode = audioContext.createGain()
       const oscillator = audioContext.createOscillator()
+      this.__isPlayingMusic = true
       let previousTime = 0.1
 
       oscillator
@@ -103,6 +109,7 @@ class BaseWorld extends WithParent {
 
       gainNode.gain.setValueAtTime(0, previousTime + 0.1)
       oscillator.stop(previousTime + 0.1)
+      this.__isPlayingMusic = false
     }
   }
 
@@ -206,6 +213,6 @@ class BaseWorld extends WithParent {
  * @static
  * @readonly
  */
-BaseWorld.worldName = 'base'
+BaseWorld.worldName = WORLDS.BASE
 
 export { BaseWorld }

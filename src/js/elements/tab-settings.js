@@ -1,4 +1,4 @@
-import { EVENTS } from '../constants'
+import { EVENTS, HANDEDNESS } from '../constants'
 import { t } from '../translations'
 
 import { Tab } from './tab'
@@ -30,8 +30,48 @@ class TabSettings extends Tab {
     this.__mountForm()
   }
 
+  /**
+   * Handle change event.
+   * @private
+   * @param {HTMLElement} eventTarget
+   */
   __handleChange (eventTarget) {
-    const volume = eventTarget.valueAsNumber
+    switch (eventTarget.nodeName.toLowerCase()) {
+      case 'input':
+        this.__handleVolumeChange(eventTarget)
+        break
+      case 'select':
+        this.__handleHandednessChange(eventTarget)
+        break
+      default:
+        console.warn('Unhandled change event', eventTarget)
+    }
+  }
+
+  /**
+   * User indicated change in handedness.
+   * @private
+   * @param {HTMLSelectElement} selectElement
+   */
+  __handleHandednessChange (selectElement) {
+    const options = Array.from(selectElement.selectedOptions)
+    if (options.length === 1) {
+      const handedness = options[ 0 ].value
+      const event = new CustomEvent(
+        EVENTS.HANDEDNESS,
+        { detail: { handedness } }
+      )
+      this._eventNode.dispatchEvent(event)
+    }
+  }
+
+  /**
+   * User picked another volume
+   * @private
+   * @param {HTMLInputElement} inputElement
+   */
+  __handleVolumeChange (inputElement) {
+    const volume = inputElement.valueAsNumber
     const event = new CustomEvent(
       EVENTS.VOLUME,
       { detail: { volume } }
@@ -54,12 +94,53 @@ class TabSettings extends Tab {
       []
     )
 
-    this.__mountLanguage(form)
+    this.__mountHandedness(form)
     /*
+    this.__mountLanguage(form)
     this.__mountTypingSpeed(form)
     */
     this.__mountVolume(form)
     this.element.appendChild(form)
+  }
+
+  /**
+   * Left or right handed?
+   * @private
+   * @param {HTMLFormElement} form
+   */
+  __mountHandedness (form) {
+    const handednessLabel = this._createHtmlElement(
+      'label',
+      {},
+      []
+    )
+    const text = document.createTextNode(t('HANDEDNESS'))
+    handednessLabel.appendChild(text)
+
+    const handedness = [{
+      value: HANDEDNESS.LEFT,  text: t('HANDEDNESS_LEFT'), selected: false,
+    }, {
+      value: HANDEDNESS.RIGHT, text: t('HANDEDNESS_RIGHT'), selected: true,
+    }]
+
+    const handednessSelect = this._createHtmlElement(
+      'select',
+      { name: 'handedness' },
+      []
+    )
+    handedness.forEach((hand) => {
+      const option = this._createHtmlElement(
+        'option',
+        { value: hand.value, selected: hand.selected },
+        []
+      )
+      const text = document.createTextNode(hand.text)
+      option.appendChild(text)
+      handednessSelect.add(option)
+    })
+
+    form.appendChild(handednessLabel)
+    form.appendChild(handednessSelect)
   }
 
   /**

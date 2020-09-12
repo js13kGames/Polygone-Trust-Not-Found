@@ -1,4 +1,4 @@
-import { EVENTS } from '../constants'
+import { EVENTS, WIND_STRENGTHS, WORLDS } from '../constants'
 
 import { Background } from '../elements/background'
 import { Foreground } from '../elements/foreground'
@@ -88,9 +88,9 @@ class FourCastleWorld extends BaseWorld {
 
     const winds = [
       null,
-      'still', 'still',
-      'medium', 'medium', 'medium',
-      'strong'
+      WIND_STRENGTHS.STILL, WIND_STRENGTHS.STILL,
+      WIND_STRENGTHS.MEDIUM, WIND_STRENGTHS.MEDIUM, WIND_STRENGTHS.MEDIUM,
+      WIND_STRENGTHS.STRONG,
     ]
 
     const wind = winds[ dice ]
@@ -273,6 +273,6 @@ class FourCastleWorld extends BaseWorld {
  * @static
  * @readonly
  */
-FourCastleWorld.worldName = 'four-castle'
+FourCastleWorld.worldName = WORLDS.FOUR_CASTLE
 
 export { FourCastleWorld }

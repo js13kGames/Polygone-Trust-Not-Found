@@ -1,4 +1,4 @@
-import { EVENTS } from '../constants'
+import { EVENTS, WORLDS } from '../constants'
 
 import { Sun } from '../elements/sun'
 
@@ -91,6 +91,6 @@ class SixMountainWorld extends BaseWorld {
  * @static
  * @readonly
  */
-SixMountainWorld.worldName = 'six-mountain'
+SixMountainWorld.worldName = WORLDS.SIX_MOUNTAIN
 
 export { SixMountainWorld }

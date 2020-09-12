@@ -1,4 +1,4 @@
-import { EVENTS } from '../constants'
+import { EVENTS, WORLDS } from '../constants'
 
 import { Guild } from '../elements/guild'
 import { Sun } from '../elements/sun'
@@ -113,6 +113,6 @@ class FiveTownWorld extends BaseWorld {
  * @static
  * @readonly
  */
-FiveTownWorld.worldName = 'five-town'
+FiveTownWorld.worldName = WORLDS.FIVE_TOWN
 
 export { FiveTownWorld }

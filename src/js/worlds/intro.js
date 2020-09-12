@@ -1,4 +1,4 @@
-import { WORLDS } from '../constants'
+import { DIRECTIONS, EVENTS, WORLDS } from '../constants'
 import { t } from '../translations'
 
 import { Narrator } from '../elements/narrator'
@@ -45,6 +45,33 @@ class IntroWorld extends BaseWorld {
     }
 
     this._narrator = new Narrator(properties)
+  }
+
+  /**
+   * Register a click event handler.
+   * @protected
+   * @returns {{}}
+   */
+  _getEventMap () {
+    return {
+      click: this.__handleClick.bind(this)
+    }
+  }
+
+  /**
+   * Navigate to next world on click.
+   * @private
+   * @param {HTMLElement} eventTarget
+   */
+  __handleClick (eventTarget) {
+    if (!this.isActive()) {
+      return
+    }
+    const event = new CustomEvent(
+      EVENTS.TURN,
+      { detail: { direction: DIRECTIONS.TOP } }
+    )
+    this._eventNode.dispatchEvent(event)
   }
 
   /**

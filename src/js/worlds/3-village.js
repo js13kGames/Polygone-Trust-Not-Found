@@ -1,4 +1,4 @@
-import { EVENTS } from '../constants'
+import { EVENTS, WORLDS } from '../constants'
 
 import { Hut } from '../elements/hut'
 import { Sea } from '../elements/sea'
@@ -140,6 +140,6 @@ class ThreeVillageWorld extends BaseWorld {
  * @static
  * @readonly
  */
-ThreeVillageWorld.worldName = 'three-village'
+ThreeVillageWorld.worldName = WORLDS.THREE_VILLAGE
 
 export { ThreeVillageWorld }

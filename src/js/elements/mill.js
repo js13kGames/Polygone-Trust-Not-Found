@@ -1,4 +1,4 @@
-import { EVENTS } from '../constants'
+import { EVENTS, WIND_STRENGTHS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
 /**
@@ -14,7 +14,7 @@ class Mill extends WithParent {
     super(properties)
 
     const { x, y, h, w } = this._boundingBox
-    this._windStrength = 'still'
+    this._windStrength = WIND_STRENGTHS.STILL
     this._axisX = x + w * 0.5
     this._axisY = y + h * 0.3
     this.degree = 0
@@ -103,11 +103,11 @@ class Mill extends WithParent {
     // Must be divisable by 2/3 without remainder!
     let factor = 1.5
 
-    if (this._windStrength === 'medium') {
+    if (this._windStrength === WIND_STRENGTHS.MEDIUM) {
       factor = 6
     }
 
-    if (this._windStrength === 'strong') {
+    if (this._windStrength === WIND_STRENGTHS.STRONG) {
       factor = 9
     }
 

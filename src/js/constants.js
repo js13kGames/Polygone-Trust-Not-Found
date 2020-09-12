@@ -1,8 +1,19 @@
 /**
+ * Lists all known directions
+ * @enum {String}
+ */
+const DIRECTIONS = {
+  LEFT: 'left',
+  RIGHT: 'right',
+  TOP: 'top',
+}
+
+/**
  * Lists all known Custom Event types.
  * @enum {String}
  */
 const EVENTS = {
+  HANDEDNESS: 'game:handedness:change',
   INTRO: 'game:memory:narrator',
   TICK: 'game:time:update',
   TURN: 'game:controls:turn',
@@ -11,6 +22,19 @@ const EVENTS = {
   WORLD: 'game:world:switch'
 }
 
+/**
+ * Lists all possible handedness options.
+ * @enum {String}
+ */
+const HANDEDNESS = {
+  LEFT: 'left',
+  RIGHT: 'right',
+}
+
+/**
+ * Lists all possible memories.
+ * @enum {String}
+ */
 const MEMORIES = {
   GAME_STARTED: 'Game started',
   MET_NARRATOR: 'Met the narrator'
@@ -52,17 +76,41 @@ const VOICES = {
 }
 
 /**
+ * Different wind strengths.
+ * @enum {String}
+ */
+const WIND_STRENGTHS = {
+  MEDIUM: 'medium',
+  STILL: 'still',
+  STRONG: 'strong',
+}
+
+/**
  * Unique identifier for all worlds.
  * @enum {String}
  */
 const WORLDS = {
-  INTRO: 'intro'
+  BASE: 'base',
+  FIVE_PORTAL: 'five-portal',
+  FIVE_TOWN: 'five-town',
+  FOUR_CASTLE: 'four-castle',
+  FOUR_PORTAL: 'four-portal',
+  INTRO: 'intro',
+  PORTAL: 'portal',
+  SIX_MOUNTAIN: 'six-mountain',
+  SIX_PORTAL: 'six-portal',
+  THREE_PORTAL: 'three-portal',
+  THREE_VILLAGE: 'three-village',
+  TITLE: 'title',
 }
 
 export {
+  DIRECTIONS,
   EVENTS,
+  HANDEDNESS,
   MEMORIES,
   NOTES,
   VOICES,
+  WIND_STRENGTHS,
   WORLDS,
 }

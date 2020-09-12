@@ -5,10 +5,14 @@
 const T = {
   DEBUG: 'Debug',
   DEBUG_BUTTON: 'Start time',
+  HANDEDNESS: 'Handedness',
+  HANDEDNESS_LEFT: 'Left-handed',
+  HANDEDNESS_RIGHT: 'Right-handed',
   INVENTORY: 'Inventory',
   LANGUAGE: 'Language',
   LANGUAGE_EN: 'English',
   MEMORY: 'Memory',
+  NEW_GAME: 'New Game',
   NO_ITEMS: 'No items.',
   NO_MEMORIES: 'Make some encounters.',
   SETTINGS: 'Settings',
@@ -29,4 +33,4 @@ function t (key) {
   return T[ key ]
 }
 
-export { T, t }
+export { t }

@@ -90,7 +90,7 @@
  *     WithSympathy      : _mapSympathyToLuminance() : Number
  */
 
-import { EVENTS } from './constants'
+import { EVENTS, WORLDS } from './constants'
 import { Canvas } from './elements/canvas'
 import { Controls } from './elements/controls'
 import { Time } from './elements/time'
@@ -99,6 +99,7 @@ import { WithEventListener } from './mixins/with-event-listener'
 import { Navigation } from './elements/navigation'
 
 import { IntroWorld } from './worlds/intro'
+import { TitleWorld } from './worlds/title'
 
 import { FivePortalWorld } from './worlds/5-portal'
 import { FourPortalWorld } from './worlds/4-portal'
@@ -130,7 +131,7 @@ class Game {
      */
     this.clock = {
       minute: 0,
-      hour: 5,
+      hour: 0,
       day: 1
     }
 
@@ -225,56 +226,64 @@ class Game {
       parent: this.canvas.element,
     }
 
+    const {
+      FIVE_PORTAL,
+      FIVE_TOWN,
+      FOUR_CASTLE,
+      FOUR_PORTAL,
+      INTRO,
+      PORTAL,
+      SIX_MOUNTAIN,
+      SIX_PORTAL,
+      THREE_PORTAL,
+      THREE_VILLAGE,
+    } = WORLDS
     const worlds = [{
-      ctr: IntroWorld,
-      left: PortalWorld.worldName,
-      right: PortalWorld.worldName,
-      top: PortalWorld.worldName
+      ctr: TitleWorld,  left: INTRO,  right: INTRO,  top: INTRO,
     }, {
-      ctr: PortalWorld,
-      left: PortalWorld.worldName,
-      right: PortalWorld.worldName,
-      top: PortalWorld.worldName
+      ctr: IntroWorld,  left: PORTAL, right: PORTAL, top: PORTAL,
     }, {
       ctr: ThreePortalWorld,
-      left: ThreeVillageWorld.worldName,
-      right: ThreeVillageWorld.worldName,
-      top: PortalWorld.worldName
+      left: THREE_VILLAGE,
+      right: THREE_VILLAGE,
+      top: PORTAL,
     }, {
       ctr: ThreeVillageWorld,
-      left: ThreePortalWorld.worldName,
-      right: ThreePortalWorld.worldName,
-      top: ThreeVillageWorld.worldName
+      left: THREE_PORTAL,
+      right: THREE_PORTAL,
+      top: THREE_VILLAGE,
     }, {
       ctr: FourPortalWorld,
-      left: FourCastleWorld.worldName,
-      right: FourCastleWorld.worldName,
-      top: PortalWorld.worldName
+      left: FOUR_CASTLE,
+      right: FOUR_CASTLE,
+      top: PORTAL,
     }, {
       ctr: FourCastleWorld,
-      left: FourPortalWorld.worldName,
-      right: FourPortalWorld.worldName,
-      top: FourCastleWorld.worldName
+      left: FOUR_PORTAL,
+      right: FOUR_PORTAL,
+      top: FOUR_CASTLE,
     }, {
       ctr: FivePortalWorld,
-      left: FiveTownWorld.worldName,
-      right: FiveTownWorld.worldName,
-      top: FivePortalWorld.worldName
+      left: FIVE_TOWN,
+      right: FIVE_TOWN,
+      top: PORTAL,
     }, {
       ctr: FiveTownWorld,
-      left: FivePortalWorld.worldName,
-      right: FivePortalWorld.worldName,
-      top: FiveTownWorld.worldName,
+      left: FIVE_PORTAL,
+      right: FIVE_PORTAL,
+      top: FIVE_TOWN,
     }, {
       ctr: SixPortalWorld,
-      left: SixMountainWorld.worldName,
-      right: SixMountainWorld.worldName,
-      top: SixPortalWorld.worldName
+      left: SIX_MOUNTAIN,
+      right: SIX_MOUNTAIN,
+      top: PORTAL,
     }, {
       ctr: SixMountainWorld,
-      left: SixPortalWorld.worldName,
-      right: SixPortalWorld.worldName,
-      top: SixMountainWorld.worldName
+      left: SIX_PORTAL,
+      right: SIX_PORTAL,
+      top: SIX_MOUNTAIN
+    }, {
+      ctr: PortalWorld, left: PORTAL, right: PORTAL, top: PORTAL,
     }]
 
     worlds.forEach((w) => {
@@ -370,7 +379,7 @@ class Game {
    * @public
    */
   init () {
-    const firstWorld = IntroWorld.worldName
+    const firstWorld = TitleWorld.worldName
     this.__respondToDevice()
 
     this.addWorlds()
@@ -394,7 +403,7 @@ class Game {
    * @public
    */
   startTime () {
-    const fps = 1000
+    const fps = 1000 / 4
     const self = this
     this.__timeHandle = setInterval(self.fireNewTime.bind(self), fps)
   }
@@ -408,7 +417,6 @@ class Game {
   switchWorld ({ nextWorld }) {
     const world = this.__worlds.find((w) => w.name == nextWorld)
     this.__worlds.forEach((world) => world.instance.setInactive())
-    console.log('Transitioning to ', nextWorld, world)
     world && world.instance.setActive()
   }
 
@@ -419,6 +427,7 @@ class Game {
    */
   _getEventMap () {
     return {
+      [ EVENTS.HANDEDNESS ]: this.__handleHandednessChange.bind(this),
       [ EVENTS.TURN ]: this.__handleGameControlsTurn.bind(this),
       [ EVENTS.WORLD ]: this.switchWorld.bind(this)
     }
@@ -450,19 +459,21 @@ class Game {
    * @private
    */
   __addControls () {
-    // TODO: Consider left-handers!
-    const controlsWidth = this.__controlsWidth
-    const controlsHeight = this.__controlsHeight
-
-    const controlsX = this._boundingBox.x + this._boundingBox.w - controlsWidth
-    const controlsY = this._boundingBox.y + this._boundingBox.h - controlsHeight
+    const { x, y, h, w } = this._boundingBox
 
     const properties = {
       boundingBox: {
-        x: controlsX,
-        y: controlsY,
-        height: controlsHeight,
-        width: controlsWidth
+        x,
+        y,
+        height: h,
+        width: w
+      },
+      controls: {
+        x,
+        y,
+        height: this.__controlsHeight,
+        width: this.__controlsWidth,
+        isOnRight: true,
       },
       eventNode: this._eventNode,
       parent: this.canvas.element
@@ -501,6 +512,21 @@ class Game {
     this.switchWorld({ nextWorld })
   }
 
+  /**
+   * Updates UI based on handedness.
+   * @private
+   */
+  __handleHandednessChange (eventDetail) {
+    const { handedness } = eventDetail
+    this._parent.classList.remove('left-handedness')
+    this._parent.classList.remove('right-handedness')
+    this._parent.classList.add(`${handedness}-handedness`)
+  }
+
+  /**
+   * Adjusts the UI to the current device.
+   * @private
+   */
   __respondToDevice () {
     let factor = 5
 
