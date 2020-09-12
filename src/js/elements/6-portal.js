@@ -82,7 +82,11 @@ class SixPortal extends WithParent {
    * @parameter {Number} clock.minute
    */
   __handleGameTimeUpdate (clock) {
-    if (!clock.hour || !clock.minute) {
+    if (typeof clock.hour === 'undefined') {
+      console.warn('Invalid event', clock)
+      return
+    }
+    if (typeof clock.minute === 'undefined') {
       console.warn('Invalid event', clock)
       return
     }

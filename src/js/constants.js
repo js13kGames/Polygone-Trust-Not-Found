@@ -3,10 +3,17 @@
  * @enum {String}
  */
 const EVENTS = {
+  INTRO: 'game:memory:narrator',
   TICK: 'game:time:update',
   TURN: 'game:controls:turn',
+  VOLUME: 'game:volume:change',
   WIND: 'world:weather:wind',
   WORLD: 'game:world:switch'
+}
+
+const MEMORIES = {
+  GAME_STARTED: 'Game started',
+  MET_NARRATOR: 'Met the narrator'
 }
 
 /**
@@ -44,4 +51,18 @@ const VOICES = {
   SOFT: 'sans-serif'
 }
 
-export { EVENTS, NOTES, VOICES }
+/**
+ * Unique identifier for all worlds.
+ * @enum {String}
+ */
+const WORLDS = {
+  INTRO: 'intro'
+}
+
+export {
+  EVENTS,
+  MEMORIES,
+  NOTES,
+  VOICES,
+  WORLDS,
+}

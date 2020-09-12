@@ -1,17 +1,17 @@
-import { WithSympathy } from './with-sympathy'
+import { WithControls } from './with-controls'
 
 /**
  * @typedef PropertiesWithParent
- * @mixes PropertiesWithSympathy
+ * @mixes PropertiesWithControls
  * @property {HTMLElement} parent
  */
 
 /**
  * Mixin adding functionality about `parent` and mounting.
- * @extends WithSympathy
+ * @extends WithControls
  * @todo Turn into real mixin
  */
-class WithParent extends WithSympathy {
+class WithParent extends WithControls {
   /**
    * @param {PropertiesWithParent} properties
    */

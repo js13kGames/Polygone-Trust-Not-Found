@@ -55,8 +55,8 @@
  *     WithBoundingBox   <|-- WithEventListener
  *     WithEventListener <|-- WithLife
  *     WithLife          <|-- WithSympathy
- *     WithParent        <|-- BaseWorld
  *     WithParent        <|-- Background
+ *     WithParent        <|-- BaseWorld
  *     WithParent        <|-- Canvas
  *     WithParent        <|-- Castle
  *     WithParent        <|-- Controls
@@ -166,6 +166,18 @@ class Game {
     this._parent = mountPoint
 
     /**
+     * This is the height of the controls element.
+     * @private
+     */
+    this.__controlsHeight = 5 * 2
+
+    /**
+     * This is the width of the controls element.
+     * @private
+     */
+    this.__controlsWidth = 5 * 3
+
+    /**
      * Holds return value of setInterval.
      * @private
      * @type {Number|null}
@@ -199,10 +211,18 @@ class Game {
         x,
         y,
         height: h,
-        width: w
+        width: w,
+      },
+      controls: {
+        // TODO: Consider left-handedness
+        x: x + w - this.__controlsWidth,
+        y: y + h - this.__controlsHeight,
+        height: this.__controlsHeight,
+        width: this.__controlsWidth,
+        isOnRight: true
       },
       eventNode: this._eventNode,
-      parent: this.canvas.element
+      parent: this.canvas.element,
     }
 
     const worlds = [{
@@ -351,11 +371,13 @@ class Game {
    */
   init () {
     const firstWorld = IntroWorld.worldName
+    this.__respondToDevice()
 
     this.addWorlds()
     // TODO: Only in debug builds?
     this.__addTime()
     this.__addControls()
+    this.startTime()
     this.switchWorld({ nextWorld: firstWorld })
   }
 
@@ -372,7 +394,7 @@ class Game {
    * @public
    */
   startTime () {
-    const fps = 33
+    const fps = 1000
     const self = this
     this.__timeHandle = setInterval(self.fireNewTime.bind(self), fps)
   }
@@ -428,10 +450,10 @@ class Game {
    * @private
    */
   __addControls () {
-    const controlsHeight = 5 * 2
-    const controlsWidth = 5 * 3
-
     // TODO: Consider left-handers!
+    const controlsWidth = this.__controlsWidth
+    const controlsHeight = this.__controlsHeight
+
     const controlsX = this._boundingBox.x + this._boundingBox.w - controlsWidth
     const controlsY = this._boundingBox.y + this._boundingBox.h - controlsHeight
 
@@ -477,6 +499,18 @@ class Game {
     const currentWorld = this.getCurrentWorld()
     const nextWorld = currentWorld[ eventDetail.direction ]
     this.switchWorld({ nextWorld })
+  }
+
+  __respondToDevice () {
+    let factor = 5
+
+    const pointer = window.matchMedia('(pointer: coarse)')
+    if (pointer.matches) {
+      factor = 10
+    }
+
+    this.__controlsHeight = factor * 2
+    this.__controlsWidth = factor * 3
   }
 }
 

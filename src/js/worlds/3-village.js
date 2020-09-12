@@ -17,11 +17,17 @@ class ThreeVillageWorld extends BaseWorld {
   constructor (properties) {
     super(properties)
     /**
-     * This world has a melody.
-     * @todo Improve notation.
+     * This world plays What shall we do with a drunken sailor.
      */
     this.melody = [
-      13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13,,,,13,,,13,,,13,,13,13
+      'C1', 'C0.5', 'C0.5', 'C1', 'C0.5', 'C0.5',
+      'C1', 'f1', 'a1', 'c1',
+      'h1', 'h0.5', 'h0.5', 'h1', 'h0.5', 'h0.5',
+      'h1', 'e1', 'g1', 'h1',
+      'C1', 'C0.5', 'C0.5', 'C1', 'C0.5', 'C0.5',
+      'C1', 'D1', 'E1', 'F1',
+      'E1', 'C1', 'h1', 'g1',
+      'f2', 'f2'
     ]
   }
 

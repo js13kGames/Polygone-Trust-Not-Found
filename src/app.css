@@ -21,6 +21,9 @@ body {
 #app {
   display: flex;
   align-items: center;
+  height: 95vmin;
+  width: 95vmin;
+  margin: auto;
 }
 
 /* TODO: Added handedness setting */
@@ -52,8 +55,8 @@ body {
 svg {
   flex-shrink: 0;
   display: block;
-  height: 98vmin;
-  width: 98vmin;
+  height: 50vmin;
+  width: 50vmin;
   margin-left: auto;
   margin-right: auto;
   margin-inline-start: auto;

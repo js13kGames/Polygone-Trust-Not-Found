@@ -7,6 +7,9 @@ import { WithParent } from '../mixins/with-parent'
  * @todo Fix wings.
  */
 class Mill extends WithParent {
+  /**
+   * @param {PropertiesWithParent} properties
+   */
   constructor (properties) {
     super(properties)
 
@@ -19,7 +22,53 @@ class Mill extends WithParent {
     this._updateView()
   }
 
-  _getElementAttributes () {
+  /**
+   * Register some event listeners.
+   * @protected
+   * @returns {{}}
+   */
+  _getEventMap () {
+    return {
+      [ EVENTS.TICK ]: this.__handleGameTimeUpdate.bind(this),
+      [ EVENTS.WIND ]: this.__handleWorldWeatherWind.bind(this)
+    }
+  }
+
+  /**
+   * Add a new element to the DOM.
+   * @protected
+   * @param {HTMLElement} parent
+   */
+  _mount (parent) {
+    this.element = this._createSvgElement(
+      'g',
+      {},
+      [ 'mill' ]
+    )
+    parent.appendChild(this.element)
+    this.__mountBuilding()
+    this.__mountWings()
+  }
+
+  /**
+   * Update the UI.
+   * @protected
+   */
+  _updateView () {
+    super._updateView()
+    const degree = this._degree
+    const origin = this._axisX + ',' + this._axisY
+    const rotate = `rotate(${degree},${origin})`
+
+    const wings = this.element.querySelector('.wings')
+    wings.setAttributeNS(null, 'transform', rotate)
+  }
+
+  /**
+   * Share element attributes regarding axis and degree of rotation
+   * @private
+   */
+  __getElementAttributes () {
     const { x, y, h, w } = this._boundingBox
 
     this._axisX = this._axisX || x + w * 0.5
@@ -33,15 +82,20 @@ class Mill extends WithParent {
     }
   }
 
-  _getEventMap () {
-    return {
-      [ EVENTS.TICK ]: this._handleGameTimeUpdate.bind(this),
-      [ EVENTS.WIND ]: this._handleWorldWeatherWind.bind(this)
+  /**
+   * Update to time change.
+   * @private
+   * @param {{}}     clock
+   * @param {Number} clock.day
+   * @param {Number} clock.hour
+   * @param {Number} clock.minute
+   */
+  __handleGameTimeUpdate (clock) {
+    if (typeof clock.hour === 'undefined') {
+      console.warn('Invalid event', clock)
+      return
     }
-  }
-
-  _handleGameTimeUpdate (clock) {
-    if (!clock.hour || !clock.minute) {
+    if (typeof clock.minute === 'undefined') {
       console.warn('Invalid event', clock)
       return
     }
@@ -61,23 +115,22 @@ class Mill extends WithParent {
     this._updateView()
   }
 
-  _handleWorldWeatherWind (eventDetail) {
+  /**
+   * Reaction to wind changes.
+   * @private
+   * @param {{}} eventDetail
+   * @param {string} eventDetail.wind
+   */
+  __handleWorldWeatherWind (eventDetail) {
     this._windStrength = eventDetail.wind
     this._updateView()
   }
 
-  _mount (parent) {
-    this.element = this._createSvgElement(
-      'g',
-      {},
-      [ 'mill' ]
-    )
-    parent.appendChild(this.element)
-    this._mountBuilding()
-    this._mountWings()
-  }
-
-  _mountBuilding () {
+  /**
+   * Add the main building to the DOM.
+   * @private
+   */
+  __mountBuilding () {
     const { x, y, h, w } = this._boundingBox
 
     const left = x + w * 0.3
@@ -100,22 +153,31 @@ class Mill extends WithParent {
     this.element.appendChild(building)
   }
 
-  _mountWings () {
+  /**
+   * Add the wings to the DOM.
+   * @private
+   */
+  __mountWings () {
     const wings = this._createSvgElement(
       'g',
       {},
       [ 'wings' ]
     )
-    this._mountTopWing(wings)
-    this._mountRightWing(wings)
-    this._mountBottomWing(wings)
-    this._mountLeftWing(wings)
+    this.__mountTopWing(wings)
+    this.__mountRightWing(wings)
+    this.__mountBottomWing(wings)
+    this.__mountLeftWing(wings)
     this.element.appendChild(wings)
   }
 
-  _mountBottomWing (parent) {
+  /**
+   * Add the bottom wing.
+   * @private
+   * @param {HTMLElement} parent
+   */
+  __mountBottomWing (parent) {
     const { x, y, h, w } = this._boundingBox
-    const { axisX, axisY } = this._getElementAttributes()
+    const { axisX, axisY } = this.__getElementAttributes()
 
     const left = axisX - w * 0.01
     const right = axisX + w * 0.01
@@ -140,9 +202,14 @@ class Mill extends WithParent {
     parent.appendChild(wing)
   }
 
-  _mountLeftWing (parent) {
+  /**
+   * Add the left wing.
+   * @private
+   * @param {HTMLElement} parent
+   */
+  __mountLeftWing (parent) {
     const { x, y, h, w } = this._boundingBox
-    const { axisX, axisY } = this._getElementAttributes()
+    const { axisX, axisY } = this.__getElementAttributes()
 
     const left = axisX - w * 0.3
     const right = axisX - w * 0.01
@@ -167,9 +234,14 @@ class Mill extends WithParent {
     parent.appendChild(wing)
   }
 
-  _mountRightWing (parent) {
+  /**
+   * Add the right wing to the DOM.
+   * @private
+   * @param {HTMLElement} parent
+   */
+  __mountRightWing (parent) {
     const { x, y, h, w } = this._boundingBox
-    const { axisX, axisY } = this._getElementAttributes()
+    const { axisX, axisY } = this.__getElementAttributes()
 
     const left = axisX + w * 0.01
     const right = axisX + w * 0.3
@@ -194,9 +266,14 @@ class Mill extends WithParent {
     parent.appendChild(wing)
   }
 
-  _mountTopWing (parent) {
+  /**
+   * Add the top wing to the DOM
+   * @private
+   * @param {HTMLElement} parent
+   */
+  __mountTopWing (parent) {
     const { x, y, h, w } = this._boundingBox
-    const { axisX, axisY } = this._getElementAttributes()
+    const { axisX, axisY } = this.__getElementAttributes()
 
     const left = axisX - w * 0.01
     const right = axisX + w * 0.1
@@ -221,15 +298,7 @@ class Mill extends WithParent {
     parent.appendChild(wing)
   }
 
-  _updateView () {
-    super._updateView()
-    const degree = this._degree
-    const origin = this._axisX + ',' + this._axisY
-    const rotate = `rotate(${degree},${origin})`
 
-    const wings = this.element.querySelector('.wings')
-    wings.setAttributeNS(null, 'transform', rotate)
-  }
 }
 
 export { Mill }

@@ -1,3 +1,4 @@
+import { EVENTS } from '../constants'
 import { t } from '../translations'
 
 import { Tab } from './tab'
@@ -10,6 +11,12 @@ import { Tab } from './tab'
  * @todo Implement handedness setting
  */
 class TabSettings extends Tab {
+  _getEventMap () {
+    return {
+      change: this.__handleChange.bind(this)
+    }
+  }
+
   /**
    * Add new element to the DOM
    * @protected
@@ -23,15 +30,20 @@ class TabSettings extends Tab {
     this.__mountForm()
   }
 
+  __handleChange (eventTarget) {
+    const volume = eventTarget.valueAsNumber
+    const event = new CustomEvent(
+      EVENTS.VOLUME,
+      { detail: { volume } }
+    )
+    this._eventNode.dispatchEvent(event)
+  }
+
   /**
    * Add Settings form to the DOM
    * @private
    */
   __mountForm () {
-    const languages = [{
-      value: 'en', text: t('LANGUAGE_EN')
-    }]
-
     const form = this._createHtmlElement(
       'form',
       {
@@ -41,6 +53,24 @@ class TabSettings extends Tab {
       },
       []
     )
+
+    this.__mountLanguage(form)
+    /*
+    this.__mountTypingSpeed(form)
+    */
+    this.__mountVolume(form)
+    this.element.appendChild(form)
+  }
+
+  /**
+   * Relevant to spoken language
+   * @private
+   * @param {HTMLFormElement} form
+   */
+  __mountLanguage (form) {
+    const languages = [{
+      value: 'en', text: t('LANGUAGE_EN')
+    }]
 
     const fieldset = this._createHtmlElement(
       'fieldset',
@@ -75,6 +105,18 @@ class TabSettings extends Tab {
       languageSelect.appendChild(option)
     })
 
+    fieldset.appendChild(legend)
+    fieldset.appendChild(languageSelect)
+    form.appendChild(fieldset)
+  }
+
+  /**
+   * Form settings regarding speed of typing
+   * @private
+   * @param {HTMLFormElement} form
+   */
+  /*
+  __mountTypingSpeed (form) {
     const typingLabel = this._createHtmlElement(
       'label',
       {},
@@ -94,13 +136,39 @@ class TabSettings extends Tab {
       []
     )
 
-    fieldset.appendChild(legend)
-    fieldset.appendChild(languageSelect)
-    fieldset.appendChild(typingLabel)
-    fieldset.appendChild(typingSpeed)
+    form.appendChild(typingLabel)
+    form.appendChild(typingSpeed)
+  }
+  */
 
-    form.appendChild(fieldset)
-    this.element.appendChild(form)
+  /**
+   * Control volume of game sounds.
+   * @private
+   * @param {HTMLFormElement} form
+   */
+  __mountVolume (form) {
+    const volumeLabel = this._createHtmlElement(
+      'label',
+      {},
+      [ 'settings__label--volume' ]
+    )
+    const volumeLabelText = document.createTextNode(t('VOLUME'))
+    volumeLabel.appendChild(volumeLabelText)
+
+    const volume = this._createHtmlElement(
+      'input',
+      {
+        type: 'range',
+        min: 0,
+        max: 1,
+        value: 0.3,
+        step: 0.1
+      },
+      [ 'settings__label--volume__input' ]
+    )
+
+    form.appendChild(volumeLabel)
+    form.appendChild(volume)
   }
 }
 

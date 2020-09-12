@@ -201,12 +201,21 @@ class FourCastleWorld extends BaseWorld {
    */
   __addKnight () {
     const { x, y, h, w } = this._boundingBox
+    const { height, width, isOnRight } = this._controls
+
     const properties = {
       boundingBox: {
         x: x + w * 0.05,
         y: y + h * 0.40,
         height: h * 0.45,
         width: w * 0.9,
+      },
+      controls: {
+        x: this._controls.x,
+        y: this._controls.y,
+        height,
+        width,
+        isOnRight,
       },
       eventNode: this._eventNode,
       parent: this.element

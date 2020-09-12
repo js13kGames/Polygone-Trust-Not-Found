@@ -1,4 +1,5 @@
-import { VOICES } from '../constants'
+import { EVENTS, MEMORIES, VOICES, WORLDS } from '../constants'
+
 import { Person } from './person'
 
 /**
@@ -11,6 +12,7 @@ class Narrator extends Person {
    */
   constructor (properties) {
     super(properties)
+
     /** Name of the narrator */
     this.name = '???'
     /** Voice of the narrator */
@@ -18,6 +20,16 @@ class Narrator extends Person {
 
     this._hue = 42
     this._updateView()
+  }
+
+  /**
+   * Remember having seen this message.
+   * @public
+   * @param {Array<string>} messages
+   */
+  showText (messages) {
+    super.showText(messages)
+    this.__makeMemory()
   }
 
   /**
@@ -29,8 +41,8 @@ class Narrator extends Person {
     super._mount(parent)
     const { x, y, h, w } = this._boundingBox
 
-    const left   = x + w * 0.1
-    const right  = x + w * 0.2
+    let left   = x + w * 0.1
+    let right  = x + w * 0.2
     const top    = y + h * 0.2
     const bottom = y + h * 0.5
 
@@ -75,6 +87,32 @@ class Narrator extends Person {
     super._updateView()
     const avatar = this.element.querySelector('.speaker-avatar__pic--narrator')
     avatar.style.setProperty('--hue', this._hue + '', '')
+  }
+
+  /**
+   * Remember this encounter.
+   * @private
+   */
+  __makeMemory () {
+    const { day, hour, minute } = this.__clock
+
+    const when = 'Day ' + day + ' - ' + [
+      ('00' + hour).slice(-2),
+      ('00' + minute).slice(-2)
+    ].join(':')
+
+    const detail = {
+      who: this.name,
+      when,
+      what: MEMORIES.MET_NARRATOR,
+      why: MEMORIES.GAME_STARTED,
+      where: WORLDS.INTRO,
+    }
+    const event = new CustomEvent(
+      EVENTS.NARRATOR,
+      { detail }
+    )
+    this._eventNode.dispatchEvent(event)
   }
 }
 

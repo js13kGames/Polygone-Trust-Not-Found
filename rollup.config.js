@@ -20,7 +20,7 @@ export default {
   input: './src/app.js',
   output: {
     file: './tmp/app.js',
-    format: 'iife'
+    format: 'iife',
   },
   plugins: [
     copy({

@@ -13,7 +13,11 @@ const T = {
   NO_MEMORIES: 'Make some encounters.',
   SETTINGS: 'Settings',
   TYPING: 'Typing speed',
-  WELCOME: 'Welcome, stranger'
+  VOLUME: 'Volume',
+  WELCOME: [
+    'Oh, good that you are there!',
+    'We need your help!'
+  ]
 }
 
 /**

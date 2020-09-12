@@ -38,13 +38,16 @@ class Sun extends WithParent {
   }
 
   _handleGameTimeUpdate (clock) {
-    const { hour, minute } = clock
-    if (!hour || !minute) {
-      // TODO: Investigate
+    if (typeof clock.hour === 'undefined') {
+      console.warn('Invalid event', clock)
+      return
+    }
+    if (typeof clock.minute === 'undefined') {
       console.warn('Invalid event', clock)
       return
     }
 
+    const { hour, minute } = clock
     const { x, y, h, w } = this._boundingBox
 
     const dawn = 6

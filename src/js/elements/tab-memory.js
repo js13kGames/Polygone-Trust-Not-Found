@@ -1,3 +1,4 @@
+import { EVENTS } from '../constants'
 import { t } from '../translations'
 
 import { Tab } from './tab'
@@ -9,6 +10,28 @@ import { Tab } from './tab'
  * @extends Tab
  */
 class TabMemory extends Tab {
+  constructor (properties) {
+    super(properties)
+
+    /**
+     * All memories made in this game.
+     * @private
+     */
+    this.__memories = []
+    this._updateView()
+  }
+
+  /**
+   * React to certain events
+   * @protected
+   * @returns {{}}
+   */
+  _getEventMap () {
+    return {
+      [ EVENTS.NARRATOR ]: this.__handleMetNarrator.bind(this)
+    }
+  }
+
   /**
    * Add new element to the DOM
    * @protected
@@ -17,9 +40,47 @@ class TabMemory extends Tab {
   _mount (parent) {
     super._mount(parent)
     this.element.setAttribute('id', 'tab-memory')
-    this.element.querySelector('.tab-view__header').textContent = t('MEMORY')
-
     this.__mountMemory()
+  }
+
+  /**
+   * Update the UI
+   * @protected
+   */
+  _updateView () {
+    const header = this.element.querySelector('.tab-view__header')
+    header.textContent = t('MEMORY')
+
+    this.__clearMemories()
+    this.__renderMemories()
+  }
+
+  /**
+   * Removes all memories from the UI.
+   * @private
+   */
+  __clearMemories () {
+    const list = this.element.querySelector('.memories')
+    if (list && list.children.length > 0) {
+      Array.from(list.children).forEach((item) => {
+        list.removeChild(item)
+      })
+    }
+  }
+
+  /**
+   * Remember the encounter with the narrator
+   * @private
+   * @param {{}} eventDetail
+   * @param {string} eventDetail.who
+   * @param {string} eventDetail.when
+   * @param {string} eventDetail.what
+   * @param {string} eventDetail.why
+   * @param {string} eventDetail.where
+   */
+  __handleMetNarrator (eventDetail) {
+    this.__memories.push(eventDetail)
+    this._updateView()
   }
 
   /**
@@ -32,9 +93,44 @@ class TabMemory extends Tab {
       {},
       []
     )
-    const text = document.createTextNode(t('NO_MEMORIES'))
+    const text = document.createTextNode('')
     memory.appendChild(text)
     this.element.appendChild(memory)
+  }
+
+  /**
+   * Updates UI with all memories
+   * @private
+   */
+  __renderMemories () {
+    if (this.__memories.length > 0) {
+      this.element.querySelector('p').textContent = ''
+
+      const list = this._createHtmlElement(
+        'ol',
+        {},
+        [ 'memories' ]
+      )
+      this.element.appendChild(list)
+
+      this.__memories.forEach((memory) => {
+        const element = this._createHtmlElement(
+          'li',
+          {},
+          [ 'memory' ]
+        )
+
+        const { who, when, what, why, where } = memory
+        // TODO: Make translateable
+        const text = document.createTextNode(`
+          I ${what} „${who}” in ${where} at ${when} because ${why}
+        `)
+        element.appendChild(text)
+        list.appendChild(element)
+      })
+    } else {
+      this.element.querySelector('p').textContent = t('NO_MEMORIES')
+    }
   }
 }
 

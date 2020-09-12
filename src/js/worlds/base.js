@@ -1,4 +1,4 @@
-import { NOTES } from '../constants'
+import { EVENTS, NOTES } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
 /**
@@ -18,14 +18,17 @@ class BaseWorld extends WithParent {
     this.melody = []
 
     /**
-     * How loud shall the music be played?
-     */
-    this.gain = 0.3;
-
-    /**
      * Flag to indicate, whether this world is shown in the UI.
+     * @protected
      */
     this._isActive = false
+
+    /**
+     * How loud shall the music be played?
+     * @private
+     */
+    this.__volume = 0.3;
+
     this._updateView()
   }
 
@@ -78,7 +81,7 @@ class BaseWorld extends WithParent {
         .connect(audioContext.destination)
 
       oscillator.start(previousTime)
-      gainNode.gain.setValueAtTime(this.gain, previousTime)
+      gainNode.gain.setValueAtTime(this.__volume, previousTime)
 
       this.melody
         .map((note) => {
@@ -144,6 +147,17 @@ class BaseWorld extends WithParent {
   }
 
   /**
+   * Listen to some events.
+   * @protected
+   * @return {{}}
+   */
+  _getEventMap () {
+    return {
+      [ EVENTS.VOLUME ]: this.__handleGameVolumeChange.bind(this)
+    }
+  }
+
+  /**
    * Add a new element to the DOM.
    * @param {HTMLElement} parent
    */
@@ -174,6 +188,16 @@ class BaseWorld extends WithParent {
     } else {
       this.element.classList.add('hidden')
     }
+  }
+
+  /**
+   * Handle change in volume by the user.
+   * @private
+   * @param {{}}     eventDetail
+   * @param {Number} eventDetail.volume
+   */
+  __handleGameVolumeChange (eventDetail) {
+    this.__volume = eventDetail.volume
   }
 }
 
