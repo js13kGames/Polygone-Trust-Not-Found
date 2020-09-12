@@ -19,7 +19,7 @@ export default {
   input: './src/app.js',
   output: {
     file: './tmp/app.js',
-    format: 'iife'
+    format: 'umd'
   },
   plugins: [
     copy({
