@@ -11,6 +11,7 @@ const EN = {
   INVENTORY: 'Inventory',
   LANGUAGE: 'Language',
   LANGUAGE_EN: 'English',
+  LINK_TITLE: 'I played »Polygone - Trust Not Found«',
   MEMORY: 'Memory',
   NEW_GAME: 'New Game',
   NO_ITEMS: 'No items.',

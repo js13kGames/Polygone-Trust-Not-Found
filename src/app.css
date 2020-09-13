@@ -74,14 +74,15 @@ nav {
   margin: 0.5em;
 }
 
-.nav-link,
-.nav-link:visited {
+a,
+a:visited {
   color: var(--text-color);
   padding: 0.5em;
+  line-height: 1.6;
 }
 
-.nav-link:hover,
-.nav-link:active {
+a:hover,
+a:active {
   color: var(--background-color);
   background-color: var(--text-color);
 }

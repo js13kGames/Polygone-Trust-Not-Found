@@ -1,6 +1,7 @@
 import { WithParent } from '../mixins/with-parent'
 import { t } from '../translations'
 
+import { Share } from './share'
 import { TabDebug } from './tab-debug'
 import { TabInventory } from './tab-inventory'
 import { TabMemory } from './tab-memory'
@@ -11,6 +12,11 @@ import { TabSettings } from './tab-settings'
  * @extends WithParent
  */
 class Navigation extends WithParent {
+  /**
+   * Adds a new element to the DOM.
+   * @protected
+   * @param {HTMLElement} parent
+   */
   _mount (parent) {
     this.element = this._createHtmlElement(
       'section',
@@ -19,11 +25,14 @@ class Navigation extends WithParent {
     )
 
     parent.appendChild(this.element)
-    this._mountNavigation()
+    this.__mountNavigation()
   }
 
-  _mountNavigation () {
-    // TODO: Move somewhere else
+  /**
+   * Adds the content of the navigation.
+   * @private
+   */
+  __mountNavigation () {
     const navListItems = [{
       href: '#tab-inventory',
       text: t('INVENTORY')
@@ -74,6 +83,27 @@ class Navigation extends WithParent {
     this.element.appendChild(nav)
 
     this.__mountTabViews()
+    this.__mountShare()
+  }
+
+  /**
+   * Mounts share button to the DOM.
+   * @private
+   */
+  __mountShare () {
+    const { x, y, h, w } = this._boundingBox
+
+    const properties = {
+      boundingBox: {
+        x,
+        y,
+        height: h,
+        width: w
+      },
+      parent: this.element,
+      eventNode: this._eventNode
+    }
+    new Share(properties)
   }
 
   /**

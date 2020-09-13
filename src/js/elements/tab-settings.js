@@ -94,6 +94,7 @@ class TabSettings extends Tab {
       []
     )
 
+    // TODO: Add Theme switcher
     this.__mountHandedness(form)
     /*
     this.__mountLanguage(form)

@@ -69,6 +69,7 @@
  *     WithParent        <|-- Mill
  *     WithParent        <|-- Navigation
  *     WithParent        <|-- Sea
+ *     WithParent        <|-- Share
  *     WithParent        <|-- SixPortal
  *     WithParent        <|-- Sun
  *     WithParent        <|-- Tab
@@ -450,7 +451,7 @@ class Game {
       eventNode: this._eventNode
     }
 
-    this.navigation = new Navigation(properties)
+    new Navigation(properties)
     this.canvas = new Canvas(properties)
   }
 
