@@ -1,3 +1,4 @@
+import { EVENTS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
 /**
@@ -5,6 +6,17 @@ import { WithParent } from '../mixins/with-parent'
  * @extends {WithParent}
  */
 class Castle extends WithParent {
+  /**
+   * Listen to changes in time.
+   * @protected
+   * @returns {{}}
+   */
+  _getEventMap () {
+    return {
+      [ EVENTS.TICK ]: this.__handleGameTimeUpdate.bind(this)
+    }
+  }
+
   /**
    * Adds the Castle as composition of SVG Elements to the DOM.
    * @protected
@@ -18,10 +30,22 @@ class Castle extends WithParent {
     )
 
     parent.appendChild(this.element)
-    this._mountLeftTower()
-    this._mountMain()
-    this._mountCrenellations(4)
-    this._mountRightTower()
+    this.__mountLeftTower()
+    this.__mountMain()
+    this.__mountCrenellations(4)
+    this.__mountRightTower()
+  }
+
+  /**
+   * Reduce life over time.
+   * @private
+   * @param {{}}     clock
+   * @param {Number} clock.day
+   * @param {Number} clock.hour
+   * @param {Number} clock.minute
+   */
+  __handleGameTimeUpdate (clock) {
+    this._mapTimeToLife(clock)
   }
 
   /**
@@ -29,7 +53,7 @@ class Castle extends WithParent {
    * @private
    * @param {Number} numberOfCrenellations
    */
-  _mountCrenellations (numberOfCrenellations) {
+  __mountCrenellations (numberOfCrenellations) {
     const { x, y, h, w } = this._boundingBox
 
     const breadth = w * 0.7 / (numberOfCrenellations * 2 + 1)
@@ -62,7 +86,7 @@ class Castle extends WithParent {
    * This adds the left tower to the castle.
    * @private
    */
-  _mountLeftTower () {
+  __mountLeftTower () {
     const { x, y, h, w } = this._boundingBox
 
     const left = x
@@ -90,7 +114,7 @@ class Castle extends WithParent {
    * I originally planned to add more details to it, but lacked the time.
    * @private
    */
-  _mountMain () {
+  __mountMain () {
     const { x, y, h, w } = this._boundingBox
 
     const left = x + w * 0.15
@@ -117,7 +141,7 @@ class Castle extends WithParent {
    * This adds the right tower to the castle.
    * @private
    */
-  _mountRightTower () {
+  __mountRightTower () {
     const { x, y, h, w } = this._boundingBox
 
     const left = x + w - w * 0.15

@@ -1,4 +1,4 @@
-import { VOICES } from '../constants'
+import { EVENTS, VOICES } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
 /**
@@ -33,6 +33,17 @@ class TextBox extends WithParent {
   showText (messages) {
     this.text = messages
     this._updateView()
+  }
+
+  /**
+   * Listen to changes in time.
+   * @protected
+   * @returns {{}}
+   */
+  _getEventMap () {
+    return {
+      [ EVENTS.TICK ]: this.__handleGameTimeUpdate.bind(this)
+    }
   }
 
   /**
@@ -114,6 +125,18 @@ class TextBox extends WithParent {
     if (text.children.length > 0) {
       Array.from(text.children).forEach((child) => text.removeChild(child))
     }
+  }
+
+  /**
+   * Reduce life over time.
+   * @private
+   * @param {{}}     clock
+   * @param {Number} clock.day
+   * @param {Number} clock.hour
+   * @param {Number} clock.minute
+   */
+  __handleGameTimeUpdate (clock) {
+    this._mapTimeToLife(clock)
   }
 
   /**

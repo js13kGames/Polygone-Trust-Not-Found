@@ -99,19 +99,21 @@ class Mill extends WithParent {
       console.warn('Invalid event', clock)
       return
     }
+    const { MEDIUM, STRONG } = WIND_STRENGTHS
 
     // Must be divisable by 2/3 without remainder!
     let factor = 1.5
 
-    if (this._windStrength === WIND_STRENGTHS.MEDIUM) {
+    if (this._windStrength === MEDIUM) {
       factor = 6
     }
 
-    if (this._windStrength === WIND_STRENGTHS.STRONG) {
+    if (this._windStrength === STRONG) {
       factor = 9
     }
 
     this._degree = clock.minute * factor
+    this._mapTimeToLife(clock)
     this._updateView()
   }
 

@@ -54,7 +54,7 @@ class WithEventListener extends WithBoundingBox {
       }
 
       // Everything else
-      console.warn(`Unknown event type ${type}`)
+      console.warn(`Unknown event type ${type}`, event)
       return
     } else {
       console.warn(`No callback for ${event.type}`)

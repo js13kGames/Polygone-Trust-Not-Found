@@ -28,6 +28,23 @@ class WithLife extends WithEventListener {
   }
 
   /**
+   * Reduce life over time.
+   * @protected
+   * @param {{}}     clock
+   * @param {Number} clock.day
+   * @param {Number} clock.hour
+   * @param {Number} clock.minute
+   */
+  _mapTimeToLife (clock) {
+    const { day, hour, minute } = clock
+    const dayInMinutes = 24 * 60
+    const max = 7 * dayInMinutes
+    const current = (day - 1) * dayInMinutes + hour * 60 + minute
+    this._life = 100 * (max - current) / max
+    this._updateView()
+  }
+
+  /**
    * Updates UI.
    * @protected
    */
