@@ -1,4 +1,4 @@
-import { DIRECTIONS, EVENTS, WORLDS } from '../constants'
+import { EVENTS, WORLDS } from '../constants'
 import { t } from '../translations'
 
 import { BaseWorld } from './base'
@@ -35,6 +35,33 @@ class TitleWorld extends BaseWorld {
    */
   _addForeground () {
     this.__mountButton()
+  }
+
+  /**
+   * Register a click event handler.
+   * @protected
+   * @returns {{}}
+   */
+  _getEventMap () {
+    return {
+      click: this.__handleClick.bind(this)
+    }
+  }
+
+  /**
+   * Start game clock
+   * @private
+   * @param {HTMLElement} eventTarget
+   */
+  __handleClick (eventTarget) {
+    if (!this.isActive()) {
+      return
+    }
+    const event = new CustomEvent(
+      EVENTS.START,
+      { detail: null }
+    )
+    this._eventNode.dispatchEvent(event)
   }
 
   /**

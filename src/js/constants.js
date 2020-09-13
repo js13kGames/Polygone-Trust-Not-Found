@@ -15,6 +15,7 @@ const DIRECTIONS = {
 const EVENTS = {
   HANDEDNESS: 'game:handedness:change',
   INTRO: 'game:memory:narrator',
+  START: 'game:time:started',
   TICK: 'game:time:update',
   TURN: 'game:controls:turn',
   VOLUME: 'game:volume:change',

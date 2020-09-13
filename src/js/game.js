@@ -387,7 +387,6 @@ class Game {
     // TODO: Only in debug builds?
     this.__addTime()
     this.__addControls()
-    this.startTime()
     this.switchWorld({ nextWorld: firstWorld })
   }
 
@@ -429,6 +428,7 @@ class Game {
   _getEventMap () {
     return {
       [ EVENTS.HANDEDNESS ]: this.__handleHandednessChange.bind(this),
+      [ EVENTS.START ]: this.__handleGameStart.bind(this),
       [ EVENTS.TURN ]: this.__handleGameControlsTurn.bind(this),
       [ EVENTS.WORLD ]: this.switchWorld.bind(this)
     }
@@ -511,6 +511,14 @@ class Game {
     const currentWorld = this.getCurrentWorld()
     const nextWorld = currentWorld[ eventDetail.direction ]
     this.switchWorld({ nextWorld })
+  }
+
+  /**
+   * Initiate start of the game clock.
+   * @private
+   */
+  __handleGameStart () {
+    this.startTime()
   }
 
   /**

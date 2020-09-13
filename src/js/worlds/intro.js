@@ -25,6 +25,7 @@ class IntroWorld extends BaseWorld {
 
   /**
    * Adds elements to the scene.
+   * @public
    */
   addScene () {
     this._addForeground()
