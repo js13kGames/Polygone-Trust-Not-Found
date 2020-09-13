@@ -1,4 +1,4 @@
-import { EVENTS, NOTES, WORLDS } from '../constants'
+import { EVENTS, NOTES, WIND_STRENGTHS, WORLDS } from '../constants'
 import { WithParent } from '../mixins/with-parent'
 
 /**
@@ -59,6 +59,34 @@ class BaseWorld extends WithParent {
     this._addBackground()
     this._addMiddleground()
     this._addForeground()
+  }
+
+  /**
+   * Informs the game about a change in the wind.
+   * @public
+   * @fires {world:wind:change}
+   */
+  fireWindChange () {
+    const dice = this._rollDice()
+    const { STILL, MEDIUM, STRONG } = WIND_STRENGTHS
+
+    const winds = [
+      null,
+      STILL, STILL,
+      MEDIUM, MEDIUM, MEDIUM,
+      STRONG,
+    ]
+
+    const wind = winds[ dice ]
+
+    /**
+     * @event world:wind:change
+     * @type {{}}
+     * @property {{}}     detail
+     * @property {string} detail.wind
+     */
+    const event = new CustomEvent(EVENTS.WIND, { detail: { wind }})
+    this._eventNode.dispatchEvent(event)
   }
 
   /**
@@ -178,6 +206,7 @@ class BaseWorld extends WithParent {
    */
   _getEventMap () {
     return {
+      [ EVENTS.TICK ]: this.__handleGameTimeUpdate.bind(this),
       [ EVENTS.VOLUME ]: this.__handleGameVolumeChange.bind(this)
     }
   }
@@ -212,6 +241,20 @@ class BaseWorld extends WithParent {
       this.element.classList.remove('hidden')
     } else {
       this.element.classList.add('hidden')
+    }
+  }
+
+  /**
+   * Perhaps update the wind strength.
+   * @private
+   * @param {{}}     clock
+   * @param {Number} clock.day
+   * @param {Number} clock.hour
+   * @param {Number} clock.minute
+   */
+  __handleGameTimeUpdate (clock) {
+    if (clock.minute === 0) {
+      this.fireWindChange()
     }
   }
 

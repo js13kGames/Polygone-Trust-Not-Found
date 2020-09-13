@@ -1,4 +1,4 @@
-import { EVENTS, WIND_STRENGTHS, WORLDS } from '../constants'
+import { WORLDS } from '../constants'
 import { t } from '../translations'
 
 import { Background } from '../elements/background'
@@ -57,13 +57,6 @@ class FourCastleWorld extends BaseWorld {
       'C1', 'h1', 'C1', 'D1',
       'h4'
     ]
-
-    /**
-     * The return value for changing the wind.
-     * @type {Number|null}
-     * @private
-     */
-    this.__windChangeHandle = null
   }
 
   /**
@@ -78,39 +71,6 @@ class FourCastleWorld extends BaseWorld {
     this.__addCastle()
     this._addForeground()
     this.__addKnight()
-
-    this.fireWindChange()
-    const self = this
-    const delay = 4 * 1000  // TODO: Bind to clock
-    this.__windChangeHandle = setInterval(self.fireWindChange.bind(self), delay)
-  }
-
-  /**
-   * Informs the game about a change in the wind.
-   * @public
-   * @fires {world:wind:change}
-   */
-  fireWindChange () {
-    const dice = this._rollDice()
-    const { STILL, MEDIUM, STRONG } = WIND_STRENGTHS
-
-    const winds = [
-      null,
-      STILL, STILL,
-      MEDIUM, MEDIUM, MEDIUM,
-      STRONG,
-    ]
-
-    const wind = winds[ dice ]
-
-    /**
-     * @event world:wind:change
-     * @type {{}}
-     * @property {{}}     detail
-     * @property {string} detail.wind
-     */
-    const event = new CustomEvent(EVENTS.WIND, { detail: { wind }})
-    this._eventNode.dispatchEvent(event)
   }
 
   /*
