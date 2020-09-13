@@ -3,6 +3,7 @@
  * @enum {String}
  */
 const EN = {
+  GAME_OVER: 'Game Over',
   HANDEDNESS: 'Handedness',
   HANDEDNESS_LEFT: 'Left-handed',
   HANDEDNESS_RIGHT: 'Right-handed',
@@ -11,10 +12,16 @@ const EN = {
   LANGUAGE_EN: 'English',
   LINK_TITLE: 'Share on Twitter',
   MEMORY: 'Memory',
+  MEMORY_ENTERED_FIVE_TOWN: 'entered Five Town',
   MEMORY_ENTERED_FOUR_CASTLE: 'entered Four Castle',
+  MEMORY_ENTERED_SIX_MOUNTAIN: 'entered Six Mountain',
+  MEMORY_ENTERED_THREE_VILLAGE: 'entered Three Village',
   MEMORY_GAME_STARTED: 'the game started',
+  MEMORY_MET_FISHERWOMAN: 'met the Fisherwoman',
   MEMORY_MET_KNIGHT: 'met the Knight',
   MEMORY_MET_NARRATOR: 'met the Narrator',
+  MEMORY_MET_PILOT: 'met the Pilot',
+  MEMORY_MET_SCRIBE: 'met the Scribe',
   NEW_GAME: 'New Game',
   NO_ITEMS: 'No items.',
   NO_MEMORIES: 'Make some encounters.',
@@ -24,6 +31,7 @@ const EN = {
   TITLE_FIVE_TOWN: 'At Five Town',
   TITLE_FOUR_CASTLE: 'At Four Castle',
   TITLE_FOUR_PORTAL: 'At Four Portal',
+  TITLE_GAME_OVER: 'Game Over',
   TITLE_INTRO: 'At the beginning',
   TITLE_PORTAL: 'At Portal',
   TITLE_SIX_MOUNTAIN: 'At Six Mountain',

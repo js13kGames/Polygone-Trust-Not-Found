@@ -57,7 +57,7 @@ class Knight extends Person {
   }
 
   /**
-   * Listen to when user switched to Intro world.
+   * Listen to when user switched to FourCastleWorld.
    * @private
    * @param {{}}     eventDetail
    * @param {String} eventDetail.nextWorld

@@ -6,6 +6,15 @@ import { WithParent } from '../mixins/with-parent'
  */
 class Hut extends WithParent {
   /**
+   * @param {PropertiesWithParent} properties
+   */
+  constructor (properties) {
+    super(properties)
+    this._hue = 15
+    this._updateView()
+  }
+
+  /**
    * Adds a new element to the DOM.
    * @protected
    * @param {HTMLElement} parent
@@ -18,11 +27,23 @@ class Hut extends WithParent {
     )
 
     parent.appendChild(this.element)
-    this._mountRoof()
-    this._mountBuilding()
+    this.__mountRoof()
+    this.__mountBuilding()
   }
 
-  _mountBuilding () {
+  /**
+   * Updates the UI
+   * @protected
+   */
+  _updateView () {
+    this._cssVar(this.element, {'--hue': this._hue + ''})
+  }
+
+  /**
+   * Mount the main part of the hut.
+   * @private
+   */
+  __mountBuilding () {
     const { x, y, h, w } = this._boundingBox
     const top = y
     const bottom = y + h * 0.8
@@ -45,7 +66,11 @@ class Hut extends WithParent {
     this.element.appendChild(roof)
   }
 
-  _mountRoof () {
+  /**
+   * Mount the roof part of the hut.
+   * @private
+   */
+  __mountRoof () {
     const { x, y, h, w } = this._boundingBox
     const top = y
     const bottom = y + h * 0.6

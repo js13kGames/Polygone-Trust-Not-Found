@@ -1,3 +1,5 @@
+import { EVENTS, MEMORIES, VOICES, WORLDS } from '../constants'
+
 import { Person } from './person'
 
 /**
@@ -20,17 +22,25 @@ class Pilot extends Person {
   }
 
   /**
+   * Listen to world changes.
+   * @protected
+   * @returns {{}}
+   */
+  _getEventMap () {
+    const otherEvents = super._getEventMap()
+    return Object.assign(otherEvents, {
+      [ EVENTS.WORLD ]: this.__handleWorldSwitch.bind(this)
+    })
+  }
+
+  /**
    * Add new element to the DOM.
    * @protected
    * @param {HTMLElement} parent
    */
   _mount (parent) {
-    this.element = this._svg(
-      'g',
-      {},
-      [ 'speaker-avatar__pic', 'speaker-avatar__pic--pilot' ]
-    )
-    parent.appendChild(this.element)
+    super._mount(parent)
+    this.__addFace()
   }
 
   /**
@@ -43,6 +53,34 @@ class Pilot extends Person {
     this._cssVar(avatar, {'--hue': this._hue + ''})
   }
 
+  /**
+   * Adds the face of the pilot.
+   * @private
+   */
+  __addFace () {
+    const face = this._svg(
+      'g',
+      {},
+      [ 'speaker-avatar__pic', 'speaker-avatar__pic--pilot' ]
+    )
+    this.element.insertBefore(face, this.element.firstChild)
+  }
+
+  /**
+   * Listen to when user switched to SixMountainWorld.
+   * @private
+   * @param {{}}     eventDetail
+   * @param {String} eventDetail.nextWorld
+   */
+  __handleWorldSwitch ({ nextWorld }) {
+    if (nextWorld === WORLDS.SIX_MOUNTAIN) {
+      this._makeMemory(
+        MEMORIES.MET_PILOT,             // what
+        MEMORIES.ENTERED_SIX_MOUNTAIN,  // when
+        WORLDS.SIX_MOUNTAIN,            // where
+      )
+    }
+  }
 }
 
 export { Pilot }

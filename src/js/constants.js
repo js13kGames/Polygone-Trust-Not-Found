@@ -15,6 +15,7 @@ const DIRECTIONS = {
  * @enum {String}
  */
 const EVENTS = {
+  GAME_OVER: 'game:time:stopped',
   HANDEDNESS: 'game:handedness:change',
   INTRO: 'game:memory:narrator',
   START: 'game:time:started',
@@ -39,10 +40,16 @@ const HANDEDNESS = {
  * @enum {String}
  */
 const MEMORIES = {
+  ENTERED_FIVE_TOWN: t('MEMORY_ENTERED_FIVE_TOWN'),
   ENTERED_FOUR_CASTLE: t('MEMORY_ENTERED_FOUR_CASTLE'),
+  ENTERED_SIX_MOUNTAIN: t('MEMORY_ENTERED_SIX_MOUNTAIN'),
+  ENTERED_THREE_VILLAGE: t('MEMORY_ENTERED_THREE_VILLAGE'),
   GAME_STARTED: t('MEMORY_GAME_STARTED'),
+  MET_FISHERWOMAN: t('MEMORY_MET_FISHERWOMAN'),
   MET_KNIGHT: t('MEMORY_MET_KNIGHT'),
   MET_NARRATOR: t('MEMORY_MET_NARRATOR'),
+  MET_PILOT: t('MEMORY_MET_PILOT'),
+  MET_SCRIBE: t('MEMORY_MET_SCRIBE'),
 }
 
 /**
@@ -100,6 +107,7 @@ const WORLDS = {
   FIVE_TOWN: 'five-town',
   FOUR_CASTLE: 'four-castle',
   FOUR_PORTAL: 'four-portal',
+  GAME_OVER: 'game-over',
   INTRO: 'intro',
   PORTAL: 'portal',
   SIX_MOUNTAIN: 'six-mountain',

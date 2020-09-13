@@ -2,6 +2,7 @@ import { EVENTS, WORLDS } from '../constants'
 import { t } from '../translations'
 
 import { Guild } from '../elements/guild'
+import { Scribe } from '../elements/scribe'
 import { Sun } from '../elements/sun'
 
 import { BaseWorld } from './base'
@@ -38,22 +39,11 @@ class FiveTownWorld extends BaseWorld {
   }
 
   /**
-   * Add elements to the scene.
-   * @public
-   */
-  addScene () {
-    this._addBackground()
-    this.__addSun()
-    this._addMiddleground()
-    this._addForeground()
-    this.__addGuild()
-  }
-
-  /**
-   * Currently the background is empty.
+   * You can see the sun in the background
    * @protected
    */
   _addBackground () {
+    this.__addSun()
   }
 
   /**
@@ -61,12 +51,14 @@ class FiveTownWorld extends BaseWorld {
    * @protected
    */
   _addForeground () {
+    this.__addScribe()
   }
 
   /**
-   * Currently, the middleground is empty.
+   * You can see guild buildings in the middleground.
    */
   _addMiddleground () {
+    this.__addGuild()
   }
 
   /**
@@ -90,6 +82,34 @@ class FiveTownWorld extends BaseWorld {
     new Guild(properties)
   }
 
+  /**
+   * Adds the scribe to the scene.
+   * @private
+   */
+  __addScribe () {
+    const { x, y, h, w } = this._boundingBox
+    const { height, width, isOnRight } = this._controls
+
+    const properties = {
+      boundingBox: {
+        x: x + w * 0.05,
+        y: y + h * 0.40,
+        height: y + h * 0.45,
+        width: w * 0.9,
+      },
+      controls: {
+        x: this._controls.x,
+        y: this._controls.y,
+        height,
+        width,
+        isOnRight,
+      },
+      eventNode: this._eventNode,
+      parent: this.element
+    }
+
+    new Scribe(properties)
+  }
 
   /**
    * Add a sun to the scene.

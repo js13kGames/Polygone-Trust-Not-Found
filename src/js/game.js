@@ -35,6 +35,7 @@
  *     BaseWorld         <|-- FiveTownWorld
  *     BaseWorld         <|-- FourCastleWorld
  *     BaseWorld         <|-- FourPortalWorld
+ *     BaseWorld         <|-- GameOverWorld
  *     BaseWorld         <|-- IntroWorld
  *     BaseWorld         <|-- PortalWorld
  *     BaseWorld         <|-- SixMountainWorld
@@ -56,6 +57,7 @@
  *     WithLife          <|-- WithSympathy
  *     WithParent        <|-- Background
  *     WithParent        <|-- BaseWorld
+ *     WithParent        <|-- Beach
  *     WithParent        <|-- Canvas
  *     WithParent        <|-- Castle
  *     WithParent        <|-- Controls
@@ -75,6 +77,7 @@
  *     WithParent        <|-- Tab
  *     WithParent        <|-- TextBox
  *     WithParent        <|-- ThreePortal
+ *     WithParent        <|-- Tree
  *     WithSympathy      <|-- WithParent
  *
  *     WithBoundingBox   : Object _boundingBox
@@ -98,6 +101,7 @@ import { WithEventListener } from './mixins/with-event-listener'
 import { Navigation } from './elements/navigation'
 
 import { IntroWorld } from './worlds/intro'
+import { GameOverWorld } from './worlds/game-over'
 import { TitleWorld } from './worlds/title'
 
 import { FivePortalWorld } from './worlds/5-portal'
@@ -230,6 +234,7 @@ class Game {
       FIVE_TOWN,
       FOUR_CASTLE,
       FOUR_PORTAL,
+      GAME_OVER,
       INTRO,
       PORTAL,
       SIX_MOUNTAIN,
@@ -283,6 +288,8 @@ class Game {
       top: SIX_MOUNTAIN
     }, {
       ctr: PortalWorld, left: PORTAL, right: PORTAL, top: PORTAL,
+    }, {
+      ctr: GameOverWorld, left: GAME_OVER, right: GAME_OVER, top: GAME_OVER,
     }]
 
     worlds.forEach((w) => {
@@ -423,6 +430,7 @@ class Game {
    */
   _getEventMap () {
     return {
+      [ EVENTS.GAME_OVER ]: this.__handleGameOver.bind(this),
       [ EVENTS.HANDEDNESS ]: this.__handleHandednessChange.bind(this),
       [ EVENTS.START ]: this.__handleGameStart.bind(this),
       [ EVENTS.TURN ]: this.__handleGameControlsTurn.bind(this),
@@ -504,6 +512,19 @@ class Game {
    */
   __handleGameStart () {
     this.startTime()
+  }
+
+  /**
+   * Game is over
+   * @private
+   */
+  __handleGameOver () {
+    const nextWorld = WORLDS.GAME_OVER
+    const event = new CustomEvent(
+      EVENTS.WORLD,
+      { detail: { nextWorld } }
+    )
+    this._eventNode.dispatchEvent(event)
   }
 
   /**

@@ -1,6 +1,7 @@
 import { EVENTS, WORLDS } from '../constants'
 import { t } from '../translations'
 
+import { Pilot } from '../elements/pilot'
 import { Sun } from '../elements/sun'
 
 import { BaseWorld } from './base'
@@ -38,28 +39,19 @@ class SixMountainWorld extends BaseWorld {
   }
 
   /**
-   * Add elements to the scene.
-   * @public
-   */
-  addScene () {
-    this._addBackground()
-    this.__addSun()
-    this._addMiddleground()
-    this._addForeground()
-  }
-
-  /**
-   * Currently, the background is empty.
+   * You can see the sun if you're lucky.
    * @protected
    */
   _addBackground () {
+    this.__addSun()
   }
 
   /**
-   * Currently the foreground is empty.
+   * The foreground shows the pilot.
    * @protected
    */
   _addForeground () {
+    this.__addPilot()
   }
 
   /**
@@ -67,6 +59,35 @@ class SixMountainWorld extends BaseWorld {
    * @protected
    */
   _addMiddleground () {
+  }
+
+  /**
+   * Shows the pilot.
+   * @private
+   */
+  __addPilot () {
+    const { x, y, h, w } = this._boundingBox
+    const { height, width, isOnRight } = this._controls
+
+    const properties = {
+      boundingBox: {
+        x: x + w * 0.05,
+        y: y + h * 0.40,
+        height: y + h * 0.45,
+        width: w * 0.9,
+      },
+      controls: {
+        x: this._controls.x,
+        y: this._controls.y,
+        height,
+        width,
+        isOnRight,
+      },
+      eventNode: this._eventNode,
+      parent: this.element
+    }
+
+    new Pilot(properties)
   }
 
   /**

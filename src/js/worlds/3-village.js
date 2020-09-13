@@ -1,9 +1,12 @@
 import { EVENTS, WORLDS } from '../constants'
 import { t } from '../translations'
 
+import { Beach } from '../elements/beach'
+import { Fisherwoman } from '../elements/fisherwoman'
 import { Hut } from '../elements/hut'
 import { Sea } from '../elements/sea'
 import { Sun } from '../elements/sun'
+import { Tree } from '../elements/tree'
 
 import { BaseWorld } from './base'
 
@@ -39,55 +42,95 @@ class ThreeVillageWorld extends BaseWorld {
   }
 
   /**
-   * The world shows a sun raising above a coast with sea and sky.
-   * In the middleground, you can see a hut.
-   * @public
-   */
-  addScene () {
-    this._addBackground()
-    this.__addSun()
-    this.__addSea()
-    this._addMiddleground()
-    this._addForeground()
-    this.__addHut()
-  }
-
-  /**
-   * No background.
+   * The background has the sun, the sea and a tree.
    * @protected
    */
   _addBackground () {
+    this.__addSun()
+    this.__addSea()
+    this.__addTree(true)
   }
 
   /**
-   * No foreground.
+   * Adds the hut and the Fisherwoman to the foreground.
    * @protected
    */
   _addForeground () {
+    this.__addHut()
+    this.__addFisherwoman()
   }
 
   /**
-   * No middleground.
+   * You can see a beach in the middleground
    * @protected
    */
   _addMiddleground () {
+    this.__addBeach()
+    this.__addTree(false)
   }
 
-   /**
-    * Adds the hut to the scene.
-    * @private
-    */
-   __addHut () {
+  /**
+   * Adds the beach to the scene.
+   * @private
+   */
+  __addBeach () {
     const { x, y, h, w } = this._boundingBox
-    const controlsWidth = 5 * 3
-    const controlsHeight = 5 * 2
+    const properties = {
+      boundingBox: {
+        x,
+        y: y + h * 0.5,
+        height: h * 0.5,
+        width: w
+      },
+      eventNode: this._eventNode,
+      parent: this.element
+    }
+
+    new Beach(properties)
+  }
+
+  /**
+   * Adds the fisherwoman to the scene.
+   * @private
+   */
+  __addFisherwoman () {
+    const { x, y, h, w } = this._boundingBox
+    const { height, width, isOnRight } = this._controls
 
     const properties = {
       boundingBox: {
-        x: x + controlsWidth,
-        y: y + h * 0.7,
-        height: y + h * 0.25,
-        width: w - controlsWidth * 2
+        x: x + w * 0.05,
+        y: y + h * 0.40,
+        height: y + h * 0.45,
+        width: w * 0.9,
+      },
+      controls: {
+        x: this._controls.x,
+        y: this._controls.y,
+        height,
+        width,
+        isOnRight,
+      },
+      eventNode: this._eventNode,
+      parent: this.element
+    }
+
+    new Fisherwoman(properties)
+  }
+
+  /**
+   * Adds the hut to the scene.
+   * @private
+   */
+  __addHut () {
+    const { x, y, h, w } = this._boundingBox
+
+    const properties = {
+      boundingBox: {
+        x: x + w * 0.15,
+        y: y + h * 0.2,
+        height: y + h * 0.6,
+        width: w * 0.7
       },
       eventNode: this._eventNode,
       parent: this.element
@@ -103,13 +146,12 @@ class ThreeVillageWorld extends BaseWorld {
    */
   __addSea () {
     const { x, y, h, w } = this._boundingBox
-    const backgroundHeight = h / 3
 
     const properties = {
       boundingBox: {
         x,
         y,
-        height: backgroundHeight,
+        height: h * 0.5,
         width: w
       },
       eventNode: this._eventNode,
@@ -139,6 +181,27 @@ class ThreeVillageWorld extends BaseWorld {
     }
 
     new Sun(properties)
+  }
+
+  /**
+   * Adds the tree to the scene.
+   * @private
+   */
+  __addTree (isBackground) {
+    const { x, y, h, w } = this._boundingBox
+
+    const properties = {
+      boundingBox: {
+        x,
+        y: isBackground ? y : y + h * 0.5,
+        height: h * 0.5,
+        width: w * 0.5
+      },
+      eventNode: this._eventNode,
+      parent: this.element
+    }
+
+    new Tree(properties)
   }
 }
 

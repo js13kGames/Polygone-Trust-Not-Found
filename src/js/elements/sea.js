@@ -11,6 +11,7 @@ class Sea extends WithParent {
    */
   constructor (properties) {
     super(properties)
+    this._hue = 250
     this._updateView()
   }
 
@@ -31,6 +32,14 @@ class Sea extends WithParent {
   }
 
   /**
+   * Updates the UI
+   * @protected
+   */
+  _updateView () {
+    this._cssVar(this.element, {'--hue': this._hue + ''})
+  }
+
+  /**
    * Adds the Sky to the scene.
    * @private
    */
@@ -38,7 +47,6 @@ class Sea extends WithParent {
     const { x, y, h, w } = this._boundingBox
 
     const top = y
-    const middle = y + h * 0.5
     const bottom = y + h
     const left = x
     const right = x + w
@@ -46,7 +54,7 @@ class Sea extends WithParent {
     const points = [
       left  + ',' + top,
       right + ',' + top,
-      right + ',' + middle
+      right + ',' + bottom
     ].join(' ')
 
     const sky = this._svg(
@@ -64,16 +72,16 @@ class Sea extends WithParent {
   __mountWaves () {
     const { x, y, h, w } = this._boundingBox
 
-    const top = y
-    const middle = y + h * 0.5
+    const top = y + h * 0.5
+    const middle = x + w * 0.5
     const bottom = y + h
     const left = x
     const right = x + w
 
     const points = [
-      right + ',' + middle,
-      right + ',' + bottom,
-      left  + ',' + bottom,
+      left   + ',' + bottom,
+      middle + ',' + top,
+      right  + ',' + bottom,
     ].join(' ')
 
     const waves = this._svg(

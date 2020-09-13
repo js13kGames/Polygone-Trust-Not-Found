@@ -159,10 +159,17 @@ svg {
 .background,
 .middleground,
 .foreground,
+.beach,
+.castle,
+.hut,
 .mill__building,
 .mill__wings,
-.castle,
-.speaker-avatar__pic--knight {
+.sky,
+.tree,
+.waves,
+.speaker-avatar__pic--fisherwoman,
+.speaker-avatar__pic--knight,
+.speaker-avatar__pic--scribe {
   fill: hsl(
     var(--hue),
     var(--saturation),
