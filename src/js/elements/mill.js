@@ -4,7 +4,6 @@ import { WithParent } from '../mixins/with-parent'
 /**
  * This is the Mill of my first world: FourCastleWorld
  * @extends WithParent
- * @todo Fix wings.
  */
 class Mill extends WithParent {
   /**
@@ -17,6 +16,7 @@ class Mill extends WithParent {
     this._windStrength = WIND_STRENGTHS.STILL
     this._axisX = x + w * 0.5
     this._axisY = y + h * 0.3
+    this._hue = 50
     this.degree = 0
 
     this._updateView()
@@ -56,11 +56,13 @@ class Mill extends WithParent {
    */
   _updateView () {
     super._updateView()
+    this._cssVar(this.element, {'--hue': this._hue + ''})
+
     const degree = this._degree
     const origin = this._axisX + ',' + this._axisY
     const rotate = `rotate(${degree},${origin})`
 
-    const wings = this.element.querySelector('.wings')
+    const wings = this.element.querySelector('.mill__wings')
     this._attrSvg(wings, {transform: rotate})
   }
 
@@ -72,7 +74,7 @@ class Mill extends WithParent {
     const { x, y, h, w } = this._boundingBox
 
     this._axisX = this._axisX || x + w * 0.5
-    this._axisY = this._axisY || y + h * 0.5
+    this._axisY = this._axisY || y + h * 0.3
     this._degree = this._degree || 0
 
     return {
@@ -142,7 +144,7 @@ class Mill extends WithParent {
     const building = this._svg(
       'polygon',
       { points },
-      []
+      [ 'mill__building' ]
     )
     this.element.appendChild(building)
   }
@@ -155,7 +157,7 @@ class Mill extends WithParent {
     const wings = this._svg(
       'g',
       {},
-      [ 'wings' ]
+      [ 'mill__wings' ]
     )
     this.__mountTopWing(wings)
     this.__mountRightWing(wings)
@@ -173,11 +175,11 @@ class Mill extends WithParent {
     const { x, y, h, w } = this._boundingBox
     const { axisX, axisY } = this.__getElementAttributes()
 
-    const left = axisX - w * 0.01
-    const right = axisX + w * 0.01
-    const top = axisY + h * 0.01
-    const bottom = axisY + h * 0.3
-    const middle = bottom - h * 0.2
+    const left =   axisX  - w * 0.01
+    const right =  axisX  + w * 0.01
+    const top =    axisY  + h * 0.01
+    const bottom = axisY  + h * 0.30
+    const middle = bottom - h * 0.20
 
     const points = [
       right              + ',' + top,
@@ -271,7 +273,7 @@ class Mill extends WithParent {
 
     const left = axisX - w * 0.01
     const right = axisX + w * 0.1
-    const top = axisY + h * 0.3
+    const top = axisY - h * 0.3
     const bottom = axisY - h * 0.01
     const middle = top + h * 0.2
 

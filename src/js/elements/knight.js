@@ -40,28 +40,8 @@ class Knight extends Person {
    */
   _mount (parent) {
     super._mount(parent)
-    const { x, y, h, w } = this._boundingBox
-
-    const left   = x + w * 0.10
-    const right  = x + w * 0.20
-    const top    = y + h * 0.20
-    const bottom = y + h * 0.70
-    const middle = x * w * 0.15
-
-    const points = [
-       left              + ',' + bottom,
-      (left  + w * 0.02) + ',' + top,
-      (right - w * 0.02) + ',' + top,
-       right             + ',' + bottom
-    ].join(' ')
-
-    const avatar = this._svg(
-      'polyline',
-      { points },
-      [ 'speaker-avatar__pic', 'speaker-avatar__pic--knight' ]
-    )
-
-    this.element.insertBefore(avatar, this.element.firstChild)
+    this.__mountTopHelmet()
+    this.__mountBottomHelmet()
   }
 
   /**
@@ -70,8 +50,10 @@ class Knight extends Person {
    */
   _updateView () {
     super._updateView()
-    const avatar = this.element.querySelector('.speaker-avatar__pic--knight')
-    this._cssVar(avatar, {'--hue': this._hue + ''})
+    const avatars = this.element.querySelectorAll('.speaker-avatar__pic--knight')
+    Array.from(avatars).forEach((avatar) => {
+      this._cssVar(avatar, {'--hue': this._hue + ''})
+    })
   }
 
   /**
@@ -88,6 +70,62 @@ class Knight extends Person {
         WORLDS.FOUR_CASTLE,            // where
       )
     }
+  }
+
+  /**
+   * Add the bottom of the helmet
+   * @private
+   */
+  __mountBottomHelmet () {
+    const { x, y, h, w } = this._boundingBox
+
+    const left   = x + w * 0.10
+    const right  = x + w * 0.20
+    const top    = y + h * 0.38
+    const bottom = y + h * 0.58
+
+    const points = [
+      (left  - w * 0.02) + ',' + top,
+      (right + w * 0.02) + ',' + top,
+       right             + ',' + bottom,
+       left              + ',' + bottom,
+    ].join(' ')
+
+    const avatar = this._svg(
+      'polyline',
+      { points },
+      [ 'speaker-avatar__pic', 'speaker-avatar__pic--knight' ]
+    )
+
+    this.element.insertBefore(avatar, this.element.firstChild)
+  }
+
+  /**
+   * Add the top of the helmet
+   * @private
+   */
+  __mountTopHelmet () {
+    const { x, y, h, w } = this._boundingBox
+
+    const left   = x + w * 0.10
+    const right  = x + w * 0.20
+    const top    = y + h * 0.18
+    const bottom = y + h * 0.35
+
+    const points = [
+      (left  - w * 0.02) + ',' + bottom,
+       left              + ',' + top,
+       right             + ',' + top,
+      (right + w * 0.02) + ',' + bottom,
+    ].join(' ')
+
+    const avatar = this._svg(
+      'polyline',
+      { points },
+      [ 'speaker-avatar__pic', 'speaker-avatar__pic--knight' ]
+    )
+
+    this.element.insertBefore(avatar, this.element.firstChild)
   }
 }
 

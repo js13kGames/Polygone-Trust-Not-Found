@@ -7,6 +7,16 @@ import { WithParent } from '../mixins/with-parent'
  */
 class Castle extends WithParent {
   /**
+   * @param {PropertiesWithParent} properties
+   */
+  constructor (properties) {
+    super(properties)
+
+    this._hue = 15
+    this._updateView()
+  }
+
+  /**
    * Listen to changes in time.
    * @protected
    * @returns {{}}
@@ -34,6 +44,15 @@ class Castle extends WithParent {
     this.__mountMain()
     this.__mountCrenellations(4)
     this.__mountRightTower()
+  }
+
+  /**
+   * Updates the UI
+   */
+  _updateView () {
+    super._updateView()
+
+    this._cssVar(this.element, {'--hue': this._hue + ''})
   }
 
   /**

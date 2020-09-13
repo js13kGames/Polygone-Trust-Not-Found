@@ -158,7 +158,11 @@ svg {
 
 .background,
 .middleground,
-.foreground {
+.foreground,
+.mill__building,
+.mill__wings,
+.castle,
+.speaker-avatar__pic--knight {
   fill: hsl(
     var(--hue),
     var(--saturation),
