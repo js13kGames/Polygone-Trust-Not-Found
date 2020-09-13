@@ -217,7 +217,7 @@ class BaseWorld extends WithParent {
    */
   _mount (parent) {
     const classes = ['world', 'world--' + this.constructor.worldName]
-    this.element = this._createSvgElement('g', {}, classes)
+    this.element = this._svg('g', {}, classes)
     parent.appendChild(this.element)
   }
 

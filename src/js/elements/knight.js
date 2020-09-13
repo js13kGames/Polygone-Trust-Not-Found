@@ -55,7 +55,7 @@ class Knight extends Person {
        right             + ',' + bottom
     ].join(' ')
 
-    const avatar = this._createSvgElement(
+    const avatar = this._svg(
       'polyline',
       { points },
       [ 'speaker-avatar__pic', 'speaker-avatar__pic--knight' ]
@@ -71,7 +71,7 @@ class Knight extends Person {
   _updateView () {
     super._updateView()
     const avatar = this.element.querySelector('.speaker-avatar__pic--knight')
-    avatar.style.setProperty('--hue', this._hue + '', '')
+    this._cssVar(avatar, {'--hue': this._hue + ''})
   }
 
   /**

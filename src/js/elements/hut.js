@@ -5,8 +5,13 @@ import { WithParent } from '../mixins/with-parent'
  * @extends WithParent
  */
 class Hut extends WithParent {
+  /**
+   * Adds a new element to the DOM.
+   * @protected
+   * @param {HTMLElement} parent
+   */
   _mount (parent) {
-    this.element = this._createSvgElement(
+    this.element = this._svg(
       'g',
       {},
       [ 'hut' ]
@@ -31,7 +36,7 @@ class Hut extends WithParent {
       right  + ',' + bottom
     ].join(' ')
 
-    const roof = this._createSvgElement(
+    const roof = this._svg(
       'polygon',
       { points },
       []
@@ -54,7 +59,7 @@ class Hut extends WithParent {
       right  + ',' + bottom
     ].join(' ')
 
-    const roof = this._createSvgElement(
+    const roof = this._svg(
       'polygon',
       { points },
       []

@@ -5,12 +5,15 @@ import { Tab } from './tab'
 
 /**
  * This builds the settings tab view.
- * You could change things like volume or left- or right-handedness.
+ * You can change things like volume or left- or right-handedness.
  * @extends Tab
- * @todo Implement gain setting
- * @todo Implement handedness setting
  */
 class TabSettings extends Tab {
+  /**
+   * Listens to change events
+   * @protected
+   * @returns {{}}
+   */
   _getEventMap () {
     return {
       change: this.__handleChange.bind(this)
@@ -24,9 +27,8 @@ class TabSettings extends Tab {
    */
   _mount (parent) {
     super._mount(parent)
-    this.element.setAttribute('id', 'tab-settings')
+    this._attr(this.element, {id: 'tab-settings'})
     this.element.querySelector('.tab-view__header').textContent = t('SETTINGS')
-
     this.__mountForm()
   }
 
@@ -84,7 +86,7 @@ class TabSettings extends Tab {
    * @private
    */
   __mountForm () {
-    const form = this._createHtmlElement(
+    const form = this._html(
       'form',
       {
         id: 'form-settings',
@@ -96,10 +98,6 @@ class TabSettings extends Tab {
 
     // TODO: Add Theme switcher
     this.__mountHandedness(form)
-    /*
-    this.__mountLanguage(form)
-    this.__mountTypingSpeed(form)
-    */
     this.__mountVolume(form)
     this.element.appendChild(form)
   }
@@ -110,13 +108,12 @@ class TabSettings extends Tab {
    * @param {HTMLFormElement} form
    */
   __mountHandedness (form) {
-    const handednessLabel = this._createHtmlElement(
+    const handednessLabel = this._html(
       'label',
       {},
-      []
+      [],
+      t('HANDEDNESS')
     )
-    const text = document.createTextNode(t('HANDEDNESS'))
-    handednessLabel.appendChild(text)
 
     const handedness = [{
       value: HANDEDNESS.LEFT,  text: t('HANDEDNESS_LEFT'), selected: false,
@@ -124,19 +121,19 @@ class TabSettings extends Tab {
       value: HANDEDNESS.RIGHT, text: t('HANDEDNESS_RIGHT'), selected: true,
     }]
 
-    const handednessSelect = this._createHtmlElement(
+    const handednessSelect = this._html(
       'select',
       { name: 'handedness' },
       []
     )
+
     handedness.forEach((hand) => {
-      const option = this._createHtmlElement(
+      const option = this._html(
         'option',
         { value: hand.value, selected: hand.selected },
-        []
+        [],
+        hand.text
       )
-      const text = document.createTextNode(hand.text)
-      option.appendChild(text)
       handednessSelect.add(option)
     })
 
@@ -145,99 +142,19 @@ class TabSettings extends Tab {
   }
 
   /**
-   * Relevant to spoken language
-   * @private
-   * @param {HTMLFormElement} form
-   */
-  __mountLanguage (form) {
-    const languages = [{
-      value: 'en', text: t('LANGUAGE_EN')
-    }]
-
-    const fieldset = this._createHtmlElement(
-      'fieldset',
-      {},
-      []
-    )
-
-    const legend = this._createHtmlElement(
-      'legend',
-      {},
-      []
-    )
-    const languageLegend = document.createTextNode(t('LANGUAGE'))
-    legend.appendChild(languageLegend)
-
-    const languageSelect = this._createHtmlElement(
-      'select',
-      { name: 'language' },
-      []
-    )
-    const languageLabel = document.createTextNode(t('LANGUAGE'))
-    languageSelect.appendChild(languageLabel)
-
-    languages.forEach((lang) => {
-      const option = this._createHtmlElement(
-        'option',
-        { value: lang.value },
-        []
-      )
-      const text = document.createTextNode(lang.text)
-      option.appendChild(text)
-      languageSelect.appendChild(option)
-    })
-
-    fieldset.appendChild(legend)
-    fieldset.appendChild(languageSelect)
-    form.appendChild(fieldset)
-  }
-
-  /**
-   * Form settings regarding speed of typing
-   * @private
-   * @param {HTMLFormElement} form
-   */
-  /*
-  __mountTypingSpeed (form) {
-    const typingLabel = this._createHtmlElement(
-      'label',
-      {},
-      []
-    )
-    const typingLabelText = document.createTextNode(t('TYPING'))
-    typingLabel.appendChild(typingLabelText)
-
-    const typingSpeed = this._createHtmlElement(
-      'input',
-      {
-        type: 'range',
-        min: 1,
-        max: 3,
-        step: 1
-      },
-      []
-    )
-
-    form.appendChild(typingLabel)
-    form.appendChild(typingSpeed)
-  }
-  */
-
-  /**
    * Control volume of game sounds.
    * @private
    * @param {HTMLFormElement} form
    */
   __mountVolume (form) {
-    const volumeLabel = this._createHtmlElement(
+    const volumeLabel = this._html(
       'label',
       {},
-      [ 'settings__label--volume' ]
+      [ 'settings__label--volume' ],
+      t('VOLUME')
     )
-    const volumeLabelText = document.createTextNode(t('VOLUME'))
-    volumeLabel.appendChild(volumeLabelText)
 
-    const volume = this._createHtmlElement(
+    const volume = this._html(
       'input',
       {
         type: 'range',

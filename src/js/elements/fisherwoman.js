@@ -25,7 +25,7 @@ class Fisherwoman extends Person {
    * @param {HTMLElement} parent
    */
   _mount (parent) {
-    this.element = this._createSvgElement(
+    this.element = this._svg(
       'g',
       {},
       [ 'speaker-avatar__pic', 'speaker-avatar__pic--fisherwoman' ]
@@ -41,7 +41,7 @@ class Fisherwoman extends Person {
   _updateView () {
     super._updateView()
     const avatar = this.element.querySelector('.speaker-avatar__pic--fisherwoman')
-    avatar.style.setProperty('--hue', this._hue + '', '')
+    this._cssVar(avatar, {'--hue': this._hue + ''})
   }
 
 }

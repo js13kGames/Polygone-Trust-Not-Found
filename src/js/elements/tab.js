@@ -5,25 +5,26 @@ import { WithParent } from '../mixins/with-parent'
  * @extends WithParent
  */
 class Tab extends WithParent {
+  /**
+   * Adds a new tab view to the DOM.
+   * @protected
+   * @param {HTMLElement} parent
+   */
   _mount(parent) {
-    this.element = this._createHtmlElement(
+    this.element = this._html(
       'section',
       {},
-      [ 'tab-view' ]
+      [ 'tab-view' ],
+      ''
     )
 
-    const header = this._createHtmlElement(
+    const header = this._html(
       'h2',
       {},
-      [ 'tab-view__header' ]
+      [ 'tab-view__header' ],
+      ''
     )
-    const headline = document.createTextNode('')
-    header.appendChild(headline)
     this.element.appendChild(header)
-
-    const text = document.createTextNode('')
-    this.element.appendChild(text)
-
     parent.appendChild(this.element)
   }
 }

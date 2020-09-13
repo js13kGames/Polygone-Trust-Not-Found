@@ -15,9 +15,8 @@ class TabInventory extends Tab {
    */
   _mount (parent) {
     super._mount(parent)
-    this.element.setAttribute('id', 'tab-inventory')
+    this._attr(this.element, {id: 'tab-inventory'})
     this.element.querySelector('.tab-view__header').textContent = t('INVENTORY')
-
     this.__mountInventory()
   }
 
@@ -26,13 +25,12 @@ class TabInventory extends Tab {
    * @private
    */
   __mountInventory () {
-    const inventory = this._createHtmlElement(
+    const inventory = this._html(
       'p',
       {},
-      []
+      [],
+      t('NO_ITEMS')
     )
-    const text = document.createTextNode(t('NO_ITEMS'))
-    inventory.appendChild(text)
     this.element.appendChild(inventory)
   }
 }

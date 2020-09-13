@@ -16,10 +16,12 @@ class ThreePortal extends WithParent {
      * The hue of this element.
      */
     this._hue = 0
+
     /**
      * The life of this element.
      */
     this._life = 100
+
     /**
      * The sympathy of this element.
      */
@@ -51,13 +53,12 @@ class ThreePortal extends WithParent {
       (x     + strokeWidth) + ',' + (y + h - strokeWidth),
     ].join(' ')
 
-    this.element = this._createSvgElement(
+    this.element = this._svg(
       'polygon',
       { points },
       [ 'three-portal' ]
     )
-
-    this.element.style.setProperty('--strokeWidth',  strokeWidth + '', '')
+    this._cssVar(this.element, {'--strokeWidth': strokeWidth + ''})
     parent.appendChild(this.element)
   }
 
@@ -67,7 +68,7 @@ class ThreePortal extends WithParent {
    */
   _updateView () {
     super._updateView()
-    this.element.style.setProperty('--hue', this._hue + '', '')
+    this._cssVar(this.element, {'--hue': this._hue + ''})
   }
 
   /**
@@ -79,15 +80,6 @@ class ThreePortal extends WithParent {
    * @parameter {Number} clock.minute
    */
   __handleGameTimeUpdate (clock) {
-    if (typeof clock.hour === 'undefined') {
-      console.warn('Invalid event', clock)
-      return
-    }
-    if (typeof clock.minute === 'undefined') {
-      console.warn('Invalid event', clock)
-      return
-    }
-
     this._hue = (clock.hour * 60 + clock.minute) / (24 * 60) * 360
     this._updateView()
   }

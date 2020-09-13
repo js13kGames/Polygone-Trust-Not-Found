@@ -40,7 +40,7 @@ class Mill extends WithParent {
    * @param {HTMLElement} parent
    */
   _mount (parent) {
-    this.element = this._createSvgElement(
+    this.element = this._svg(
       'g',
       {},
       [ 'mill' ]
@@ -61,7 +61,7 @@ class Mill extends WithParent {
     const rotate = `rotate(${degree},${origin})`
 
     const wings = this.element.querySelector('.wings')
-    wings.setAttributeNS(null, 'transform', rotate)
+    this._attrSvg(wings, {transform: rotate})
   }
 
   /**
@@ -91,14 +91,6 @@ class Mill extends WithParent {
    * @param {Number} clock.minute
    */
   __handleGameTimeUpdate (clock) {
-    if (typeof clock.hour === 'undefined') {
-      console.warn('Invalid event', clock)
-      return
-    }
-    if (typeof clock.minute === 'undefined') {
-      console.warn('Invalid event', clock)
-      return
-    }
     const { MEDIUM, STRONG } = WIND_STRENGTHS
 
     // Must be divisable by 2/3 without remainder!
@@ -147,7 +139,7 @@ class Mill extends WithParent {
       right             + ',' + bottom
     ].join(' ')
 
-    const building = this._createSvgElement(
+    const building = this._svg(
       'polygon',
       { points },
       []
@@ -160,7 +152,7 @@ class Mill extends WithParent {
    * @private
    */
   __mountWings () {
-    const wings = this._createSvgElement(
+    const wings = this._svg(
       'g',
       {},
       [ 'wings' ]
@@ -196,7 +188,7 @@ class Mill extends WithParent {
       (right - w * 0.02) + ',' + top
     ].join(' ')
 
-    const wing = this._createSvgElement(
+    const wing = this._svg(
       'polygon',
       { points },
       [ 'bottom', 'wing' ]
@@ -228,7 +220,7 @@ class Mill extends WithParent {
       right  + ',' + (bottom - h * 0.02)
     ].join(' ')
 
-    const wing = this._createSvgElement(
+    const wing = this._svg(
       'polygon',
       { points },
       [ 'left', 'wing' ]
@@ -260,7 +252,7 @@ class Mill extends WithParent {
       left   + ',' + (top + h * 0.02)
     ].join(' ')
 
-    const wing = this._createSvgElement(
+    const wing = this._svg(
       'polygon',
       { points },
       [ 'right', 'wing' ]
@@ -292,15 +284,13 @@ class Mill extends WithParent {
       (left + w * 0.02) + ',' + bottom
     ].join(' ')
 
-    const wing = this._createSvgElement(
+    const wing = this._svg(
       'polygon',
       { points },
       [ 'top', 'wing' ]
     )
     parent.appendChild(wing)
   }
-
-
 }
 
 export { Mill }

@@ -24,7 +24,7 @@ class Controls extends WithParent {
    * @param {HTMLElement} parent
    */
   _mount (parent) {
-    this.element = this._createSvgElement(
+    this.element = this._svg(
       'g',
       {
         'data-handedness': HANDEDNESS.RIGHT
@@ -56,7 +56,7 @@ class Controls extends WithParent {
         points = this.__getTopControlsPoints()
       }
 
-      control.setAttributeNS(null, 'points', points)
+      this._attrSvg(control, { points })
     })
   }
 
@@ -139,39 +139,28 @@ class Controls extends WithParent {
    * Handles clicks on a control.
    * @private
    * @param {HTMLElement} eventTarget
-   * @todo Refactor to reduce code duplication.
    */
   __handleClick (eventTarget) {
     const isLeftControl = eventTarget.classList.contains('left')
     const isRightControl = eventTarget.classList.contains('right')
     const isTopControl = eventTarget.classList.contains('top')
 
+    let direction = ''
     if (isLeftControl) {
-      const event = new CustomEvent(
-        EVENTS.TURN,
-        { detail: { direction: DIRECTIONS.LEFT }}
-      )
-      this._eventNode.dispatchEvent(event)
-      return
+      direction = DIRECTIONS.LEFT
     }
-
     if (isRightControl) {
-      const event = new CustomEvent(
-        EVENTS.TURN,
-        { detail: { direction: DIRECTIONS.RIGHT }}
-      )
-      this._eventNode.dispatchEvent(event)
-      return
+      direction = DIRECTIONS.RIGHT
+    }
+    if (isTopControl) {
+      direction = DIRECTIONS.TOP
     }
 
-    if (isTopControl) {
-      const event = new CustomEvent(
-        EVENTS.TURN,
-        { detail: { direction: DIRECTIONS.TOP }}
-      )
-      this._eventNode.dispatchEvent(event)
-      return
-    }
+    const event = new CustomEvent(
+      EVENTS.TURN,
+      { detail: { direction }}
+    )
+    this._eventNode.dispatchEvent(event)
   }
 
   /**
@@ -187,7 +176,7 @@ class Controls extends WithParent {
    * @private
    */
   __mountLeft () {
-    const control = this._createSvgElement(
+    const control = this._svg(
       'polygon',
       { points: this.__getLeftControlsPoints() },
       [ 'left', 'control' ]
@@ -200,7 +189,7 @@ class Controls extends WithParent {
    * @private
    */
   __mountRight () {
-    const control = this._createSvgElement(
+    const control = this._svg(
       'polygon',
       { points: this.__getRightControlsPoints() },
       [ 'right', 'control' ]
@@ -213,7 +202,7 @@ class Controls extends WithParent {
    * @private
    */
   __mountTop () {
-    const control = this._createSvgElement(
+    const control = this._svg(
       'polygon',
       { points: this.__getTopControlsPoints() },
       [ 'top', 'control' ]

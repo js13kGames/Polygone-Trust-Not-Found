@@ -10,6 +10,9 @@ import { Tab } from './tab'
  * @extends Tab
  */
 class TabMemory extends Tab {
+  /**
+   * @param {PropertiesWithParent} properties
+   */
   constructor (properties) {
     super(properties)
 
@@ -39,7 +42,7 @@ class TabMemory extends Tab {
    */
   _mount (parent) {
     super._mount(parent)
-    this.element.setAttribute('id', 'tab-memory')
+    this._attr(this.element, {id: 'tab-memory'})
     this.__mountMemory()
   }
 
@@ -86,13 +89,12 @@ class TabMemory extends Tab {
    * @private
    */
   __mountMemory () {
-    const memory = this._createHtmlElement(
+    const memory = this._html(
       'p',
       {},
-      []
+      [],
+      ''
     )
-    const text = document.createTextNode('')
-    memory.appendChild(text)
     this.element.appendChild(memory)
   }
 
@@ -104,7 +106,7 @@ class TabMemory extends Tab {
     if (this.__memories.length > 0) {
       this.element.querySelector('p').textContent = ''
 
-      const list = this._createHtmlElement(
+      const list = this._html(
         'ol',
         {},
         [ 'memories' ]
@@ -112,18 +114,14 @@ class TabMemory extends Tab {
       this.element.appendChild(list)
 
       this.__memories.forEach((memory) => {
-        const element = this._createHtmlElement(
+        const { who, when, what, why, where } = memory
+        const element = this._html(
           'li',
           {},
-          [ 'memory' ]
+          [ 'memory' ],
+          // TODO: Make translateable
+          `I ${what} „${who}” in ${where} at ${when} because ${why}`
         )
-
-        const { who, when, what, why, where } = memory
-        // TODO: Make translateable
-        const text = document.createTextNode(`
-          I ${what} „${who}” in ${where} at ${when} because ${why}
-        `)
-        element.appendChild(text)
         list.appendChild(element)
       })
     } else {

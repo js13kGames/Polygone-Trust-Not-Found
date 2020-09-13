@@ -43,9 +43,10 @@ class TitleWorld extends BaseWorld {
    * @returns {{}}
    */
   _getEventMap () {
-    return {
+    const otherEvents = super._getEventMap()
+    return Object.assign(otherEvents, {
       click: this.__handleClick.bind(this)
-    }
+    })
   }
 
   /**
@@ -72,16 +73,15 @@ class TitleWorld extends BaseWorld {
     // Asking for new game or continuing
     const { x, y, h, w } = this._boundingBox
 
-    const text = this._createSvgElement(
+    const text = this._svg(
       'text',
       {
         x: x + w * 0.25,
         y: y + h * 0.85
       },
-      [ 'logo__button__text' ]
+      [ 'logo__button__text' ],
+      t('NEW_GAME')
     )
-    const content = document.createTextNode(t('NEW_GAME'))
-    text.appendChild(content)
     this.element.appendChild(text)
   }
 
@@ -103,7 +103,7 @@ class TitleWorld extends BaseWorld {
       (x + w * 0.52) + ',' + (y + h * 0.38),
     ].join(' ')
 
-    const logo = this._createSvgElement(
+    const logo = this._svg(
       'polyline',
       {
         pathLength: 1,

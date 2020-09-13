@@ -5,13 +5,17 @@ import { WithParent } from '../mixins/with-parent'
  * @extends WithParent
  */
 class Guild extends WithParent {
+  /**
+   * Adds a new element to the DOM.
+   * @protected
+   * @param {HTMLElement} parent
+   */
   _mount (parent) {
-    this.element = this._createSvgElement(
+    this.element = this._svg(
       'g',
       {},
       [ 'guild' ]
     )
-
     parent.appendChild(this.element)
     this._mountMarket()
   }
@@ -32,7 +36,7 @@ class Guild extends WithParent {
       right  + ',' + bottom
     ].join(' ')
 
-    const market = this._createSvgElement(
+    const market = this._svg(
       'polygon',
       { points },
       [ 'market' ]

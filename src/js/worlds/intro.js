@@ -67,9 +67,10 @@ class IntroWorld extends BaseWorld {
    * @returns {{}}
    */
   _getEventMap () {
-    return {
+    const otherEvents = super._getEventMap()
+    return Object.assign(otherEvents, {
       click: this.__handleClick.bind(this)
-    }
+    })
   }
 
   /**

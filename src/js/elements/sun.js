@@ -11,6 +11,9 @@ import { WithParent } from '../mixins/with-parent'
  * @todo Turn into hexagon for SixMountainWorld
  */
 class Sun extends WithParent {
+  /**
+   * @param {PropertiesWithParent} properties
+   */
   constructor (properties) {
     super(properties)
 
@@ -19,7 +22,54 @@ class Sun extends WithParent {
     this._axisY = this._boundingBox.y
   }
 
-  _getElementAttributes () {
+  /**
+   * Update on game clock update.
+   * @protected
+   * @returns {{}}
+   */
+  _getEventMap () {
+    return {
+      [ EVENTS.TICK ]: this.__handleGameTimeUpdate.bind(this)
+    }
+  }
+
+  /**
+   * Adds Sun to the scene.
+   * @protected
+   * @param {HTMLElement} parent
+   */
+  _mount (parent) {
+    const { r, cx, cy } = this.__getElementAttributes()
+
+    this.element = this._svg(
+      'circle',
+      {
+        r: r + '',
+        cx: cx - r * 3 + '',
+        cy: cy - r * 3 + ''
+      },
+      [ 'sun' ]
+    )
+    parent.appendChild(this.element)
+  }
+
+  /**
+   * Updates the UI.
+   * @protected
+   */
+  _updateView () {
+    super._updateView()
+    const cx = this._axisX
+    const cy = this._axisY
+    this._attrSvg(this.element, {cx: cx + '', cy: cy + ''})
+  }
+
+  /**
+   * Read shared attributes
+   * @private
+   * @returns {{}}
+   */
+  __getElementAttributes () {
     this._radius = this._radius || 3
     this._axisX = this._axisX || this._boundingBox.x
     this._axisY = this._axisY || this._boundingBox.y
@@ -31,22 +81,11 @@ class Sun extends WithParent {
     }
   }
 
-  _getEventMap () {
-    return {
-      [ EVENTS.TICK ]: this._handleGameTimeUpdate.bind(this)
-    }
-  }
-
-  _handleGameTimeUpdate (clock) {
-    if (typeof clock.hour === 'undefined') {
-      console.warn('Invalid event', clock)
-      return
-    }
-    if (typeof clock.minute === 'undefined') {
-      console.warn('Invalid event', clock)
-      return
-    }
-
+  /**
+   * Update position on sun based on time.
+   * @private
+   */
+  __handleGameTimeUpdate (clock) {
     const { hour, minute } = clock
     const { x, y, h, w } = this._boundingBox
 
@@ -74,29 +113,6 @@ class Sun extends WithParent {
     this._axisX = axisX
     this._axisY = axisY
     this._updateView()
-  }
-
-  _mount (parent) {
-    const { r, cx, cy } = this._getElementAttributes()
-
-    this.element = this._createSvgElement(
-      'circle',
-      {
-        r: r + '',
-        cx: cx - r * 3 + '',
-        cy: cy - r * 3 + ''
-      },
-      [ 'sun' ]
-    )
-    parent.appendChild(this.element)
-  }
-
-  _updateView () {
-    super._updateView()
-    const cx = this._axisX
-    const cy = this._axisY
-    this.element.setAttributeNS(null, 'cx', cx + '')
-    this.element.setAttributeNS(null, 'cy', cy + '')
   }
 }
 

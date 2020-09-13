@@ -23,7 +23,7 @@ class Castle extends WithParent {
    * @param {HTMLElement} parent
    */
   _mount (parent) {
-    this.element = this._createSvgElement(
+    this.element = this._svg(
       'g',
       {},
       [ 'castle' ]
@@ -74,7 +74,7 @@ class Castle extends WithParent {
       points.push(right                + ',' + bottom)
     }
 
-    const crenellations = this._createSvgElement(
+    const crenellations = this._svg(
       'polygon',
       { points: points.join(' ') },
       [ 'crenellations' ]
@@ -101,7 +101,7 @@ class Castle extends WithParent {
       right + ',' + bottom
     ].join(' ')
 
-    const tower = this._createSvgElement(
+    const tower = this._svg(
       'polygon',
       { points },
       [ 'tower' ]
@@ -129,7 +129,7 @@ class Castle extends WithParent {
       right + ',' + bottom
     ].join(' ')
 
-    const main = this._createSvgElement(
+    const main = this._svg(
       'polygon',
       { points },
       []
@@ -156,7 +156,7 @@ class Castle extends WithParent {
       right + ',' + bottom
     ].join(' ')
 
-    const tower = this._createSvgElement(
+    const tower = this._svg(
       'polygon',
       { points },
       [ 'tower' ]

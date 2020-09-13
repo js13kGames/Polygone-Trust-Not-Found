@@ -40,7 +40,7 @@ class Share extends WithParent {
    * @param {HTMLElement} parent
    */
   _mount (parent) {
-    this.element = this._createHtmlElement(
+    this.element = this._html(
       'p',
       {},
       [ 'share' ]
@@ -55,7 +55,7 @@ class Share extends WithParent {
    */
   _updateView () {
     const link = this.element.querySelector('.share__link')
-    link.setAttribute('href', this.__getHref())
+    this._attr(link, {href: this.__getHref()})
   }
 
   /**
@@ -100,13 +100,12 @@ class Share extends WithParent {
    */
   __mountShare () {
     const href = this.__getHref()
-    const link = this._createHtmlElement(
+    const link = this._html(
       'a',
       { href },
-      [ 'share__link' ]
+      [ 'share__link' ],
+      t('LINK_TITLE')
     )
-    const text = document.createTextNode(t('LINK_TITLE'))
-    link.appendChild(text)
     this.element.appendChild(link)
   }
 }

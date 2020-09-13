@@ -8,6 +8,9 @@ import { TextBox } from './textbox'
  * @extends TextBox
  */
 class Person extends TextBox {
+  /**
+   * @param {PropertiesWithParent} properties
+   */
   constructor (properties) {
     super(properties)
     this.name = ''
@@ -70,7 +73,7 @@ class Person extends TextBox {
     super._mount(parent)
     const { x, y, h, w } = this._boundingBox
     const strokeWidth = h * 0.02
-    const speakerBox = this._createSvgElement(
+    const speakerBox = this._svg(
       'rect',
       {
         x: x + w * 0.05,
@@ -80,25 +83,22 @@ class Person extends TextBox {
       },
       [ 'speaker-box' ]
     )
-    speakerBox.style.setProperty('--strokeWidth', strokeWidth + '', '')
+    this._cssVar(speakerBox, {'--strokeWidth': strokeWidth + ''})
     this.element.appendChild(speakerBox)
 
-    const speakerName = this._createSvgElement(
+    const speakerName = this._svg(
       'text',
       {
         x: x + w * 0.07,
         y: y + h * 0.63
       },
-      [ 'speaker-box__text' ]
+      [ 'speaker-box__text' ],
+      ''
     )
-
-    const content = document.createTextNode('')
-
-    speakerName.appendChild(content)
     this.element.appendChild(speakerName)
 
     const text = this.element.querySelector('.textbox__text')
-    text.setAttributeNS(null, 'y', y + h * 0.78 + '')
+    this._attrSvg(text, { y: y + h * 0.78 + '' })
   }
 
   /**
@@ -108,10 +108,10 @@ class Person extends TextBox {
   _updateView () {
     super._updateView()
     const speakerBox = this.element.querySelector('.speaker-box')
-    speakerBox.style.setProperty('--hue', this._hue + '', '')
+    this._cssVar(speakerBox, {'--hue': this._hue + ''})
 
     const speakerName = this.element.querySelector('.speaker-box__text')
-    speakerName.style.setProperty('--fontFamily', this.style + '', '')
+    this._cssVar(speakerName, {'--fontFamily': this.style + ''})
     speakerName.textContent = this.name
   }
 

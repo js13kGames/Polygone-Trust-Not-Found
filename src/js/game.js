@@ -487,6 +487,9 @@ class Game {
   __handleGameControlsTurn (eventDetail) {
     const currentWorld = this.getCurrentWorld()
     const nextWorld = currentWorld[ eventDetail.direction ]
+    if (!nextWorld) {
+      return
+    }
     const event = new CustomEvent(
       EVENTS.WORLD,
       { detail: { nextWorld } }

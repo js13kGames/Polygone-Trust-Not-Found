@@ -54,7 +54,7 @@ class TextBox extends WithParent {
   _mount (parent) {
     const { x, y, h, w } = this._boundingBox
     const strokeWidth = h * 0.02
-    this.element = this._createSvgElement(
+    this.element = this._svg(
       'g',
       {},
       []
@@ -75,7 +75,7 @@ class TextBox extends WithParent {
       }
     }
 
-    const box = this._createSvgElement(
+    const box = this._svg(
       'rect',
       {
         x: left,
@@ -87,10 +87,10 @@ class TextBox extends WithParent {
       },
       [ 'textbox' ]
     )
-    box.style.setProperty('--strokeWidth', strokeWidth + '', '')
+    this._cssVar(box, {'--strokeWidth': strokeWidth + ''})
     this.element.appendChild(box)
 
-    const text = this._createSvgElement(
+    const text = this._svg(
       'g',
       {},
       [ 'textbox__text' ]
@@ -108,10 +108,10 @@ class TextBox extends WithParent {
   _updateView () {
     super._updateView()
     const textbox = this.element.querySelector('.textbox')
-    textbox.style.setProperty('--hue', this._hue + '', '')
+    this._cssVar(textbox, {'--hue': this._hue + ''})
 
     const text = this.element.querySelector('.textbox__text')
-    text.style.setProperty('--fontFamily', this.style + '', '')
+    this._cssVar(text, {'--fontFamily': this.style + ''})
     this.__clearText()
     this.__showTextLines()
   }
@@ -152,17 +152,15 @@ class TextBox extends WithParent {
     const parent = this.element.querySelector('.textbox__text')
 
     this.text.forEach((line, index) => {
-      const element = this._createSvgElement(
+      const element = this._svg(
         'text',
         {
           x: x + w * 0.03,
           y: y + h * 0.75 + index * h * 0.1
         },
-        []
+        [],
+        line
       )
-
-      const text = document.createTextNode(line)
-      element.appendChild(text)
       parent.appendChild(element)
     })
   }

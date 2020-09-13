@@ -61,7 +61,7 @@ class Background extends WithParent {
 
   _mount (parent) {
     const { x, y, h, w } = this._boundingBox
-    this.element = this._createSvgElement(
+    this.element = this._svg(
       'rect',
       {
         x,
@@ -71,14 +71,13 @@ class Background extends WithParent {
       },
       [ 'background' ]
     )
-
     parent.appendChild(this.element)
   }
 
   _updateView () {
     super._updateView()
-    this.element.style.setProperty('--hue', this._hue + '', '')
-    this.element.style.setProperty('--luminance', this._luminance + '%', '')
+    this._cssVar(this.element, {'--hue': this._hue + ''})
+    this._cssVar(this.element, {'--luminance': this._luminance + '%'})
   }
 }
 

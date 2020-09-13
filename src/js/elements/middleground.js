@@ -7,6 +7,9 @@ import { WithParent } from '../mixins/with-parent'
  * @todo Rename to something meaningful.
  */
 class Middleground extends WithParent {
+  /**
+   * @param {PropertiesWithParent} properties
+   */
   constructor (properties) {
     super(properties)
 
@@ -18,13 +21,56 @@ class Middleground extends WithParent {
     this._updateView()
   }
 
+  /**
+   * Updates on game time update.
+   * @protected
+   */
   _getEventMap () {
     return {
-      [ EVENTS.TICK ]: this._handleGameTimeUpdate.bind(this)
+      [ EVENTS.TICK ]: this.__handleGameTimeUpdate.bind(this)
     }
   }
 
-  _handleGameTimeUpdate (clock) {
+  /**
+   * Add a new element to the DOM.
+   * @protected
+   * @param {HTMLElement} parent
+   */
+  _mount (parent) {
+    const { x, y, h, w } = this._boundingBox
+    this.element = this._svg(
+      'rect',
+      {
+        x,
+        y,
+        height: h,
+        width: w
+      },
+      [ 'middleground' ]
+    )
+    parent.appendChild(this.element)
+  }
+
+  _updateView () {
+    super._updateView()
+    this._cssVar(
+      this.element,
+      {
+        '--hue': this._hue + '',
+        '--luminance': this._luminance + '%',
+      }
+    )
+  }
+
+  /**
+   * Update lightness
+   * @private
+   * @param {{}}     clock
+   * @param {Number} clock.day
+   * @param {Number} clock.hour
+   * @param {Number} clock.minute
+   */
+  __handleGameTimeUpdate (clock) {
     // TODO: Extract into mixin
     const isMorning = clock.hour > 5 && clock.hour < 8
     const isEvening = clock.hour > 17 && clock.hour < 20
@@ -40,28 +86,6 @@ class Middleground extends WithParent {
     }
 
     this._updateView()
-  }
-
-  _mount (parent) {
-    const { x, y, h, w } = this._boundingBox
-    this.element = this._createSvgElement(
-      'rect',
-      {
-        x,
-        y,
-        height: h,
-        width: w
-      },
-      [ 'middleground' ]
-    )
-
-    parent.appendChild(this.element)
-  }
-
-  _updateView () {
-    super._updateView()
-    this.element.style.setProperty('--hue', this._hue + '', '')
-    this.element.style.setProperty('--luminance', this._luminance + '%', '')
   }
 }
 

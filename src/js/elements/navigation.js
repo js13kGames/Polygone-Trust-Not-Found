@@ -17,12 +17,11 @@ class Navigation extends WithParent {
    * @param {HTMLElement} parent
    */
   _mount (parent) {
-    this.element = this._createHtmlElement(
+    this.element = this._html(
       'section',
       {},
       [ 'menu' ]
     )
-
     parent.appendChild(this.element)
     this.__mountNavigation()
   }
@@ -43,34 +42,31 @@ class Navigation extends WithParent {
       text: t('SETTINGS')
     }]
 
-    const nav = this._createHtmlElement(
+    const nav = this._html(
       'nav',
       {},
       []
     )
 
-    const navList = this._createHtmlElement(
+    const navList = this._html(
       'ul',
       {},
       [ 'nav-list' ]
     )
 
     navListItems.forEach((navListItem) => {
-      const listItem = this._createHtmlElement(
+      const listItem = this._html(
         'li',
         {},
         [ 'nav-list__item' ]
       )
 
-      const link = this._createHtmlElement(
+      const link = this._html(
         'a',
         { href: navListItem.href },
-        [ 'nav-link' ]
+        [ 'nav-link' ],
+        navListItem.text
       )
-
-      const linkText = document.createTextNode(navListItem.text)
-
-      link.appendChild(linkText)
       listItem.appendChild(link)
       navList.appendChild(listItem)
     })

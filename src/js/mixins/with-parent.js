@@ -21,14 +21,54 @@ class WithParent extends WithControls {
   }
 
   /**
+   * Updates an attribute on an HTML element.
+   * @protected
+   * @param {HTMLElement} element    - Element to update.
+   * @param {{}}          [attrs={}] - Key-value pairs of attributes to update.
+   */
+  _attr (element, attrs = {}) {
+    Object.keys(attrs).forEach((name) => {
+      const value = attrs[ name ]
+      element.setAttribute(name, value)
+    })
+  }
+
+  /**
+   * Updates an attribute on an SVG element.
+   * @protected
+   * @param {HTMLElement} element    - Element to update.
+   * @param {{}}          [attrs={}] - Key-value pairs of attributes to update.
+   */
+  _attrSvg (element, attrs = {}) {
+    Object.keys(attrs).forEach((name) => {
+      const value = attrs[ name ]
+      element.setAttributeNS(null, name, value)
+    })
+  }
+
+  /**
+   * Updates a CSS Custom Property for given element.
+   * @protected
+   * @param {HTMLELement} element   - Element to update CSS Variable on.
+   * @param {{}}          variables - Key-value pairs of CSS Variables
+   */
+  _cssVar (element, variables = {}) {
+    Object.keys(variables).forEach((name) => {
+      const value = variables[ name ]
+      element.style.setProperty(name, value, '')
+    })
+  }
+
+  /**
    * Creates a new HTML element.
    * @protected
    * @param {String}        name            - The NodeName of the new element.
    * @param {{}}            [attributes={}] - A mapping of attribute keys to values.
    * @param {Array<String>} [classes=[]]    - List of classNames to add.
+   * @param {String|null}   [content=null]  - Text to append to this element.
    * @returns {HTMLElement}
    */
-  _createHtmlElement (name, attributes = {}, classes = []) {
+  _html (name, attributes = {}, classes = [], content = null) {
     const element = document.createElement(name)
 
     Object.keys(attributes).forEach((attribute) => {
@@ -40,18 +80,24 @@ class WithParent extends WithControls {
       element.classList.add(className)
     })
 
+    if (content != null) {
+      const text = document.createTextNode(content)
+      element.appendChild(text)
+    }
+
     return element
   }
 
   /**
    * Creates a new SVG element.
    * @protected
-   * @param {String}        name       - The NodeName of the new element.
+   * @param {String}        name            - The NodeName of the new element.
    * @param {{}}            [attributes={}] - A mapping of attribute keys to values.
    * @param {Array<String>} [classes=[]]    - List of classNames to add.
+   * @param {String|null}   [content=null]  - Text to append to this element
    * @returns {SvgElement}
    */
-  _createSvgElement (name, attributes = {}, classes = []) {
+  _svg (name, attributes = {}, classes = [], content = null) {
     const ns = 'http://www.w3.org/2000/svg'
     const element = document.createElementNS(ns, name)
 
@@ -63,6 +109,11 @@ class WithParent extends WithControls {
     classes.forEach((className) => {
       element.classList.add(className)
     })
+
+    if (content != null) {
+      const text = document.createTextNode(content)
+      element.appendChild(text)
+    }
 
     return element
   }

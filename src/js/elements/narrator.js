@@ -68,7 +68,7 @@ class Narrator extends Person {
        right             + ',' + (bottom - h * 0.05)
     ].join(' ')
 
-    const background = this._createSvgElement(
+    const background = this._svg(
       'ellipse',
       {
         cx: x + w * 0.15,
@@ -79,13 +79,12 @@ class Narrator extends Person {
       [ 'speaker-avatar__background' ]
     )
 
-    const avatar = this._createSvgElement(
+    const avatar = this._svg(
       'polyline',
       { points },
       [ 'speaker-avatar__pic', 'speaker-avatar__pic--narrator' ]
     )
-    avatar.setAttributeNS(null, 'stroke-linecap', 'round')
-
+    this._attrSvg(avatar, {'stroke-linecap': 'round'})
     this.element.insertBefore(avatar, this.element.firstChild)
     this.element.insertBefore(background, this.element.firstChild)
   }
@@ -97,7 +96,7 @@ class Narrator extends Person {
   _updateView () {
     super._updateView()
     const avatar = this.element.querySelector('.speaker-avatar__pic--narrator')
-    avatar.style.setProperty('--hue', this._hue + '', '')
+    this._cssVar(avatar, {'--hue': this._hue + ''})
   }
 
   /**
