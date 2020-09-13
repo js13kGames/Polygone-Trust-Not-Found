@@ -23,13 +23,24 @@ class Narrator extends Person {
   }
 
   /**
-   * Remember having seen this message.
+   * Renders the text to display
    * @public
    * @param {Array<string>} messages
    */
   showText (messages) {
     super.showText(messages)
-    this.__makeMemory()
+  }
+
+  /**
+   * Listen to world changes.
+   * @protected
+   * @returns {{}}
+   */
+  _getEventMap () {
+    const otherEvents = super._getEventMap()
+    return Object.assign(otherEvents, {
+      [ EVENTS.WORLD ]: this.__handleWorldSwitch.bind(this)
+    })
   }
 
   /**
@@ -90,29 +101,19 @@ class Narrator extends Person {
   }
 
   /**
-   * Remember this encounter.
+   * Listen to when user switched to Intro world.
    * @private
+   * @param {{}}     eventDetail
+   * @param {String} eventDetail.nextWorld
    */
-  __makeMemory () {
-    const { day, hour, minute } = this.__clock
-
-    const when = 'Day ' + day + ' - ' + [
-      ('00' + hour).slice(-2),
-      ('00' + minute).slice(-2)
-    ].join(':')
-
-    const detail = {
-      who: this.name,
-      when,
-      what: MEMORIES.MET_NARRATOR,
-      why: MEMORIES.GAME_STARTED,
-      where: WORLDS.INTRO,
+  __handleWorldSwitch ({ nextWorld }) {
+    if (nextWorld === WORLDS.INTRO) {
+      this._makeMemory(
+        MEMORIES.MET_NARRATOR,  // what
+        MEMORIES.GAME_STARTED,  // when
+        WORLDS.INTRO,           // where
+      )
     }
-    const event = new CustomEvent(
-      EVENTS.NARRATOR,
-      { detail }
-    )
-    this._eventNode.dispatchEvent(event)
   }
 }
 

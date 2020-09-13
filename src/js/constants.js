@@ -1,3 +1,5 @@
+import { t } from './translations'
+
 /**
  * Lists all known directions
  * @enum {String}
@@ -37,8 +39,10 @@ const HANDEDNESS = {
  * @enum {String}
  */
 const MEMORIES = {
-  GAME_STARTED: 'Game started',
-  MET_NARRATOR: 'Met the narrator'
+  ENTERED_FOUR_CASTLE: t('MEMORY_ENTERED_FOUR_CASTLE'),
+  GAME_STARTED: t('MEMORY_GAME_STARTED'),
+  MET_KNIGHT: t('MEMORY_MET_KNIGHT'),
+  MET_NARRATOR: t('MEMORY_MET_NARRATOR'),
 }
 
 /**

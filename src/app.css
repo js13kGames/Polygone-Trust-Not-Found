@@ -48,12 +48,14 @@ body {
   margin: 0.5em;
 }
 
-#app.right-handedness {
-  flex-direction: row;
-}
+@media (orientation: landscape) {
+  #app.right-handedness {
+    flex-direction: row;
+  }
 
-#app.left-handedness {
-  flex-direction: row-reverse;
+  #app.left-handedness {
+    flex-direction: row-reverse;
+  }
 }
 
 .menu {
@@ -99,6 +101,11 @@ a:active {
 
 .tab-view:not(:target) {
   display: none;
+}
+
+.memories {
+  max-height: 25vmin;
+  overflow-y: auto;
 }
 
 svg {

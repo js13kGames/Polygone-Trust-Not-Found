@@ -1,4 +1,5 @@
-import { VOICES } from '../constants'
+import { EVENTS, MEMORIES, VOICES, WORLDS } from '../constants'
+
 import { Person } from './person'
 
 /**
@@ -18,6 +19,18 @@ class Knight extends Person {
 
     this._hue = 80
     this._updateView()
+  }
+
+  /**
+   * Listen to world changes.
+   * @protected
+   * @returns {{}}
+   */
+  _getEventMap () {
+    const otherEvents = super._getEventMap()
+    return Object.assign(otherEvents, {
+      [ EVENTS.WORLD ]: this.__handleWorldSwitch.bind(this)
+    })
   }
 
   /**
@@ -59,6 +72,22 @@ class Knight extends Person {
     super._updateView()
     const avatar = this.element.querySelector('.speaker-avatar__pic--knight')
     avatar.style.setProperty('--hue', this._hue + '', '')
+  }
+
+  /**
+   * Listen to when user switched to Intro world.
+   * @private
+   * @param {{}}     eventDetail
+   * @param {String} eventDetail.nextWorld
+   */
+  __handleWorldSwitch ({ nextWorld }) {
+    if (nextWorld === WORLDS.FOUR_CASTLE) {
+      this._makeMemory(
+        MEMORIES.MET_KNIGHT,           // what
+        MEMORIES.ENTERED_FOUR_CASTLE,  // when
+        WORLDS.FOUR_CASTLE,            // where
+      )
+    }
   }
 }
 

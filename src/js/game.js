@@ -47,7 +47,6 @@
  *     Person            <|-- Narrator
  *     Person            <|-- Pilot
  *     Person            <|-- Scribe
- *     Tab               <|-- TabDebug
  *     Tab               <|-- TabInventory
  *     Tab               <|-- TabMemory
  *     Tab               <|-- TabSettings
@@ -75,7 +74,6 @@
  *     WithParent        <|-- Tab
  *     WithParent        <|-- TextBox
  *     WithParent        <|-- ThreePortal
- *     WithParent        <|-- Time
  *     WithSympathy      <|-- WithParent
  *
  *     WithBoundingBox   : Object _boundingBox
@@ -94,7 +92,6 @@
 import { EVENTS, WORLDS } from './constants'
 import { Canvas } from './elements/canvas'
 import { Controls } from './elements/controls'
-import { Time } from './elements/time'
 import { WithEventListener } from './mixins/with-event-listener'
 
 import { Navigation } from './elements/navigation'
@@ -384,8 +381,6 @@ class Game {
     this.__respondToDevice()
 
     this.addWorlds()
-    // TODO: Only in debug builds?
-    this.__addTime()
     this.__addControls()
     this.switchWorld({ nextWorld: firstWorld })
   }
@@ -410,7 +405,7 @@ class Game {
 
   /**
    * Switches to another world
-   * @param {{}} world
+   * @param {{}}     world
    * @param {string} world.nextWorld The world to switch to.
    * @todo Align with implementation of PortalWorld.
    */
@@ -423,7 +418,7 @@ class Game {
   /**
    * Lists all interesting events with their handlers.
    * @protected
-   * @returns {Array<EventMap>}
+   * @returns {{}}
    */
   _getEventMap () {
     return {
@@ -484,24 +479,6 @@ class Game {
   }
 
   /**
-   * Adds time element to game.
-   * @private
-   */
-  __addTime () {
-    const { h, w } = this._boundingBox
-    const properties = {
-      boundingBox: {
-        x: 0.8 * h,
-        y: 0.95 * w
-      },
-      eventNode: this._eventNode,
-      parent: this.canvas.element
-    }
-
-    const time = new Time(properties)
-  }
-
-  /**
    * Triggers world switch on event.
    * @private
    * @param {{}}     eventDetail           Custom Event detail property.
@@ -510,7 +487,11 @@ class Game {
   __handleGameControlsTurn (eventDetail) {
     const currentWorld = this.getCurrentWorld()
     const nextWorld = currentWorld[ eventDetail.direction ]
-    this.switchWorld({ nextWorld })
+    const event = new CustomEvent(
+      EVENTS.WORLD,
+      { detail: { nextWorld } }
+    )
+    this._eventNode.dispatchEvent(event)
   }
 
   /**

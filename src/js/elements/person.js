@@ -36,6 +36,32 @@ class Person extends TextBox {
   }
 
   /**
+   * Remember this encounter.
+   * @protected
+   */
+  _makeMemory (what, why, where) {
+    const { day, hour, minute } = this.__clock
+
+    const when = 'Day ' + day + ' - ' + [
+      ('00' + hour).slice(-2),
+      ('00' + minute).slice(-2)
+    ].join(':')
+
+    const detail = {
+      who: this.name,
+      when,
+      what,
+      why,
+      where,
+    }
+    const event = new CustomEvent(
+      EVENTS.NARRATOR,
+      { detail }
+    )
+    this._eventNode.dispatchEvent(event)
+  }
+
+  /**
    * Add a new element to the DOM.
    * @protected
    * @param {HTMLElement} parent

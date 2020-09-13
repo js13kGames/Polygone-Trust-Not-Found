@@ -62,9 +62,7 @@ class TabMemory extends Tab {
   __clearMemories () {
     const list = this.element.querySelector('.memories')
     if (list && list.children.length > 0) {
-      Array.from(list.children).forEach((item) => {
-        list.removeChild(item)
-      })
+      this.element.removeChild(list)
     }
   }
 
