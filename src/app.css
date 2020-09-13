@@ -130,6 +130,10 @@ svg {
   animation-name: fade-in;
 }
 
+.share {
+  text-align: center;
+}
+
 .hidden.world {
   display: none;
 }
