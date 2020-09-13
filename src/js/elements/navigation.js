@@ -2,7 +2,6 @@ import { WithParent } from '../mixins/with-parent'
 import { t } from '../translations'
 
 import { Share } from './share'
-import { TabDebug } from './tab-debug'
 import { TabInventory } from './tab-inventory'
 import { TabMemory } from './tab-memory'
 import { TabSettings } from './tab-settings'
@@ -42,9 +41,6 @@ class Navigation extends WithParent {
     }, {
       href: '#tab-settings',
       text: t('SETTINGS')
-    }, {
-      href: '#tab-debug',
-      text: t('DEBUG')
     }]
 
     const nav = this._createHtmlElement(
@@ -130,8 +126,6 @@ class Navigation extends WithParent {
       id: 'memory', ref: new TabMemory(properties)
     }, {
       id: 'settings', ref: new TabSettings(properties)
-    }, {
-      id: 'debug', ref: new TabDebug(properties)
     }]
   }
 }

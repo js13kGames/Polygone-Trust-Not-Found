@@ -6,17 +6,6 @@ game.init()
 
 let shallStart = true
 
-document
-  .getElementById('action')
-  .addEventListener('click', () => {
-    if (shallStart) {
-      game.startTime()
-    } else {
-      game.pauseTime()
-    }
-    shallStart = !shallStart
-  }, false)
-
 // BIG Kudos to https://stackoverflow.com/a/16484266
 /*
 class World {

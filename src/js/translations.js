@@ -3,8 +3,6 @@
  * @enum {String}
  */
 const EN = {
-  DEBUG: 'Debug',
-  DEBUG_BUTTON: 'Start time',
   HANDEDNESS: 'Handedness',
   HANDEDNESS_LEFT: 'Left-handed',
   HANDEDNESS_RIGHT: 'Right-handed',
