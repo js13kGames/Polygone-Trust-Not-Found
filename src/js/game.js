@@ -59,6 +59,7 @@
  *     WithParent        <|-- Canvas
  *     WithParent        <|-- Castle
  *     WithParent        <|-- Controls
+ *     WithParent        <|-- EightTable
  *     WithParent        <|-- FivePortal
  *     WithParent        <|-- Foreground
  *     WithParent        <|-- FourPortal

@@ -104,6 +104,7 @@ a:active {
 }
 
 .memories {
+  list-style-position: inside;
   max-height: 25vmin;
   overflow-y: auto;
 }
@@ -178,6 +179,10 @@ svg {
   );
 }
 
+.table__background {
+  fill: purple;
+}
+
 .sun {
   fill: gold;
 }
@@ -199,7 +204,8 @@ svg {
   font-family: var(--fontFamily);
 }
 
-.logo__button__text {
+.logo__button__text,
+.table__day {
   font-size: 0.65em;
 }
 

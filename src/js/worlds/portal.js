@@ -1,5 +1,6 @@
 import { EVENTS, WORLDS } from '../constants'
 
+import { EightTable } from '../elements/8-table'
 import { FivePortal } from '../elements/5-portal'
 import { FourPortal } from '../elements/4-portal'
 import { SixPortal } from '../elements/6-portal'
@@ -43,6 +44,25 @@ class PortalWorld extends BaseWorld {
     this.__addFourPortal()
     this.__addFivePortal()
     this.__addSixPortal()
+  }
+
+  /**
+   * Adds the table to the middleground.
+   * @protected
+   */
+  _addMiddleground () {
+    const { x, y, h, w } = this._boundingBox
+    const properties = {
+      boundingBox: {
+        x,
+        y,
+        height: h,
+        width: w,
+      },
+      eventNode: this._eventNode,
+      parent: this.element
+    }
+    new EightTable(properties)
   }
 
   /**
