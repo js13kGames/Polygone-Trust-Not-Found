@@ -1,4 +1,6 @@
 import { WORLDS } from '../constants'
+import { t } from '../translations'
+
 import { ThreePortal } from '../elements/3-portal'
 
 import { BaseWorld } from './base'
@@ -8,6 +10,19 @@ import { BaseWorld } from './base'
  * @extends BaseWorld
  */
 class ThreePortalWorld extends BaseWorld {
+  /**
+   * @param {PropertiesWithParent} properties
+   */
+  constructor (properties) {
+    super(properties)
+
+    /**
+     * Updates the document.title
+     * @protected
+     */
+    this._documentTitle = t('TITLE_THREE_PORTAL')
+  }
+ 
   /**
    * Adds the {@see ThreePortal} to the background.
    * @protected

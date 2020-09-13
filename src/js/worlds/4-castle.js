@@ -1,4 +1,5 @@
 import { EVENTS, WIND_STRENGTHS, WORLDS } from '../constants'
+import { t } from '../translations'
 
 import { Background } from '../elements/background'
 import { Foreground } from '../elements/foreground'
@@ -21,6 +22,12 @@ class FourCastleWorld extends BaseWorld {
    */
   constructor (properties) {
     super(properties)
+
+    /**
+     * Updates the document.title
+     * @protected
+     */
+    this._documentTitle = t('TITLE_FOUR_CASTLE')
 
     /**
      * This world plays Alouette, a French folk song.
@@ -85,12 +92,13 @@ class FourCastleWorld extends BaseWorld {
    */
   fireWindChange () {
     const dice = this._rollDice()
+    const { STILL, MEDIUM, STRONG } = WIND_STRENGTHS
 
     const winds = [
       null,
-      WIND_STRENGTHS.STILL, WIND_STRENGTHS.STILL,
-      WIND_STRENGTHS.MEDIUM, WIND_STRENGTHS.MEDIUM, WIND_STRENGTHS.MEDIUM,
-      WIND_STRENGTHS.STRONG,
+      STILL, STILL,
+      MEDIUM, MEDIUM, MEDIUM,
+      STRONG,
     ]
 
     const wind = winds[ dice ]

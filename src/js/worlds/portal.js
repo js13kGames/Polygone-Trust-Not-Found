@@ -25,6 +25,15 @@ class PortalWorld extends BaseWorld {
   }
 
   /**
+   * Update the document.title
+   * @public
+   */
+  setActive () {
+    super.setActive()
+    document.title = 'At Portal ' + this._documentTitleRoot
+  }
+
+  /**
    * Add elements to the background.
    * @protected
    */

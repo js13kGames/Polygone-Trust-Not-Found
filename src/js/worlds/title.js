@@ -9,6 +9,19 @@ import { BaseWorld } from './base'
  */
 class TitleWorld extends BaseWorld {
   /**
+   * @param {PropertiesWithParent} properties
+   */
+  constructor (properties) {
+    super(properties)
+
+    /**
+     * Updates the document.title
+     * @protected
+     */
+    this._documentTitle = t('TITLE_TITLE')
+  }
+
+  /**
    * Adds the logo to the background
    * @protected
    */

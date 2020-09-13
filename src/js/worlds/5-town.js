@@ -1,4 +1,5 @@
 import { EVENTS, WORLDS } from '../constants'
+import { t } from '../translations'
 
 import { Guild } from '../elements/guild'
 import { Sun } from '../elements/sun'
@@ -15,6 +16,11 @@ class FiveTownWorld extends BaseWorld {
    */
   constructor (properties) {
     super(properties)
+    /**
+     * Updates the document.title
+     * @protected
+     */
+    this._documentTitle = t('TITLE_FIVE_TOWN')
 
     /**
      * This world plays Rondo by Tilman Susato, 1551

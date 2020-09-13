@@ -24,6 +24,18 @@ class BaseWorld extends WithParent {
     this._isActive = false
 
     /**
+     * This is prepended to every document title change.
+     * @protected
+     */
+    this._documentTitle = ''
+
+    /**
+     * This is appended to every document title change.
+     * @protected
+     */
+    this._documentTitleRoot = 'Polygone - Trust Not Found - JS13kgames 2020'
+
+    /**
      * Flag to track, whether music is already playing.
      */
     this.__isPlayingMusic = false
@@ -120,6 +132,12 @@ class BaseWorld extends WithParent {
   setActive () {
     this._isActive = true
     this._updateView()
+    document.title = this._documentTitle
+      ? [
+        this._documentTitle,
+        this._documentTitleRoot
+      ].join(' | ')
+      : this._documentTitleRoot
     this.playMusic()
   }
 

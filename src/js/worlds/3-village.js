@@ -1,4 +1,5 @@
 import { EVENTS, WORLDS } from '../constants'
+import { t } from '../translations'
 
 import { Hut } from '../elements/hut'
 import { Sea } from '../elements/sea'
@@ -16,6 +17,12 @@ class ThreeVillageWorld extends BaseWorld {
    */
   constructor (properties) {
     super(properties)
+    /**
+     * Updates the document.title
+     * @protected
+     */
+    this._documentTitle = t('TITLE_THREE_VILLAGE')
+ 
     /**
      * This world plays What shall we do with a drunken sailor.
      */

@@ -2,7 +2,7 @@
  * Look up table for all translations.
  * @enum {String}
  */
-const T = {
+const EN = {
   DEBUG: 'Debug',
   DEBUG_BUTTON: 'Start time',
   HANDEDNESS: 'Handedness',
@@ -16,6 +16,17 @@ const T = {
   NO_ITEMS: 'No items.',
   NO_MEMORIES: 'Make some encounters.',
   SETTINGS: 'Settings',
+  TITLE_FIVE_PORTAL: 'At Five Portal',
+  TITLE_FIVE_TOWN: 'At Five Town',
+  TITLE_FOUR_CASTLE: 'At Four Castle',
+  TITLE_FOUR_PORTAL: 'At Four Portal',
+  TITLE_INTRO: 'At the beginning',
+  TITLE_PORTAL: 'At Portal',
+  TITLE_SIX_MOUNTAIN: 'At Six Mountain',
+  TITLE_SIX_PORTAL: 'At Six Portal',
+  TITLE_THREE_PORTAL: 'At Three Portal',
+  TITLE_THREE_VILLAGE: 'At Three Village',
+  TITLE: '',  // Sic!
   TYPING: 'Typing speed',
   VOLUME: 'Volume',
   WELCOME: [
@@ -30,7 +41,7 @@ const T = {
  * @returns {String} Translation associated with key.
  */
 function t (key) {
-  return T[ key ]
+  return EN[ key ]
 }
 
 export { t }

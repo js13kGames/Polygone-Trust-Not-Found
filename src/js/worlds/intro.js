@@ -11,6 +11,19 @@ import { BaseWorld } from './base'
  */
 class IntroWorld extends BaseWorld {
   /**
+   * @param {PropertiesWithParent} properties
+   */
+  constructor (properties) {
+    super(properties)
+
+    /**
+     * Updates the document.title
+     * @protected
+     */
+    this._documentTitle = t('TITLE_INTRO')
+  }
+
+  /**
    * Adds elements to the scene.
    */
   addScene () {

@@ -1,6 +1,7 @@
-# js13kgames-2020
+# js13kgames-2020 - Polygone, Trust Not Found.
 
 js13kgames competition entry. Motto 404
+It is called »Polygone - Trust Not Found«.
 
 ## Installation
 

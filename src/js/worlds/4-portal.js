@@ -1,4 +1,6 @@
 import { WORLDS } from '../constants'
+import { t } from '../translations'
+
 import { FourPortal } from '../elements/4-portal'
 
 import { BaseWorld } from './base'
@@ -8,6 +10,19 @@ import { BaseWorld } from './base'
  * @extends BaseWorld
  */
 class FourPortalWorld extends BaseWorld {
+  /**
+   * @param {PropertiesWithParent} properties
+   */
+  constructor (properties) {
+    super(properties)
+
+    /**
+     * Updates the document.title
+     * @protected
+     */
+    this._documentTitle = t('TITLE_FOUR_PORTAL')
+  }
+
   /**
    * Add the portal to the Background
    * @protected

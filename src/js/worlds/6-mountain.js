@@ -1,4 +1,5 @@
 import { EVENTS, WORLDS } from '../constants'
+import { t } from '../translations'
 
 import { Sun } from '../elements/sun'
 
@@ -15,7 +16,12 @@ class SixMountainWorld extends BaseWorld {
    */
   constructor (properties) {
     super(properties)
-
+    /**
+     * Updates the document.title
+     * @protected
+     */
+    this._documentTitle = t('TITLE_SIX_MOUNTAIN')
+ 
     /**
      * This world plays the Kookaburra song (from Australia)
      */
