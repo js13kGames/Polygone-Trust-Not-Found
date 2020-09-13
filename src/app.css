@@ -56,6 +56,12 @@ body {
   flex-direction: row-reverse;
 }
 
+.menu {
+  display: flex;
+  flex-direction: column;
+  height: 50vmin;
+}
+
 nav {
   margin-bottom: 1em;
   margin-block-end: 1em;
@@ -85,6 +91,10 @@ a:hover,
 a:active {
   color: var(--background-color);
   background-color: var(--text-color);
+}
+
+.tab-view {
+  flex: 1;
 }
 
 .tab-view:not(:target) {

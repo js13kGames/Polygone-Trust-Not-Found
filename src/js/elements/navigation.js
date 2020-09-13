@@ -20,7 +20,7 @@ class Navigation extends WithParent {
     this.element = this._createHtmlElement(
       'section',
       {},
-      []
+      [ 'menu' ]
     )
 
     parent.appendChild(this.element)
